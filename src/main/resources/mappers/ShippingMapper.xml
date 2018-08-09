@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paopao.dao.ShippingMapper">
+  <resultMap id="BaseResultMap" type="com.paopao.po.Shipping">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="user_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="receiver_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="receiver_mobile" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="receiver_large_area" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="receiver_medium_area" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="receiver_small_area" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="receiver_door" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, receiver_name, receiver_mobile, receiver_large_area, receiver_medium_area, 
+    receiver_small_area, receiver_door, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from paopao_shipping
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from paopao_shipping
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.paopao.po.Shipping">
+    insert into paopao_shipping (id, user_id, receiver_name, 
+      receiver_mobile, receiver_large_area, receiver_medium_area, 
+      receiver_small_area, receiver_door, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{receiverName,jdbcType=VARCHAR}, 
+      #{receiverMobile,jdbcType=VARCHAR}, #{receiverLargeArea,jdbcType=VARCHAR}, #{receiverMediumArea,jdbcType=VARCHAR}, 
+      #{receiverSmallArea,jdbcType=VARCHAR}, #{receiverDoor,jdbcType=VARCHAR}, now(),
+      now())
+  </insert>
+  <insert id="insertSelective" parameterType="com.paopao.po.Shipping">
+    insert into paopao_shipping
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="receiverName != null">
+        receiver_name,
+      </if>
+      <if test="receiverMobile != null">
+        receiver_mobile,
+      </if>
+      <if test="receiverLargeArea != null">
+        receiver_large_area,
+      </if>
+      <if test="receiverMediumArea != null">
+        receiver_medium_area,
+      </if>
+      <if test="receiverSmallArea != null">
+        receiver_small_area,
+      </if>
+      <if test="receiverDoor != null">
+        receiver_door,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="receiverName != null">
+        #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverMobile != null">
+        #{receiverMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverLargeArea != null">
+        #{receiverLargeArea,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverMediumArea != null">
+        #{receiverMediumArea,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverSmallArea != null">
+        #{receiverSmallArea,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverDoor != null">
+        #{receiverDoor,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        now(),
+      </if>
+      <if test="updateTime != null">
+        now(),
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.paopao.po.Shipping">
+    update paopao_shipping
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="receiverName != null">
+        receiver_name = #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverMobile != null">
+        receiver_mobile = #{receiverMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverLargeArea != null">
+        receiver_large_area = #{receiverLargeArea,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverMediumArea != null">
+        receiver_medium_area = #{receiverMediumArea,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverSmallArea != null">
+        receiver_small_area = #{receiverSmallArea,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverDoor != null">
+        receiver_door = #{receiverDoor,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = now(),
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.paopao.po.Shipping">
+    update paopao_shipping
+    set user_id = #{userId,jdbcType=INTEGER},
+      receiver_name = #{receiverName,jdbcType=VARCHAR},
+      receiver_mobile = #{receiverMobile,jdbcType=VARCHAR},
+      receiver_large_area = #{receiverLargeArea,jdbcType=VARCHAR},
+      receiver_medium_area = #{receiverMediumArea,jdbcType=VARCHAR},
+      receiver_small_area = #{receiverSmallArea,jdbcType=VARCHAR},
+      receiver_door = #{receiverDoor,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = now()
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
