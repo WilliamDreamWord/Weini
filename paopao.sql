@@ -1,3 +1,5 @@
+-- noinspection SqlNoDataSourceInspectionForFile
+-- noinspection SqlDialectInspectionForFile
 /*
  Navicat Premium Data Transfer
 
@@ -139,7 +141,7 @@ CREATE TABLE `paopao_user` (
   `phone` varchar(20) DEFAULT NULL,
   `question` varchar(100) DEFAULT NULL COMMENT '找回密码问题',
   `answer` varchar(100) DEFAULT NULL COMMENT '找回密码答案',
-  `role` int(4) NOT NULL COMMENT '角色0-root用户,1-普通用户, 2-管理员',
+  `role` int(4) NOT NULL COMMENT '角色 0-root用户,1-普通用户, 2-管理员',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '最后一次更新时间',
   PRIMARY KEY (`id`),
