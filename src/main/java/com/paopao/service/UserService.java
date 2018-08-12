@@ -25,8 +25,6 @@ public class UserService {
 
 
 
-
-
     public User login(LoginParam loginParam) {
         BeanValidator.check(loginParam);
 
@@ -52,8 +50,6 @@ public class UserService {
 
         ans = userMapper.insert(user);
         Preconditions.checkArgument(ans > 0, "注册失败");
-
-
         return "注册成功";
     }
 
