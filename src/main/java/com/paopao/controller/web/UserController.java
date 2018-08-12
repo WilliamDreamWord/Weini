@@ -1,4 +1,4 @@
-package com.paopao.controller.backend;
+package com.paopao.controller.web;
 
 import com.paopao.common.Const;
 import com.paopao.common.JsonResponse;
