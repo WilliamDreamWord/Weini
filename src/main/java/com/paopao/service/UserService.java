@@ -24,6 +24,9 @@ public class UserService {
     private UserMapper userMapper;
 
 
+
+
+
     public User login(LoginParam loginParam) {
         BeanValidator.check(loginParam);
 
@@ -43,6 +46,8 @@ public class UserService {
         user.setPassword(registerParam.getPassword());
         user.setPhone(registerParam.getPhone());
         user.setEmail(registerParam.getEmail());
+        user.setQuestion(registerParam.getQuestion());
+        user.setAnswer(registerParam.getAnswer());
         user.setRole(Const.Role.NORMAL);
 
         ans = userMapper.insert(user);

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,6 +54,20 @@ public class JsonUtil {
             return null;
         }
     }
+
+    public static <T> T string2Obj(String str,Class<T> clazz){
+        if(StringUtils.isEmpty(str) || clazz == null){
+            return null;
+        }
+
+        try {
+            return clazz.equals(String.class)? (T)str : objectMapper.readValue(str,clazz);
+        } catch (Exception e) {
+            log.warn("Parse String to Object error",e);
+            return null;
+        }
+    }
+
 
     public static <T> T string2Obj(String src, TypeReference<T> typeReference) {
         if (src == null || typeReference == null) {

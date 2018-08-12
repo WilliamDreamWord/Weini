@@ -13,4 +13,8 @@ public class Const {
         int NORMAL = 1;
     }
 
+    public interface RedisCacheExtime {
+        int REDIS_SESSION_EXTIME = 60*30;
+    }
+
 }
