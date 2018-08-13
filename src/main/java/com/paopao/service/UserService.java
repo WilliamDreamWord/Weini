@@ -46,7 +46,7 @@ public class UserService {
         user.setEmail(registerParam.getEmail());
         user.setQuestion(registerParam.getQuestion());
         user.setAnswer(registerParam.getAnswer());
-        user.setRole(Const.Role.NORMAL);
+        user.setRole(Const.Role.NORMAL.getCode());
 
         ans = userMapper.insert(user);
         Preconditions.checkArgument(ans > 0, "注册失败");

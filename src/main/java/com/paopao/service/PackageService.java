@@ -1,7 +1,11 @@
 package com.paopao.service;
 
 import com.google.common.base.Preconditions;
+import com.paopao.common.Const;
+import com.paopao.convert.PackageConvert;
 import com.paopao.dao.PackageMapper;
+import com.paopao.param.PackageParam;
+import com.paopao.po.Package;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,10 +38,39 @@ public class PackageService {
 
 
 
-    public boolean addOrSavePackage(Package pack) {
-        Preconditions.checkNotNull(pack, "新增或更新产品参数不正确");
 
-        return false;
+
+    public boolean addPackage(PackageParam packageParam) {
+        Package pack = PackageConvert.of(packageParam);
+        pack.setStatus(Const.PackageStatus.WAIT.getCode());
+        int ans = packageMapper.insert(pack);
+        Preconditions.checkArgument(ans > 0, "新增包裹失败");
+
+        return true;
     }
+
+
+    public boolean  deletePackage(int id) {
+        int ans = packageMapper.updateStatus(id, Const.PackageStatus.CANCEL.getCode());
+        Preconditions.checkArgument(ans > 0, "删除包裹失败");
+
+        return true;
+
+    }
+
+    public Package findPackageById(int id) {
+        Package ans = packageMapper.selectByPrimaryKey(id);
+        Preconditions.checkNotNull(ans, "没有找到相关包裹");
+
+        return ans;
+    }
+
+    public boolean updateDetail(Package pack) {
+        int ans = packageMapper.updateByPrimaryKeySelective(pack);
+        Preconditions.checkArgument(ans > 0, "更新失败");
+
+        return true;
+    }
+
 
 }

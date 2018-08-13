@@ -1,5 +1,4 @@
--- noinspection SqlNoDataSourceInspectionForFile
--- noinspection SqlDialectInspectionForFile
+
 /*
  Navicat Premium Data Transfer
 
@@ -63,7 +62,7 @@ CREATE TABLE `paopao_order` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '订单id',
   `order_no` bigint(20) DEFAULT NULL COMMENT '订单号',
   `user_id` int(11) DEFAULT NULL COMMENT '用户id',
-  `shipping_id` int(11) DEFAULT NULL COMMENT '收货地址',
+  `shipping_id` int(11) DEFAULT NULL COMMENT '收货地址id',
   `payment` decimal(20,2) DEFAULT NULL COMMENT '实际付款金额,单位是元,保留两位小数',
   `payment_type` int(4) DEFAULT NULL COMMENT '支付类型,1-线下支付, 2-线上支付',
   `status` int(10) DEFAULT NULL COMMENT '订单状态:0-已取消，10-已下单，20-已接单，30-已签收',
@@ -100,6 +99,7 @@ CREATE TABLE `paopao_order_item` (
 DROP TABLE IF EXISTS `paopao_package`;
 CREATE TABLE `paopao_package` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `user_id` int(11) NOT NULL COMMENT '用户id',
   `name` varchar(100) NOT NULL COMMENT '包裹名称',
   `address` varchar(100) NOT NULL comment '包裹取货地址',
   `detail` text COMMENT '包裹详细叙述',

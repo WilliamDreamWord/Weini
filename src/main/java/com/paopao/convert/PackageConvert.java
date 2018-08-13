@@ -10,10 +10,18 @@ import com.paopao.util.BeanValidator;
 public class PackageConvert {
 
     public static Package of(PackageParam packageParam) {
+        //convert里进行参数校验
         BeanValidator.check(packageParam);
 
         Package pack = new Package();
-        // TODO: 13/08/2018 填充属性   
+        pack.setUserId(packageParam.getUserId());
+        pack.setName(packageParam.getName());
+        pack.setAddress(packageParam.getAddress());
+        pack.setCode(packageParam.getCode());
+        pack.setDetail(packageParam.getDetail());
+        pack.setPrice(packageParam.getPrice());
+        pack.setPackageType(packageParam.getPackageType());
+        
         return pack;
     }
 
