@@ -1,4 +1,4 @@
-package com.paopao.common;
+package com.paopao.util;
 
 
 import com.google.common.base.Preconditions;

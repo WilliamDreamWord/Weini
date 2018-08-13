@@ -101,6 +101,7 @@ DROP TABLE IF EXISTS `paopao_package`;
 CREATE TABLE `paopao_package` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `name` varchar(100) NOT NULL COMMENT '包裹名称',
+  `address` varchar(100) NOT NULL comment '包裹取货地址',
   `detail` text COMMENT '包裹详细叙述',
   `price` decimal(20,2) NOT NULL COMMENT '价格,单位-元保留两位小数',
   `code` varchar(100) NOT NULL COMMENT '提货码',
@@ -122,7 +123,7 @@ CREATE TABLE `paopao_shipping` (
   `receiver_mobile` varchar(20) DEFAULT NULL COMMENT '收货移动电话',
   `receiver_large_area` varchar(20) DEFAULT NULL COMMENT '大区域，现在是西南大学',
   `receiver_medium_area` varchar(20) DEFAULT NULL COMMENT '中区域，现在有北区，南区',
-  `receiver_small_area` varchar(20) DEFAULT NULL COMMENT '小片区，橘园，桃园',
+  `receiver_small_area` varchar(20) DEFAULT NULL COMMENT '小片区，比如橘园八舍，桃园一舍',
   `receiver_door` varchar(20) DEFAULT NULL COMMENT '门牌号',
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,

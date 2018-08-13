@@ -1,7 +1,7 @@
 package com.paopao.service;
 
 import com.google.common.base.Preconditions;
-import com.paopao.common.BeanValidator;
+import com.paopao.util.BeanValidator;
 import com.paopao.common.Const;
 import com.paopao.dao.UserMapper;
 import com.paopao.param.LoginParam;
