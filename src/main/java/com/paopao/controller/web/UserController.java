@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 
 
 @RestController
-@RequestMapping("/user/")
+@RequestMapping("/manager/user/")
 public class UserController {
 
     @Autowired
@@ -26,7 +26,7 @@ public class UserController {
 
         User user = userService.login(loginParam);
 
-        httpSession.setAttribute(Const.CURRENT_USER, user);
+        httpSession.setAttribute(Const.CURRENT_MANAGER_USER, user);
 
         return JsonResponse.createBySuccess(user);
     }

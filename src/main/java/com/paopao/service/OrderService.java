@@ -17,9 +17,7 @@ import com.paopao.vo.OrderVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by joker on 13/08/2018.
@@ -153,7 +151,7 @@ public class OrderService {
     }
 
     public List<OrderVo> getOrderList(Integer userId, int pageNum, int pageSize) {
-        List<Order> orderList = orderMapper.selectByUserId(userId);
+        List<Order> orderList = orderMapper.selectByUserId(userId, (pageNum-1)*pageSize, pageSize);
         List<OrderVo> orderVoList = assembleOrderVoList(orderList, userId);
 
         return orderVoList;
@@ -163,14 +161,68 @@ public class OrderService {
         List<OrderVo> orderVoList = Lists.newArrayList();
         for (Order order : orderList) {
             List<OrderItem> orderItemList = Lists.newArrayList();
-            orderItemList = orderItemMapper.getByOrderNoUserId(
+            if (userId == null) {
+                //todo 管理员查询
+                orderItemList = orderItemMapper.getByOrderNo(order.getOrderNo());
+            } else {
+                orderItemList = orderItemMapper.getByOrderNoUserId(
                         order.getOrderNo(), userId);
+            }
             OrderVo orderVo = assembleOrderVo(order, orderItemList);
             orderVoList.add(orderVo);
 
         }
         return orderVoList;
     }
+
+
+
+    //manager
+
+    public List<OrderVo> manageList(int pageNum, int pageSize) {
+
+        List<Order> orderList = orderMapper.selectAllOrder((pageNum-1)*pageSize, pageSize);
+        List<OrderVo> orderVoList = assembleOrderVoList(orderList,null);
+
+        return orderVoList;
+    }
+
+    public OrderVo manageDetail(Long orderNo) {
+        Order order = orderMapper.selectByOrderNo(orderNo);
+        Preconditions.checkNotNull(order, "订单不存在");
+        List<OrderItem> orderItems = orderItemMapper.getByOrderNo(orderNo);
+        return assembleOrderVo(order, orderItems);
+    }
+
+
+    public List<OrderVo> manageSearchByUserId(Integer userId, int pageNum, int pageSize) {
+        List<Order> orders = orderMapper.selectByUserId(userId, pageNum, pageSize);
+        List<OrderVo> orderVoList = new ArrayList<>();
+        for (Order order : orders) {
+            List<OrderItem> orderItems = orderItemMapper.getByOrderNo(order.getOrderNo());
+            orderVoList.add(assembleOrderVo(order, orderItems));
+        }
+        return orderVoList;
+    }
+
+
+    //接单
+    public void manageSendGoods(Long orderNo) {
+        Order order = orderMapper.selectByOrderNo(orderNo);
+        Preconditions.checkNotNull(order, "订单不存在");
+        if (order.getStatus() == Const.OrderStatusEnum.PUBLISH_ORDER.getCode()) {
+            order.setStatus(Const.OrderStatusEnum.GET_ORDER.getCode());
+            order.setGetTime(new Date());
+            orderMapper.updateByPrimaryKeySelective(order);
+        }
+    }
+
+
+
+
+
+
+
 
 
 

@@ -185,12 +185,35 @@
     and user_id=#{userId}
   </select>
 
+  <select id="selectByOrderNo" resultMap="BaseResultMap" parameterType="long">
+    SELECT
+    <include refid="Base_Column_List" />
+    from paopao_order
+    where order_no = #{orderNo}
+  </select>
+
   <select id="selectByUserId" resultMap="BaseResultMap" parameterType="int">
     SELECT
     <include refid="Base_Column_List" />
     from paopao_order
     where user_id = #{userId}
     order by create_time desc
+    limit #{begin}, #{offset}
   </select>
+
+
+  <select id="selectAllOrder" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from paopao_order
+    ORDER by create_time DESC
+    limit #{begin}, #{offset}
+  </select>
+
+  <update id="closeOrderByOrderId" parameterType="int" >
+    UPDATE paopao_order
+    SET status = 0
+    where id = #{id}
+  </update>
 
 </mapper>

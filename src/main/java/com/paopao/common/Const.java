@@ -5,7 +5,7 @@ package com.paopao.common;
  */
 public class Const {
 
-    public static final String CURRENT_USER = "CURRRENT_USER";
+    public static final String CURRENT_MANAGER_USER = "CURRRENT_MANAGER_USER";
 
     public enum Role {
         ADMIN(2, "管理员"),

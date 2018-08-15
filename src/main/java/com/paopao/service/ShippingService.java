@@ -39,12 +39,12 @@ public class ShippingService {
     }
 
 
-    public void update(Shipping shipping) {
+    public void update(Integer shippingId, ShippingParam shippingParam) {
+        Shipping shipping = ShippingConvert.of(shippingParam);
         //userId在这里是为了防止横向越权
-        Preconditions.checkNotNull(shipping.getId(), "请输入订单id");
-        Preconditions.checkNotNull(shipping.getUserId(), "请输入用户id");
+        shipping.setId(shippingId);
 
-        int row = shippingMapper.updateByPrimaryKeySelective(shipping);
+        int row = shippingMapper.updateByShipping(shipping);
         Preconditions.checkArgument(row>0, "更新地址失败");
     }
 

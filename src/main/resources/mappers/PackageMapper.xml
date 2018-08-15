@@ -13,34 +13,16 @@
       <arg column="status" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="detail" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.paopao.po.Package">
-    <constructor>
-      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="user_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="name" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="address" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="price" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
-      <arg column="code" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="package_type" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="status" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="detail" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
-    </constructor>
-  </resultMap>
+
   <sql id="Base_Column_List">
-    id, user_id, name, address, price, code, package_type, status, create_time, update_time
+    id, user_id, name, address, price, code, package_type, status, create_time, update_time, detail
   </sql>
-  <sql id="Blob_Column_List">
-    detail
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from paopao_package
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -167,20 +149,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.paopao.po.Package">
-    update paopao_package
-    set user_id = #{userId,jdbcType=INTEGER},
-      name = #{name,jdbcType=VARCHAR},
-      address = #{address,jdbcType=VARCHAR},
-      price = #{price,jdbcType=DECIMAL},
-      code = #{code,jdbcType=VARCHAR},
-      package_type = #{packageType,jdbcType=INTEGER},
-      status = #{status,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = now(),
-      detail = #{detail,jdbcType=LONGVARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+
   <update id="updateByPrimaryKey" parameterType="com.paopao.po.Package">
     update paopao_package
     set user_id = #{userId,jdbcType=INTEGER},
@@ -191,7 +160,8 @@
       package_type = #{packageType,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = now()
+      update_time = now(),
+      detail = #{detail, jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
@@ -199,6 +169,36 @@
     UPDATE paopao_package
     set status=#{status},
     update_time = now()
-    where id =#{id}
+    where id =#{id} and user_id=#{userId}
   </update>
+
+  <select id="selectList" resultMap="BaseResultMap" >
+    SELECT
+    <include refid="Base_Column_List"/>
+    from paopao_package
+    ORDER by id asc
+  </select>
+
+    <select id="selectByIdAndUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from paopao_package
+        where id = #{id,jdbcType=INTEGER} and user_id=#{userId}
+    </select>
+
+
+    <update id="updateByIdAndUserId" parameterType="com.paopao.po.Package">
+        update paopao_package
+        set
+         name = #{name,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      code = #{code,jdbcType=VARCHAR},
+      package_type = #{packageType,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = now(),
+      detail = #{detail, jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER} and user_id=#{userId, jdbcType=INTEGER}
+    </update>
 </mapper>

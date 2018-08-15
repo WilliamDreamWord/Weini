@@ -29,4 +29,6 @@ public interface ShippingMapper {
 
     List<Shipping> selectByUserId(@Param("userId")Integer userId, @Param("begin") int begin,
                                   @Param("count") int count);
+
+
 }

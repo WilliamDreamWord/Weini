@@ -20,5 +20,15 @@ public interface OrderMapper {
 
     Order selectByUserIdAndOrderNo(@Param("userId") Integer userId, @Param("orderNo") Long orderNo);
 
-    List<Order> selectByUserId(Integer userId);
+    Order selectByOrderNo(Long OrderNo);
+
+    List<Order> selectByUserId(@Param("userId") Integer userId, @Param("begin") int begin,
+                               @Param("offset") int offset);
+
+
+    List<Order> selectAllOrder(@Param("begin")int begin, @Param("offset") int num);
+
+    int closeOrderByOrderId(Integer id);
+
+
 }

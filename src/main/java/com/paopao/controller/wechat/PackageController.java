@@ -48,9 +48,9 @@ public class PackageController {
 
 
     @RequestMapping("update.do")
-    public JsonResponse<String> update(Package pack) {
+    public JsonResponse<String> update(Integer packageId, PackageParam packageParam) {
 
-        packageService.updateDetail(pack);
+        packageService.updateDetail(packageId, packageParam);
 
         return JsonResponse.createBySuccess("更新成功");
     }

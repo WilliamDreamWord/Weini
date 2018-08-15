@@ -43,8 +43,8 @@ public class ShippingController {
 
 
     @RequestMapping("update.do")
-    public JsonResponse update(Shipping shipping) {
-        shippingService.update(shipping);
+    public JsonResponse update(Integer shippingId, ShippingParam shippingParam) {
+        shippingService.update(shippingId, shippingParam);
 
         return JsonResponse.createBySuccess("更新成功");
     }
