@@ -4,6 +4,7 @@ import com.paopao.common.JsonResponse;
 import com.paopao.service.OrderService;
 import com.paopao.vo.OrderVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +22,7 @@ public class OrderManagerController {
     private OrderService orderService;
 
 
-    @RequestMapping("list.do")
+    @PostMapping("list.do")
     public JsonResponse<List<OrderVo>> orderList(@RequestParam(value = "pageNum", defaultValue = "1")
                                       int pageNum,
                                                @RequestParam(value = "pageSize", defaultValue = "10")
@@ -30,13 +31,13 @@ public class OrderManagerController {
         return JsonResponse.createBySuccess(orderService.manageList(pageNum, pageSize));
     }
 
-    @RequestMapping("detail.do")
+    @PostMapping("detail.do")
     public JsonResponse<OrderVo> orderDetail(Long orderNo) {
 
         return JsonResponse.createBySuccess(orderService.manageDetail(orderNo));
     }
 
-    @RequestMapping("search.do")
+    @PostMapping("search.do")
     public JsonResponse<List<OrderVo>> orderSearch(Integer userId,
                                                 @RequestParam(value = "pageNum", defaultValue = "1")
                                                 int pageNum,
@@ -48,7 +49,7 @@ public class OrderManagerController {
 
     }
 
-    @RequestMapping("send_goods.do")
+    @PostMapping("send_goods.do")
     public JsonResponse<String> orderSendGoods(Long orderNo) {
         orderService.manageSendGoods(orderNo);
         return JsonResponse.createBySuccess("接单成功");
