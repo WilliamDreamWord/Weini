@@ -13,11 +13,11 @@ public class LoginParam {
 
 
     // TODO: 15/08/2018 notnull message 
-    @NotNull
+    @NotNull(message = "用户名不能为空")
     @Length(min = 1, max = 20, message = "用户名必须在1-20位之间")
     private String username;
 
-    @NotNull
+    @NotNull(message = "密码不能为空")
     @Length(min = 1, max = 20, message = "密码必须在1-20位之间")
     private String password;
 

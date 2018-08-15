@@ -48,27 +48,28 @@ public class PackageService {
     }
 
 
-    public void  deletePackage(Integer packageId) {
-        Preconditions.checkNotNull(packageId, "请传入id");
+    public void  deletePackage(Integer packageId, Integer userId) {
+        Preconditions.checkNotNull(packageId, "请传入包裹id");
+        Preconditions.checkNotNull(userId, "请传入用户id");
         int ans = packageMapper.updateStatus(packageId, Const.PackageStatus.CANCEL.getCode());
         Preconditions.checkArgument(ans > 0, "删除包裹失败");
 
 
     }
 
-    public Package findPackageById(Integer packageId) {
-        Preconditions.checkNotNull(packageId, "请传入id");
+    public Package findPackageById(Integer packageId, Integer userId) {
+        Preconditions.checkNotNull(packageId, "请传入包裹id");
+        Preconditions.checkNotNull(userId, "请传入用户id");
         Package ans = packageMapper.selectByPrimaryKey(packageId);
         Preconditions.checkNotNull(ans, "没有找到相关包裹");
 
         return ans;
     }
 
-    public void updateDetail(Integer packageId, PackageParam packageParam) {
+    public void updateDetail(Package pack) {
 
-        Preconditions.checkNotNull(packageId, "请传入id");
-        Package pack = PackageConvert.of(packageParam);
-        pack.setId(packageId);
+        Preconditions.checkNotNull(pack.getId(), "请传入包裹id");
+        Preconditions.checkNotNull(pack.getUserId(), "请传入用户id");
         int ans = packageMapper.updateByPrimaryKeySelective(pack);
         Preconditions.checkArgument(ans > 0, "更新失败");
 

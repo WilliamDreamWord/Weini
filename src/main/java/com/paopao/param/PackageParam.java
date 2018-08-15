@@ -10,28 +10,28 @@ import java.math.BigDecimal;
  */
 public class PackageParam {
 
-    // TODO: 15/08/2018 notnull message
-    @NotNull
+
+    @NotNull(message = "用户id不能为空")
     private Integer userId;
 
-    @NotNull
+    @NotNull(message = "包裹名不能为空")
     @Length(min=1, max = 50, message = "请给包裹取个名字吧")
     private String name;
 
 
-    @NotNull
+    @NotNull(message = "地址不能为空")
     @Length(min=1, max = 50, message = "没有填写收货地址")
     private String address;
 
 
-    @NotNull
+    @NotNull(message = "取货码不能为空")
     @Length(min=1, max = 50, message = "没有填写提货码")
     private String code;
 
-    @NotNull
+    @NotNull(message = "价格不能为空")
     private BigDecimal price;
 
-    @NotNull
+    @NotNull(message = "包裹类型不能为空")
     private Integer packageType;
 
 

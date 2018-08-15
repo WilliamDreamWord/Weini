@@ -1,4 +1,4 @@
-package com.paopao.controller.webchat;
+package com.paopao.controller.wechat;
 
 import com.paopao.common.JsonResponse;
 import com.paopao.service.OrderService;

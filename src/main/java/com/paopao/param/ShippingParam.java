@@ -8,26 +8,26 @@ import javax.validation.constraints.NotNull;
  */
 public class ShippingParam {
 
-    // TODO: 15/08/2018 notnull message
-    @NotNull
+
+    @NotNull(message = "用户id不能空")
     private Integer userId;
 
-    @NotEmpty
+    @NotEmpty(message = "收货名称不能空")
     private String receiverName;
 
-    @NotEmpty
+    @NotEmpty(message = "收货手机不能空")
     private String receiverMobile;
 
-    @NotEmpty
+    @NotEmpty(message = "大区域地址不能空")
     private String receiverLargeArea;
 
-    @NotEmpty
+    @NotEmpty(message = "中区域地址不能空")
     private String receiverMediumArea;
 
-    @NotEmpty
+    @NotEmpty(message = "小区域地址不能空")
     private String receiverSmallArea;
 
-    @NotEmpty
+    @NotEmpty(message = "门牌号不能空")
     private String receiverDoor;
 
     public Integer getUserId() {

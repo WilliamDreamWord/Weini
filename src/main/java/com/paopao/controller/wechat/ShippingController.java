@@ -1,4 +1,4 @@
-package com.paopao.controller.webchat;
+package com.paopao.controller.wechat;
 
 import com.paopao.common.JsonResponse;
 import com.paopao.param.ShippingParam;
@@ -42,10 +42,9 @@ public class ShippingController {
     }
 
 
-    // TODO: 15/08/2018 修改参数
     @RequestMapping("update.do")
-    public JsonResponse update(ShippingParam shippingParam) {
-        shippingService.update(shippingParam);
+    public JsonResponse update(Shipping shipping) {
+        shippingService.update(shipping);
 
         return JsonResponse.createBySuccess("更新成功");
     }

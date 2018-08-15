@@ -1,4 +1,4 @@
-package com.paopao.controller.webchat;
+package com.paopao.controller.wechat;
 
 import com.paopao.common.JsonResponse;
 import com.paopao.param.PackageParam;
@@ -31,28 +31,26 @@ public class PackageController {
     }
 
     @RequestMapping("delete.do")
-    public JsonResponse<String> delete(Integer packageId) {
+    public JsonResponse<String> delete(Integer packageId, Integer userId) {
 
-        packageService.deletePackage(packageId);
+        packageService.deletePackage(packageId, userId);
 
         return JsonResponse.createBySuccessMsg("删除成功");
     }
 
     @RequestMapping("select.do")
-    public JsonResponse<Package> select(Integer packageId) {
+    public JsonResponse<Package> select(Integer packageId, Integer userId) {
 
-        Package pack = packageService.findPackageById(packageId);
+        Package pack = packageService.findPackageById(packageId, userId);
 
         return JsonResponse.createBySuccess(pack);
     }
 
 
-    // TODO: 15/08/2018 修改参数
     @RequestMapping("update.do")
-    public JsonResponse<String> update(Integer packageId, PackageParam packageParam) {
+    public JsonResponse<String> update(Package pack) {
 
-
-        packageService.updateDetail(packageId, packageParam);
+        packageService.updateDetail(pack);
 
         return JsonResponse.createBySuccess("更新成功");
     }

@@ -12,11 +12,11 @@ import javax.validation.constraints.Pattern;
 public class RegisterParam {
 
     // TODO: 15/08/2018 notnull message
-    @NotEmpty
+    @NotEmpty(message = "用户名不能为空")
     @Length(min = 1, max = 20, message = "用户名必须在1-20位之间")
     private String username;
 
-    @NotEmpty
+    @NotEmpty(message = "密码不能为空")
     @Length(min = 1, max = 20, message = "密码必须在1-20位之间")
     private String password;
 
@@ -28,11 +28,11 @@ public class RegisterParam {
     @Pattern(regexp="(^$|[0-9]{13})")
     private String phone;
 
-    @NotEmpty
+    @NotEmpty(message = "密码找回问题不能为空")
     @Length(min = 1, max = 100, message = "找回密码问题必须在1-100之间")
     private String question;
 
-    @NotEmpty
+    @NotEmpty(message = "密码找回答案不能为空")
     @Length(min = 1, max = 100, message = "找回密码答案必须在1-100之间")
     private String answer;
 
