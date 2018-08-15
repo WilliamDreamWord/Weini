@@ -29,7 +29,7 @@
     delete from paopao_shipping
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.paopao.po.Shipping">
+  <insert id="insert" parameterType="com.paopao.po.Shipping" useGeneratedKeys="true" keyProperty="id">
     insert into paopao_shipping (id, user_id, receiver_name, 
       receiver_mobile, receiver_large_area, receiver_medium_area, 
       receiver_small_area, receiver_door, create_time, 
@@ -152,4 +152,43 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <delete id="deleteByShippingIdUserId" parameterType="map" >
+    delete from paopao_shipping
+    where id = #{shippingId}
+    and user_id = #{userId}
+  </delete>
+
+
+  <update id="updateByShipping" parameterType="com.paopao.po.Shipping">
+    update paopao_shipping
+    set
+      receiver_name = #{receiverName,jdbcType=VARCHAR},
+      receiver_mobile = #{receiverMobile,jdbcType=VARCHAR},
+      receiver_large_area = #{receiverLargeArea,jdbcType=VARCHAR},
+      receiver_medium_area = #{receiverMediumArea,jdbcType=VARCHAR},
+      receiver_small_area = #{receiverSmallArea,jdbcType=VARCHAR},
+      receiver_door = #{receiverDoor,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = now()
+    where id = #{id,jdbcType=INTEGER}
+    and user_id = #{userId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByShippingIdUserId" resultMap="BaseResultMap" parameterType="map">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from paopao_shipping
+    where id = #{shippingId}
+    and user_id = #{userId}
+  </select>
+
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List" />
+    from paopao_shipping
+    where user_id = #{userId}
+    limit #{begin}, #{count}
+  </select>
+
 </mapper>

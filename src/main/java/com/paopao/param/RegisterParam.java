@@ -11,7 +11,7 @@ import javax.validation.constraints.Pattern;
  */
 public class RegisterParam {
 
-
+    // TODO: 15/08/2018 notnull message
     @NotEmpty
     @Length(min = 1, max = 20, message = "用户名必须在1-20位之间")
     private String username;

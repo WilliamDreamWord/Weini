@@ -41,7 +41,6 @@ public class Package {
     }
 
     public Package() {
-        super();
     }
 
     public Integer getId() {

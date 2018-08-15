@@ -10,6 +10,7 @@ import java.math.BigDecimal;
  */
 public class PackageParam {
 
+    // TODO: 15/08/2018 notnull message
     @NotNull
     private Integer userId;
 

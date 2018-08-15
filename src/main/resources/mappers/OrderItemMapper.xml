@@ -127,4 +127,12 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="getByOrderNoUserId" resultMap="BaseResultMap" parameterType="map">
+    SELECT
+    <include refid="Base_Column_List" />
+    from paopao_order_item
+    where order_no = #{orderNo}
+    and user_id = #{userId}
+  </select>
 </mapper>
