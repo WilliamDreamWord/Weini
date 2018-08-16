@@ -1,6 +1,8 @@
 package com.paopao.controller.wechat;
 
+import com.paopao.common.Const;
 import com.paopao.common.JsonResponse;
+import com.paopao.po.WeChatUser;
 import com.paopao.service.OrderService;
 import com.paopao.vo.OrderVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -15,40 +18,46 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/order/")
+@RequestMapping("/wechat/order/")
 public class OrderController {
 
     @Autowired
     private OrderService orderService;
 
     @RequestMapping("add.do")
-    public JsonResponse<OrderVo> add(Integer userId, Integer shippingId, Integer packageId) {
+    public JsonResponse<OrderVo> add(Integer shippingId, Integer packageId, HttpSession httpSession) {
 
-        OrderVo orderVo =  orderService.addOrder(packageId, shippingId, userId);
+        WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
+        OrderVo orderVo =  orderService.addOrder(packageId, shippingId, weChatUser.getId());
 
         return JsonResponse.createBySuccess(orderVo);
     }
 
     @RequestMapping("cancel.do")
-    public JsonResponse cancel(Integer userId, Long orderNo) {
-        orderService.cancel(userId, orderNo);
+    public JsonResponse cancel(Long orderNo, HttpSession httpSession) {
+
+        WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
+        orderService.cancel(weChatUser.getId(), orderNo);
 
         return JsonResponse.createBySuccess("取消成功");
     }
 
     @RequestMapping("get_order.do")
-    public JsonResponse<OrderVo> getOrder(Integer userId, Long orderNo) {
-        OrderVo orderVo = orderService.getOrder(userId, orderNo);
+    public JsonResponse<OrderVo> getOrder(Long orderNo, HttpSession httpSession) {
+
+        WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
+        OrderVo orderVo = orderService.getOrder(weChatUser.getId(), orderNo);
 
         return JsonResponse.createBySuccess(orderVo);
     }
 
 
     @RequestMapping("list.do")
-    public JsonResponse<List<OrderVo>> getOrderList(Integer userId,
+    public JsonResponse<List<OrderVo>> getOrderList(HttpSession httpSession,
                                                     @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                                     @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
-        List<OrderVo> orderVoList = orderService.getOrderList(userId, pageNum, pageSize);
+        WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
+        List<OrderVo> orderVoList = orderService.getOrderList(weChatUser.getId(), pageNum, pageSize);
 
         return JsonResponse.createBySuccess(orderVoList);
     }

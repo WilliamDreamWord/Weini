@@ -6,6 +6,9 @@ package com.paopao.common;
 public class Const {
 
     public static final String CURRENT_MANAGER_USER = "CURRRENT_MANAGER_USER";
+    public static final String CURRENT_WECHAT_USER_SESSION_KEY = "CURRENT_WECHAT_USER_SESSION_KEY";
+    public static final String CURRENT_WECHAT_USER_OPEN_ID = "CURRENT_WECHAT_USER_OPEN_ID";
+    public static final String CURRENT_WECHAT_USER = "CURRENT_WECHAT_USER";
 
     public enum Role {
         ADMIN(2, "管理员"),
@@ -174,5 +177,37 @@ public class Const {
         }
     }
 
+
+    public enum WeChatIdentity {
+        NORMAL(1, "普通用户"),
+        VIP(2, "VIP");
+
+        WeChatIdentity(int code, String value) {
+            this.code = code;
+            this.value = value;
+        }
+
+        private String value;
+        private int code;
+
+
+        public String getValue() {
+            return value;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public static WeChatIdentity codeOf(int code) {
+            for (WeChatIdentity weChatIdentity : values()) {
+                if (weChatIdentity.getCode() == code) {
+                    return weChatIdentity;
+                }
+            }
+            throw new RuntimeException("没有找到对应的枚举");
+        }
+
+    }
 
 }

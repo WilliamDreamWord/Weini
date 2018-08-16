@@ -25,5 +25,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/manager/**").excludePathPatterns("/manager/user/login.do")
                 .excludePathPatterns("/manager/user/register.do");
 
+        registry.addInterceptor(new WeChatLoginInterceptor())
+                .addPathPatterns("/wechat/**").excludePathPatterns("/wechat/user/login.do");
+
     }
 }
