@@ -53,16 +53,15 @@ public class PackageController {
     }
 
 
-    // TODO: 18/08/2018 完善更新
-//    @PostMapping("update.do")
-//    public JsonResponse<String> update(Integer packageId, PackageParam packageParam, HttpSession httpSession) {
-//
-//        WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
-//        packageParam.setUserId(weChatUser.getId());
-//        packageService.updateDetail(packageId, packageParam);
-//
-//        return JsonResponse.createBySuccess("更新成功");
-//    }
+    @PostMapping("update.do")
+    public JsonResponse<String> update(Integer packageId, PackageParam packageParam, HttpSession httpSession) {
+
+        WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
+        packageParam.setUserId(weChatUser.getId());
+        packageService.updateDetail(packageId, packageParam);
+
+        return JsonResponse.createBySuccess("更新成功");
+    }
 
 
 

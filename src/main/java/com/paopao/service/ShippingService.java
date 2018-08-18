@@ -41,7 +41,6 @@ public class ShippingService {
 
     public void update(Integer shippingId, ShippingParam shippingParam) {
         Shipping shipping = ShippingConvert.of(shippingParam);
-        //userId在这里是为了防止横向越权
         shipping.setId(shippingId);
 
         int row = shippingMapper.updateByShipping(shipping);

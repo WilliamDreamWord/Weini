@@ -47,15 +47,14 @@ public class ShippingController {
     }
 
 
-    // TODO: 18/08/2018 完善更新
-//    @PostMapping("update.do")
-//    public JsonResponse update(Integer shippingId, ShippingParam shippingParam, HttpSession httpSession) {
-//        WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
-//        shippingParam.setUserId(weChatUser.getId());
-//        shippingService.update(shippingId, shippingParam);
-//
-//        return JsonResponse.createBySuccess("更新成功");
-//    }
+    @PostMapping("update.do")
+    public JsonResponse update(Integer shippingId, ShippingParam shippingParam, HttpSession httpSession) {
+        WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
+        shippingParam.setUserId(weChatUser.getId());
+        shippingService.update(shippingId, shippingParam);
+
+        return JsonResponse.createBySuccess("更新成功");
+    }
 
 
     @PostMapping("select.do")
