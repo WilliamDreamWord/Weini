@@ -3,7 +3,6 @@ package com.paopao.vo;
 import com.paopao.po.Shipping;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,13 +18,13 @@ public class OrderVo {
     private Integer status;
     private String statusDesc;
 
-    private Date getTime;
+    private String getTime;
 
-    private Date endTime;
+    private String endTime;
 
-    private Date closeTime;
+    private String closeTime;
 
-    private Date createTime;
+    private String createTime;
 
     //订单明细
     private List<OrderItemVo> orderItemVoList;
@@ -83,35 +82,35 @@ public class OrderVo {
         this.statusDesc = statusDesc;
     }
 
-    public Date getGetTime() {
+    public String getGetTime() {
         return getTime;
     }
 
-    public void setGetTime(Date getTime) {
+    public void setGetTime(String getTime) {
         this.getTime = getTime;
     }
 
-    public Date getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
-    public Date getCloseTime() {
+    public String getCloseTime() {
         return closeTime;
     }
 
-    public void setCloseTime(Date closeTime) {
+    public void setCloseTime(String closeTime) {
         this.closeTime = closeTime;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 

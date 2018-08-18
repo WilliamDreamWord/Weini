@@ -25,13 +25,19 @@ public class PackageService {
     private PackageMapper packageMapper;
 
 
+    public List<Package> listByUserId(Integer userId, Integer pageNum, Integer pageSize) {
+        return packageMapper.selectByUserId(userId, (pageNum-1)*pageSize, pageSize);
+    }
 
 
-    public void addPackage(PackageParam packageParam) {
+    public Package addPackage(PackageParam packageParam) {
         Package pack = PackageConvert.of(packageParam);
         pack.setStatus(Const.PackageStatus.WAIT.getCode());
+
         int ans = packageMapper.insert(pack);
         Preconditions.checkArgument(ans > 0, "新增包裹失败");
+
+        return pack;
 
     }
 
@@ -76,7 +82,6 @@ public class PackageService {
     public List<Package> list() {
         return packageMapper.selectList();
     }
-
 
 
 

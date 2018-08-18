@@ -188,6 +188,7 @@
     <include refid="Base_Column_List" />
     from paopao_shipping
     where user_id = #{userId}
+    order by create_time desc
     limit #{begin}, #{count}
   </select>
 

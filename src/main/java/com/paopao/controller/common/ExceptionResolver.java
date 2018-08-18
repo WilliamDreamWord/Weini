@@ -44,6 +44,20 @@ public class ExceptionResolver extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(responseBody, headers,  HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(value=Exception.class)
+    public ResponseEntity<Object> handleOtherException(Exception ex){
+
+
+        JsonResponse responseBody = JsonResponse.createByErrorMsg(
+                String.format("system error ：%s", ex.getMessage()));
+
+        HttpHeaders headers = new HttpHeaders();
+
+        return new ResponseEntity<>(responseBody, headers,  HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+
 
 
     @Override

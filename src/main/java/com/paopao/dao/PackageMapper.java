@@ -28,5 +28,10 @@ public interface PackageMapper {
 
     int updateByIdAndUserId(Package record);
 
+    List<Package> selectByUserId(@Param("userId") Integer userId,
+                                 @Param("begin") Integer being,
+                                 @Param("count") Integer count);
+
+
 
 }

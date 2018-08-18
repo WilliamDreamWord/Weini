@@ -8,9 +8,7 @@ import com.paopao.po.Shipping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by joker on 13/08/2018.
@@ -22,15 +20,12 @@ public class ShippingService {
     private ShippingMapper shippingMapper;
 
 
-    public Map<String, Integer> add(ShippingParam shippingParam) {
+    public Shipping add(ShippingParam shippingParam) {
         Shipping shipping = ShippingConvert.of(shippingParam);
         int row = shippingMapper.insert(shipping);
         Preconditions.checkArgument(row>0, "新增地址失败");
 
-        Map<String, Integer> map = new HashMap<>();
-        map.put("shippingId", shipping.getId());
-
-        return map;
+        return shipping;
     }
 
     public void del(Integer userId, Integer shippingId) {

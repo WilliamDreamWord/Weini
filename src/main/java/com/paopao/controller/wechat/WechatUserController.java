@@ -83,6 +83,10 @@ public class WechatUserController {
             httpSession.setAttribute(Const.CURRENT_WECHAT_USER_OPEN_ID, openid);
             httpSession.setAttribute(Const.CURRENT_WECHAT_USER_SESSION_KEY, session_key);
 
+
+            WeChatUser weChatUser = wechatUserService.insertNotExist(openid);
+            httpSession.setAttribute(Const.CURRENT_WECHAT_USER, weChatUser);
+
             Map<String, String> map = new HashMap<>();
             map.put("JSESSIONID", sessionId);
 
@@ -132,7 +136,7 @@ public class WechatUserController {
 
         String openId = (String)httpSession.getAttribute(Const.CURRENT_WECHAT_USER_OPEN_ID);
 
-        return JsonResponse.createBySuccess(wechatUserService.getUserInfo(openId));
+        return JsonResponse.createBySuccess(wechatUserService.selectByOpenId(openId));
     }
 
 

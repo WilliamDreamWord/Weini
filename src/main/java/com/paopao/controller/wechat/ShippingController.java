@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by joker on 13/08/2018.
@@ -30,12 +29,12 @@ public class ShippingController {
 
 
     @PostMapping("add.do")
-    public JsonResponse add(ShippingParam shippingParam, HttpSession httpSession) {
+    public JsonResponse<Shipping> add(ShippingParam shippingParam, HttpSession httpSession) {
         WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
         shippingParam.setUserId(weChatUser.getId());
-        Map<String, Integer> map = shippingService.add(shippingParam);
+        Shipping shipping = shippingService.add(shippingParam);
 
-        return JsonResponse.createBySuccess(map);
+        return JsonResponse.createBySuccess(shipping);
     }
 
 
@@ -64,6 +63,8 @@ public class ShippingController {
         Shipping shipping = shippingService.select(weChatUser.getId(), shippingId);
         return JsonResponse.createBySuccess(shipping);
     }
+
+
 
     @PostMapping("list.do")
     public JsonResponse list(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,

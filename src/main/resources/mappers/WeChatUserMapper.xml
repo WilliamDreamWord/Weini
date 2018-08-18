@@ -28,7 +28,7 @@
     delete from paopao_wechat_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.paopao.po.WeChatUser">
+  <insert id="insert" parameterType="com.paopao.po.WeChatUser" useGeneratedKeys="true" keyProperty="id">
     insert into paopao_wechat_user (id, open_id, union_id, 
       nickname, gender, phone, 
       score, identity, create_time, 
@@ -160,7 +160,7 @@
   </select>
 
 
-  <update id="updateByOpenId" parameterType="com.paopao.po.WeChatUser">
+  <update id="updateByOpenId" parameterType="com.paopao.po.WeChatUser" useGeneratedKeys="true" keyProperty="id" >
     update paopao_wechat_user
     <set>
       <if test="unionId != null">
@@ -190,5 +190,12 @@
     </set>
     where open_id = #{openId,jdbcType=INTEGER}
   </update>
+
+  <select id="countByOpenId" parameterType="string" resultType="int">
+    select count(*)
+    from paopao_wechat_user
+    where open_id=#{openId}
+  </select>
+
 
 </mapper>

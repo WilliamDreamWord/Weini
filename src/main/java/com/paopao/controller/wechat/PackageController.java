@@ -9,9 +9,11 @@ import com.paopao.service.PackageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * Created by joker on 13/08/2018.
@@ -28,12 +30,12 @@ public class PackageController {
 
 
     @PostMapping("add.do")
-    public JsonResponse<String> add(PackageParam packageParam,HttpSession httpSession) {
+    public JsonResponse<Package> add(PackageParam packageParam,HttpSession httpSession) {
         WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
         packageParam.setUserId(weChatUser.getId());
-        packageService.addPackage(packageParam);
+        Package pack = packageService.addPackage(packageParam);
 
-        return JsonResponse.createBySuccessMsg("添加成功");
+        return JsonResponse.createBySuccess(pack);
     }
 
     @PostMapping("delete.do")
@@ -65,6 +67,16 @@ public class PackageController {
     }
 
 
+    @PostMapping("list.do")
+    public JsonResponse list(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                             HttpSession httpSession) {
+
+        WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
+        List<Package> packages = packageService.listByUserId(weChatUser.getId(), pageNum, pageSize);
+
+        return JsonResponse.createBySuccess(packages);
+    }
 
 
 }

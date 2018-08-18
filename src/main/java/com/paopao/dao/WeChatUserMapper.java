@@ -19,4 +19,7 @@ public interface WeChatUserMapper {
 
     int updateByOpenId(WeChatUser record);
 
+
+    int countByOpenId(String openId);
+
 }

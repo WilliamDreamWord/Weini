@@ -62,10 +62,10 @@ public class OrderService {
         }
 
 
-        orderVo.setCreateTime(order.getCreateTime());
-        orderVo.setGetTime(order.getGetTime());
-        orderVo.setEndTime(order.getEndTime());
-        orderVo.setCloseTime(order.getCloseTime());
+        orderVo.setCreateTime(DateTimeUtil.dateToStr(order.getCreateTime()));
+        orderVo.setGetTime(DateTimeUtil.dateToStr(order.getGetTime()));
+        orderVo.setEndTime(DateTimeUtil.dateToStr(order.getEndTime()));
+        orderVo.setCloseTime(DateTimeUtil.dateToStr(order.getCloseTime()));
 
 
         List<OrderItemVo> orderItemVoList = Lists.newArrayList();
