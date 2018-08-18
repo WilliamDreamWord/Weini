@@ -4,10 +4,7 @@ package com.paopao.config;
 import com.paopao.controller.common.LoginInterceptor;
 import com.paopao.controller.common.WeChatLoginInterceptor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 
 @Configuration
 @EnableWebMvc
@@ -33,5 +30,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(new WeChatLoginInterceptor())
                 .addPathPatterns("/wechat/**").excludePathPatterns("/wechat/user/login.do");
 
+    }
+
+    @Override
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+        configurer.enable();
     }
 }

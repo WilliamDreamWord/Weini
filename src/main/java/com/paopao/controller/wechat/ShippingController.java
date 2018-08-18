@@ -30,8 +30,9 @@ public class ShippingController {
 
 
     @PostMapping("add.do")
-    public JsonResponse add(ShippingParam shippingParam) {
-
+    public JsonResponse add(ShippingParam shippingParam, HttpSession httpSession) {
+        WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
+        shippingParam.setUserId(weChatUser.getId());
         Map<String, Integer> map = shippingService.add(shippingParam);
 
         return JsonResponse.createBySuccess(map);

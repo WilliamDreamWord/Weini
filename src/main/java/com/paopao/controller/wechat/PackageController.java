@@ -28,8 +28,9 @@ public class PackageController {
 
 
     @PostMapping("add.do")
-    public JsonResponse<String> add(PackageParam packageParam) {
-
+    public JsonResponse<String> add(PackageParam packageParam,HttpSession httpSession) {
+        WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
+        packageParam.setUserId(weChatUser.getId());
         packageService.addPackage(packageParam);
 
         return JsonResponse.createBySuccessMsg("添加成功");
