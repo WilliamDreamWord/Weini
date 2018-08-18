@@ -19,6 +19,14 @@ public class WechatUserService {
 
 
 
+    public void savePhone(String phone, String openId) {
+        WeChatUser weChatUser = new WeChatUser();
+        weChatUser.setPhone(phone);
+
+
+        int row = weChatUserMapper.updateByOpenId(weChatUser);
+        Preconditions.checkArgument(row>0, "存储用户手机号码失败");
+    }
 
 
     public void saveInfo(String nickname, String gender, String openId) {

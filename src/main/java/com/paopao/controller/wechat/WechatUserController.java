@@ -54,9 +54,6 @@ public class WechatUserController {
             throw  new ParamException("code为空");
         }
 
-
-
-
         //////////////// 1、向微信服务器 使用登录凭证 code 获取 session_key 和 openid ////////////////
         //请求参数
         String params = "appid=" + wxspAppid + "&secret=" + wxspSecret + "&js_code="
@@ -98,6 +95,15 @@ public class WechatUserController {
 
 
     }
+
+
+    @PostMapping("save_phone.do")
+    public JsonResponse savePhone(String phone, HttpSession httpSession) {
+        String openId = (String)httpSession.getAttribute(Const.CURRENT_WECHAT_USER_OPEN_ID);
+        wechatUserService.savePhone(phone, openId);
+        return JsonResponse.createBySuccess("保存手机号码成功");
+    }
+
 
     @PostMapping("save_user_info.do")
     public JsonResponse saveUserInfo(String encryptedData, String iv, HttpSession httpSession) {
