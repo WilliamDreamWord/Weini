@@ -21,11 +21,11 @@ public class RegisterParam {
     private String password;
 
 
-    @Email
+    @Email(message = "邮箱地址有误")
     private String email;
 
     //check phone number
-    @Pattern(regexp="(^$|[0-9]{13})")
+    @Pattern(regexp="(^$|[0-9]{13})", message = "电话号码需要13位")
     private String phone;
 
     @NotEmpty(message = "密码找回问题不能为空")
