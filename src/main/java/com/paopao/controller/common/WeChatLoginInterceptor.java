@@ -2,8 +2,8 @@ package com.paopao.controller.common;
 
 import com.paopao.common.Const;
 import com.paopao.common.JsonResponse;
-import com.paopao.po.WeChatUser;
 import com.paopao.util.JsonUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.method.HandlerMethod;
@@ -30,8 +30,9 @@ public class WeChatLoginInterceptor extends HandlerInterceptorAdapter {
 
         log.debug(" {} => 拦截Controller：{}, 拦截方法：{}  ", this.getClass().getName(), targetClazz, targetMethod);
 
-        WeChatUser weChatUser = (WeChatUser) request.getSession().getAttribute(Const.CURRENT_WECHAT_USER_SESSION_KEY);
-        if (weChatUser == null) {
+        String sessionKey = (String) request.getSession().getAttribute(Const.CURRENT_WECHAT_USER_SESSION_KEY);
+        String openId = (String) request.getSession().getAttribute(Const.CURRENT_WECHAT_USER_OPEN_ID);
+        if (StringUtils.isEmpty(sessionKey) || StringUtils.isEmpty(openId)) {
 
             response.reset();// 这里要添加reset，否则报异常 getWriter() has already been called for this response.
             response.setCharacterEncoding("UTF-8");// 这里要设置编码，否则会乱码

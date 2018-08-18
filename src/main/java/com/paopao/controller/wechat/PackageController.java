@@ -7,6 +7,7 @@ import com.paopao.po.Package;
 import com.paopao.po.WeChatUser;
 import com.paopao.service.PackageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +27,7 @@ public class PackageController {
 
 
 
-    @RequestMapping("add.do")
+    @PostMapping("add.do")
     public JsonResponse<String> add(PackageParam packageParam) {
 
         packageService.addPackage(packageParam);
@@ -34,7 +35,7 @@ public class PackageController {
         return JsonResponse.createBySuccessMsg("添加成功");
     }
 
-    @RequestMapping("delete.do")
+    @PostMapping("delete.do")
     public JsonResponse<String> delete(Integer packageId, HttpSession httpSession) {
 
         WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
@@ -43,7 +44,7 @@ public class PackageController {
         return JsonResponse.createBySuccessMsg("删除成功");
     }
 
-    @RequestMapping("select.do")
+    @PostMapping("select.do")
     public JsonResponse<Package> select(Integer packageId, HttpSession httpSession) {
         WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
         Package pack = packageService.findPackageById(packageId, weChatUser.getId());
@@ -52,15 +53,16 @@ public class PackageController {
     }
 
 
-    @RequestMapping("update.do")
-    public JsonResponse<String> update(Integer packageId, PackageParam packageParam, HttpSession httpSession) {
-
-        WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
-        packageParam.setUserId(weChatUser.getId());
-        packageService.updateDetail(packageId, packageParam);
-
-        return JsonResponse.createBySuccess("更新成功");
-    }
+    // TODO: 18/08/2018 完善更新
+//    @PostMapping("update.do")
+//    public JsonResponse<String> update(Integer packageId, PackageParam packageParam, HttpSession httpSession) {
+//
+//        WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
+//        packageParam.setUserId(weChatUser.getId());
+//        packageService.updateDetail(packageId, packageParam);
+//
+//        return JsonResponse.createBySuccess("更新成功");
+//    }
 
 
 

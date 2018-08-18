@@ -1,6 +1,8 @@
-package com.paopao.controller.common;
+package com.paopao.config;
 
 
+import com.paopao.controller.common.LoginInterceptor;
+import com.paopao.controller.common.WeChatLoginInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -15,8 +17,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
+        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
         registry.addResourceHandler("/statics/**").addResourceLocations("classpath:/static/");
         registry.addResourceHandler("/mappers/**").addResourceLocations("classpath:/mappers/");
+        registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
     @Override
