@@ -3,6 +3,7 @@ package com.paopao.dao;
 import com.paopao.po.Order;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface OrderMapper {
@@ -29,6 +30,17 @@ public interface OrderMapper {
     List<Order> selectAllOrder(@Param("begin")int begin, @Param("offset") int num);
 
     int closeOrderByOrderId(Integer id);
+
+    int countAll();
+
+    int countByUserIdStatus(@Param("userId") Integer userId, @Param("status") Integer status);
+
+    List<Order> selectByUserIdDateStatus(@Param("userId")Integer userId,
+                                         @Param("begin")Date begin,
+                                         @Param("end") Date end,
+                                         @Param("status") Integer status);
+
+
 
 
 }

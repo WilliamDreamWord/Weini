@@ -216,4 +216,41 @@
     where id = #{id}
   </update>
 
+  <select id="countAll" resultType="int">
+    select count(*)
+    from paopao_order
+  </select>
+
+  <select id="countByUserIdStatus" parameterType="int" resultType="int">
+    select count(*)
+    from paopao_user
+    where user_id=#{userId}
+    and status=#{status}
+  </select>
+
+  <select id="selectByUserIdDateStatus" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from paopao_order
+    <where>
+      <if test="status != null">
+        status = #{status}
+      </if>
+      <if test="userId != null">
+        and user_id = #{userId}
+      </if>
+      <if test="begin!=null ">
+        <![CDATA[
+       and create_time >= #{begin}
+       ]]>
+      </if>
+      <if test="end!=null ">
+        <![CDATA[
+       and create_time <= #{end}
+       ]]>
+      </if>
+    </where>
+  </select>
+
+
 </mapper>

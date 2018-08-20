@@ -28,6 +28,24 @@ public class Order {
 
     private Date updateTime;
 
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", orderNo=" + orderNo +
+                ", userId=" + userId +
+                ", shippingId=" + shippingId +
+                ", payment=" + payment +
+                ", paymentType=" + paymentType +
+                ", status=" + status +
+                ", getTime=" + getTime +
+                ", endTime=" + endTime +
+                ", closeTime=" + closeTime +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
+    }
+
     public Order(Integer id, Long orderNo, Integer userId, Integer shippingId, BigDecimal payment, Integer paymentType, Integer status, Date getTime, Date endTime, Date closeTime, Date createTime, Date updateTime) {
         this.id = id;
         this.orderNo = orderNo;
