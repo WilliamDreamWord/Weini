@@ -176,6 +176,16 @@ public class OrderService {
     }
 
 
+    public int countByStatus(Integer userId, Integer status) {
+        return orderMapper.countByUserIdStatus(userId, status);
+    }
+
+    public int countByUserId(Integer userId) {
+        return orderMapper.countByUserIdStatus(userId, null);
+    }
+
+
+
 
     //manager
 
@@ -218,7 +228,21 @@ public class OrderService {
     }
 
 
+    public int manageCountAll() {
+        return orderMapper.countAll();
+    }
 
+
+    public List<OrderVo> selectByUserIdDateStatus(Integer userId, Date begin, Date end, Integer status) {
+        List<Order> orderList =  orderMapper.selectByUserIdDateStatus(userId, begin, end, status);
+        List<OrderVo> orderVos = new ArrayList<>();
+        for (Order order : orderList) {
+            List<OrderItem> orderItems = orderItemMapper.getByOrderNo(order.getOrderNo());
+
+            orderVos.add(assembleOrderVo(order, orderItems));
+        }
+        return orderVos;
+    }
 
 
 

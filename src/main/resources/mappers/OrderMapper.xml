@@ -225,7 +225,9 @@
     select count(*)
     from paopao_user
     where user_id=#{userId}
-    and status=#{status}
+    <if test="status != null">
+      and status=#{status}
+    </if>
   </select>
 
   <select id="selectByUserIdDateStatus" parameterType="map" resultMap="BaseResultMap">
@@ -250,6 +252,7 @@
        ]]>
       </if>
     </where>
+    order by create_time desc
   </select>
 
 

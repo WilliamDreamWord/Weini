@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -57,4 +58,28 @@ public class OrderManagerController {
     }
 
 
+    @PostMapping("count_by_user_id.do")
+    public JsonResponse<Integer> countByUserId(Integer userId) {
+        int count = orderService.countByUserId(userId);
+        return JsonResponse.createBySuccess(count);
+    }
+
+    @PostMapping("count_by_user_id_status.do")
+    public JsonResponse<Integer> countByUserId(Integer userId, Integer status) {
+        int count = orderService.countByStatus(userId, status);
+        return JsonResponse.createBySuccess(count);
+    }
+
+    @PostMapping("count_all.do")
+    public JsonResponse<Integer> countAll() {
+        int count = orderService.manageCountAll();
+        return JsonResponse.createBySuccess(count);
+    }
+
+
+    @PostMapping("count_complex.do")
+    public JsonResponse<List<OrderVo>> countByStatus(Integer userId, Date begin, Date end, Integer status) {
+        List<OrderVo> orderVoList = orderService.selectByUserIdDateStatus(userId, begin, end, status);
+        return JsonResponse.createBySuccess(orderVoList);
+    }
 }

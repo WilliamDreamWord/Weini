@@ -84,6 +84,15 @@ public class OrderController {
     }
 
 
+    @PostMapping("count_all.do")
+    public JsonResponse<Integer> countAll(HttpSession httpSession) {
+        WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
+        int count = orderService.countByUserId(weChatUser.getId());
+        return JsonResponse.createBySuccess(count);
+    }
+
+
+
 
 
 
