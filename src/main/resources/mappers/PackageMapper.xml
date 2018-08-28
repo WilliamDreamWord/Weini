@@ -11,15 +11,17 @@
       <arg column="code" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="package_type" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="status" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="except_time" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="detail" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="detail" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
     </constructor>
   </resultMap>
-
   <sql id="Base_Column_List">
-    id, user_id, name, address, price, code, package_type, status, create_time, update_time, detail
+    id, user_id, name, address, price, code, package_type, status, except_time, create_time, 
+    update_time, detail
   </sql>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -30,15 +32,17 @@
     delete from paopao_package
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.paopao.po.Package" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.paopao.po.Package">
     insert into paopao_package (id, user_id, name, 
       address, price, code, 
-      package_type, status, create_time, 
-      update_time, detail)
+      package_type, status, except_time, 
+      create_time, update_time, detail
+      )
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
       #{address,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{code,jdbcType=VARCHAR}, 
-      #{packageType,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, now(),
-      now(), #{detail,jdbcType=LONGVARCHAR})
+      #{packageType,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{exceptTime,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{detail,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.paopao.po.Package">
     insert into paopao_package
@@ -66,6 +70,9 @@
       </if>
       <if test="status != null">
         status,
+      </if>
+      <if test="exceptTime != null">
+        except_time,
       </if>
       <if test="createTime != null">
         create_time,
@@ -102,11 +109,14 @@
       <if test="status != null">
         #{status,jdbcType=INTEGER},
       </if>
+      <if test="exceptTime != null">
+        #{exceptTime,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
-        now(),
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        now(),
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="detail != null">
         #{detail,jdbcType=LONGVARCHAR},
@@ -137,11 +147,14 @@
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
+      <if test="exceptTime != null">
+        except_time = #{exceptTime,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        update_time = now(),
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="detail != null">
         detail = #{detail,jdbcType=LONGVARCHAR},
@@ -149,7 +162,6 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-
   <update id="updateByPrimaryKey" parameterType="com.paopao.po.Package">
     update paopao_package
     set user_id = #{userId,jdbcType=INTEGER},
@@ -159,11 +171,15 @@
       code = #{code,jdbcType=VARCHAR},
       package_type = #{packageType,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
+      except_time = #{exceptTime,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = now(),
-      detail = #{detail, jdbcType=VARCHAR}
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      detail = #{detail,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+
 
   <update id="updateStatus" parameterType="map">
     UPDATE paopao_package
@@ -179,28 +195,29 @@
     ORDER by id asc
   </select>
 
-    <select id="selectByIdAndUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List" />
-        from paopao_package
-        where id = #{id,jdbcType=INTEGER} and user_id=#{userId}
-    </select>
+  <select id="selectByIdAndUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from paopao_package
+    where id = #{id,jdbcType=INTEGER} and user_id=#{userId}
+  </select>
 
 
-    <update id="updateByIdAndUserId" parameterType="com.paopao.po.Package">
-        update paopao_package
-        set
-         name = #{name,jdbcType=VARCHAR},
-      address = #{address,jdbcType=VARCHAR},
-      price = #{price,jdbcType=DECIMAL},
-      code = #{code,jdbcType=VARCHAR},
-      package_type = #{packageType,jdbcType=INTEGER},
-      status = #{status,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = now(),
-      detail = #{detail, jdbcType=VARCHAR}
-        where id = #{id,jdbcType=INTEGER} and user_id=#{userId, jdbcType=INTEGER}
-    </update>
+  <update id="updateByIdAndUserId" parameterType="com.paopao.po.Package">
+    update paopao_package
+    set
+    name = #{name,jdbcType=VARCHAR},
+    address = #{address,jdbcType=VARCHAR},
+    price = #{price,jdbcType=DECIMAL},
+    code = #{code,jdbcType=VARCHAR},
+    package_type = #{packageType,jdbcType=INTEGER},
+    status = #{status,jdbcType=INTEGER},
+    except_time = #{exceptTime,jdbcType=VARCHAR},
+    create_time = #{createTime,jdbcType=TIMESTAMP},
+    update_time = now(),
+    detail = #{detail, jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER} and user_id=#{userId, jdbcType=INTEGER}
+  </update>
 
 
   <select id="selectByUserId" parameterType="int" resultMap="BaseResultMap">

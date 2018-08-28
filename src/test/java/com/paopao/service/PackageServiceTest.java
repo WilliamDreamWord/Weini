@@ -31,7 +31,7 @@ public class PackageServiceTest {
         packageParam.setAddress("dfafdaf");
         packageParam.setPackageType(Const.PackageType.SMALL.getCode());
 
-        packageService.addPackage(packageParam);
+        //packageService.addPackage(packageParam);
     }
 
 }

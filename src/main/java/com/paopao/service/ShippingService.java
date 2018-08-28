@@ -20,40 +20,40 @@ public class ShippingService {
     private ShippingMapper shippingMapper;
 
 
-    public Shipping add(ShippingParam shippingParam) {
-        Shipping shipping = ShippingConvert.of(shippingParam);
-        int row = shippingMapper.insert(shipping);
-        Preconditions.checkArgument(row>0, "新增地址失败");
-
-        return shipping;
-    }
-
-    public void del(Integer userId, Integer shippingId) {
-        int row = shippingMapper.deleteByShippingIdUserId(userId, shippingId);
-        Preconditions.checkArgument(row>0, "删除地址失败");
-    }
-
-
-    public void update(Integer shippingId, ShippingParam shippingParam) {
-        Shipping shipping = ShippingConvert.of(shippingParam);
-        shipping.setId(shippingId);
-
-        int row = shippingMapper.updateByShipping(shipping);
-        Preconditions.checkArgument(row>0, "更新地址失败");
-    }
-
-
-    public Shipping select(Integer userId, Integer shippingId) {
-        Shipping shipping = shippingMapper.selectByShippingIdUserId(userId, shippingId);
-        Preconditions.checkNotNull(shipping, "无法查询到该地址");
-
-        return shipping;
-    }
-
-    public List<Shipping> list(Integer userId, int pageNum, int pageSize) {
-        List<Shipping> shippingList = shippingMapper.selectByUserId(userId, (pageNum-1)*pageSize, pageSize);
-        return shippingList;
-    }
+//    public Shipping add(ShippingParam shippingParam) {
+//        Shipping shipping = ShippingConvert.of(shippingParam);
+//        int row = shippingMapper.insert(shipping);
+//        Preconditions.checkArgument(row>0, "新增地址失败");
+//
+//        return shipping;
+//    }
+//
+//    public void del(Integer userId, Integer shippingId) {
+//        int row = shippingMapper.deleteByShippingIdUserId(userId, shippingId);
+//        Preconditions.checkArgument(row>0, "删除地址失败");
+//    }
+//
+//
+//    public void update(Integer shippingId, ShippingParam shippingParam) {
+//        Shipping shipping = ShippingConvert.of(shippingParam);
+//        shipping.setId(shippingId);
+//
+//        int row = shippingMapper.updateByShipping(shipping);
+//        Preconditions.checkArgument(row>0, "更新地址失败");
+//    }
+//
+//
+//    public Shipping select(Integer userId, Integer shippingId) {
+//        Shipping shipping = shippingMapper.selectByShippingIdUserId(userId, shippingId);
+//        Preconditions.checkNotNull(shipping, "无法查询到该地址");
+//
+//        return shipping;
+//    }
+//
+//    public List<Shipping> list(Integer userId, int pageNum, int pageSize) {
+//        List<Shipping> shippingList = shippingMapper.selectByUserId(userId, (pageNum-1)*pageSize, pageSize);
+//        return shippingList;
+//    }
 
 
 }

@@ -11,13 +11,14 @@
       <arg column="receiver_medium_area" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="receiver_small_area" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="receiver_door" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="status" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
     id, user_id, receiver_name, receiver_mobile, receiver_large_area, receiver_medium_area, 
-    receiver_small_area, receiver_door, create_time, update_time
+    receiver_small_area, receiver_door, status, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -29,15 +30,15 @@
     delete from paopao_shipping
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.paopao.po.Shipping" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.paopao.po.Shipping">
     insert into paopao_shipping (id, user_id, receiver_name, 
       receiver_mobile, receiver_large_area, receiver_medium_area, 
-      receiver_small_area, receiver_door, create_time, 
-      update_time)
+      receiver_small_area, receiver_door, status, 
+      create_time, update_time)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{receiverName,jdbcType=VARCHAR}, 
       #{receiverMobile,jdbcType=VARCHAR}, #{receiverLargeArea,jdbcType=VARCHAR}, #{receiverMediumArea,jdbcType=VARCHAR}, 
-      #{receiverSmallArea,jdbcType=VARCHAR}, #{receiverDoor,jdbcType=VARCHAR}, now(),
-      now())
+      #{receiverSmallArea,jdbcType=VARCHAR}, #{receiverDoor,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.paopao.po.Shipping">
     insert into paopao_shipping
@@ -65,6 +66,9 @@
       </if>
       <if test="receiverDoor != null">
         receiver_door,
+      </if>
+      <if test="status != null">
+        status,
       </if>
       <if test="createTime != null">
         create_time,
@@ -98,11 +102,14 @@
       <if test="receiverDoor != null">
         #{receiverDoor,jdbcType=VARCHAR},
       </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null">
-        now(),
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        now(),
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -130,11 +137,14 @@
       <if test="receiverDoor != null">
         receiver_door = #{receiverDoor,jdbcType=VARCHAR},
       </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        update_time = now(),
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -148,10 +158,13 @@
       receiver_medium_area = #{receiverMediumArea,jdbcType=VARCHAR},
       receiver_small_area = #{receiverSmallArea,jdbcType=VARCHAR},
       receiver_door = #{receiverDoor,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = now()
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
 
   <delete id="deleteByShippingIdUserId" parameterType="map" >
     delete from paopao_shipping
@@ -163,14 +176,15 @@
   <update id="updateByShipping" parameterType="com.paopao.po.Shipping">
     update paopao_shipping
     set
-      receiver_name = #{receiverName,jdbcType=VARCHAR},
-      receiver_mobile = #{receiverMobile,jdbcType=VARCHAR},
-      receiver_large_area = #{receiverLargeArea,jdbcType=VARCHAR},
-      receiver_medium_area = #{receiverMediumArea,jdbcType=VARCHAR},
-      receiver_small_area = #{receiverSmallArea,jdbcType=VARCHAR},
-      receiver_door = #{receiverDoor,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = now()
+    receiver_name = #{receiverName,jdbcType=VARCHAR},
+    receiver_mobile = #{receiverMobile,jdbcType=VARCHAR},
+    receiver_large_area = #{receiverLargeArea,jdbcType=VARCHAR},
+    receiver_medium_area = #{receiverMediumArea,jdbcType=VARCHAR},
+    receiver_small_area = #{receiverSmallArea,jdbcType=VARCHAR},
+    receiver_door = #{receiverDoor,jdbcType=VARCHAR},
+    status = #{status,jdbcType=INTEGER},
+    create_time = #{createTime,jdbcType=TIMESTAMP},
+    update_time = now()
     where id = #{id,jdbcType=INTEGER}
     and user_id = #{userId,jdbcType=INTEGER}
   </update>
@@ -191,6 +205,4 @@
     order by create_time desc
     limit #{begin}, #{count}
   </select>
-
-
 </mapper>

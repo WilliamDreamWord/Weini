@@ -18,6 +18,7 @@ public interface ShippingMapper {
 
     int updateByPrimaryKey(Shipping record);
 
+
     int deleteByShippingIdUserId(@Param("userId")Integer userId,
                                  @Param("shippingId") Integer shippingId);
 
@@ -29,6 +30,4 @@ public interface ShippingMapper {
 
     List<Shipping> selectByUserId(@Param("userId")Integer userId, @Param("begin") int begin,
                                   @Param("count") int count);
-
-
 }

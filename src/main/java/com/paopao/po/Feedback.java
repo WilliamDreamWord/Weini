@@ -2,14 +2,10 @@ package com.paopao.po;
 
 import java.util.Date;
 
-public class Comment {
+public class Feedback {
     private Integer id;
 
     private Integer authorId;
-
-    private Integer entityType;
-
-    private Integer entityId;
 
     private Integer status;
 
@@ -19,18 +15,16 @@ public class Comment {
 
     private String content;
 
-    public Comment(Integer id, Integer authorId, Integer entityType, Integer entityId, Integer status, Date createTime, Date updateTime, String content) {
+    public Feedback(Integer id, Integer authorId, Integer status, Date createTime, Date updateTime, String content) {
         this.id = id;
         this.authorId = authorId;
-        this.entityType = entityType;
-        this.entityId = entityId;
         this.status = status;
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.content = content;
     }
 
-    public Comment() {
+    public Feedback() {
         super();
     }
 
@@ -48,22 +42,6 @@ public class Comment {
 
     public void setAuthorId(Integer authorId) {
         this.authorId = authorId;
-    }
-
-    public Integer getEntityType() {
-        return entityType;
-    }
-
-    public void setEntityType(Integer entityType) {
-        this.entityType = entityType;
-    }
-
-    public Integer getEntityId() {
-        return entityId;
-    }
-
-    public void setEntityId(Integer entityId) {
-        this.entityId = entityId;
     }
 
     public Integer getStatus() {

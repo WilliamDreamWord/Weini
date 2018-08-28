@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.paopao.dao.CommentMapper">
-  <resultMap id="BaseResultMap" type="com.paopao.po.Comment">
+<mapper namespace="com.paopao.dao.FeedbackMapper">
+  <resultMap id="BaseResultMap" type="com.paopao.po.Feedback">
     <constructor>
       <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="author_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="entity_type" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="entity_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="status" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </constructor>
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.paopao.po.Comment">
+  <resultMap id="ResultMapWithBLOBs" type="com.paopao.po.Feedback">
     <constructor>
       <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="author_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="entity_type" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="entity_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="status" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
@@ -25,7 +21,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, author_id, entity_type, entity_id, status, create_time, update_time
+    id, author_id, status, create_time, update_time
   </sql>
   <sql id="Blob_Column_List">
     content
@@ -35,35 +31,29 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from paopao_comment
+    from paopao_feedback
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from paopao_comment
+    delete from paopao_feedback
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.paopao.po.Comment">
-    insert into paopao_comment (id, author_id, entity_type, 
-      entity_id, status, create_time, 
-      update_time, content)
-    values (#{id,jdbcType=INTEGER}, #{authorId,jdbcType=INTEGER}, #{entityType,jdbcType=INTEGER}, 
-      #{entityId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      now(), now())
+  <insert id="insert" parameterType="com.paopao.po.Feedback">
+    insert into paopao_feedback (id, author_id, status, 
+      create_time, update_time, content
+      )
+    values (#{id,jdbcType=INTEGER}, #{authorId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.paopao.po.Comment">
-    insert into paopao_comment
+  <insert id="insertSelective" parameterType="com.paopao.po.Feedback">
+    insert into paopao_feedback
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
       <if test="authorId != null">
         author_id,
-      </if>
-      <if test="entityType != null">
-        entity_type,
-      </if>
-      <if test="entityId != null">
-        entity_id,
       </if>
       <if test="status != null">
         status,
@@ -85,12 +75,6 @@
       <if test="authorId != null">
         #{authorId,jdbcType=INTEGER},
       </if>
-      <if test="entityType != null">
-        #{entityType,jdbcType=INTEGER},
-      </if>
-      <if test="entityId != null">
-        #{entityId,jdbcType=INTEGER},
-      </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
       </if>
@@ -98,24 +82,18 @@
         #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        now(),
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="content != null">
-        now(),
+        #{content,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.paopao.po.Comment">
-    update paopao_comment
+  <update id="updateByPrimaryKeySelective" parameterType="com.paopao.po.Feedback">
+    update paopao_feedback
     <set>
       <if test="authorId != null">
         author_id = #{authorId,jdbcType=INTEGER},
-      </if>
-      <if test="entityType != null">
-        entity_type = #{entityType,jdbcType=INTEGER},
-      </if>
-      <if test="entityId != null">
-        entity_id = #{entityId,jdbcType=INTEGER},
       </if>
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
@@ -124,7 +102,7 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        update_time = now(),
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="content != null">
         content = #{content,jdbcType=LONGVARCHAR},
@@ -132,25 +110,21 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.paopao.po.Comment">
-    update paopao_comment
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.paopao.po.Feedback">
+    update paopao_feedback
     set author_id = #{authorId,jdbcType=INTEGER},
-      entity_type = #{entityType,jdbcType=INTEGER},
-      entity_id = #{entityId,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = now(),
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
       content = #{content,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.paopao.po.Comment">
-    update paopao_comment
+  <update id="updateByPrimaryKey" parameterType="com.paopao.po.Feedback">
+    update paopao_feedback
     set author_id = #{authorId,jdbcType=INTEGER},
-      entity_type = #{entityType,jdbcType=INTEGER},
-      entity_id = #{entityId,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = now()
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

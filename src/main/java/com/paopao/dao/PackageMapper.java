@@ -19,6 +19,7 @@ public interface PackageMapper {
 
     int updateByPrimaryKey(Package record);
 
+
     int updateStatus(@Param("id") Integer id, @Param("userId") Integer userId,
                      @Param("status") Integer status);
 
@@ -31,7 +32,4 @@ public interface PackageMapper {
     List<Package> selectByUserId(@Param("userId") Integer userId,
                                  @Param("begin") Integer being,
                                  @Param("count") Integer count);
-
-
-
 }

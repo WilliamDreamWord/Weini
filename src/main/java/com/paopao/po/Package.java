@@ -20,13 +20,15 @@ public class Package {
 
     private Integer status;
 
+    private String exceptTime;
+
     private Date createTime;
 
     private Date updateTime;
 
     private String detail;
 
-    public Package(Integer id, Integer userId, String name, String address, BigDecimal price, String code, Integer packageType, Integer status, Date createTime, Date updateTime, String detail) {
+    public Package(Integer id, Integer userId, String name, String address, BigDecimal price, String code, Integer packageType, Integer status, String exceptTime, Date createTime, Date updateTime, String detail) {
         this.id = id;
         this.userId = userId;
         this.name = name;
@@ -35,12 +37,14 @@ public class Package {
         this.code = code;
         this.packageType = packageType;
         this.status = status;
+        this.exceptTime = exceptTime;
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.detail = detail;
     }
 
     public Package() {
+        super();
     }
 
     public Integer getId() {
@@ -105,6 +109,14 @@ public class Package {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getExceptTime() {
+        return exceptTime;
+    }
+
+    public void setExceptTime(String exceptTime) {
+        this.exceptTime = exceptTime == null ? null : exceptTime.trim();
     }
 
     public Date getCreateTime() {

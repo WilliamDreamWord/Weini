@@ -238,7 +238,6 @@ public class OrderService {
         List<OrderVo> orderVos = new ArrayList<>();
         for (Order order : orderList) {
             List<OrderItem> orderItems = orderItemMapper.getByOrderNo(order.getOrderNo());
-
             orderVos.add(assembleOrderVo(order, orderItems));
         }
         return orderVos;

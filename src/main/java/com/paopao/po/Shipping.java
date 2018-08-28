@@ -19,11 +19,13 @@ public class Shipping {
 
     private String receiverDoor;
 
+    private Integer status;
+
     private Date createTime;
 
     private Date updateTime;
 
-    public Shipping(Integer id, Integer userId, String receiverName, String receiverMobile, String receiverLargeArea, String receiverMediumArea, String receiverSmallArea, String receiverDoor, Date createTime, Date updateTime) {
+    public Shipping(Integer id, Integer userId, String receiverName, String receiverMobile, String receiverLargeArea, String receiverMediumArea, String receiverSmallArea, String receiverDoor, Integer status, Date createTime, Date updateTime) {
         this.id = id;
         this.userId = userId;
         this.receiverName = receiverName;
@@ -32,6 +34,7 @@ public class Shipping {
         this.receiverMediumArea = receiverMediumArea;
         this.receiverSmallArea = receiverSmallArea;
         this.receiverDoor = receiverDoor;
+        this.status = status;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
@@ -102,6 +105,14 @@ public class Shipping {
 
     public void setReceiverDoor(String receiverDoor) {
         this.receiverDoor = receiverDoor == null ? null : receiverDoor.trim();
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Date getCreateTime() {
