@@ -23,7 +23,7 @@ public class ShippingService {
 
 
     public Shipping selectDefault(Integer userId) {
-        List<Shipping> shippings = shippingMapper.selectByStatus(userId, Const.ShippingEnum.DEFAULT.getCode());
+        List<Shipping> shippings = shippingMapper.selectByStatus(userId, Const.ShippingEnum.DEFAULT.getCode(), 0, 10);
         Preconditions.checkArgument(CollectionUtils.isNotEmpty(shippings), "不存在默认地址");
         return shippings.get(0);
     }
@@ -44,8 +44,11 @@ public class ShippingService {
     }
 
     public boolean changeToDefault(Integer userId, Integer shippingId) {
-        List<Shipping> shippings = shippingMapper.selectByStatus(userId, Const.ShippingEnum.DEFAULT.getCode());
-        Preconditions.checkArgument(CollectionUtils.isEmpty(shippings), "已存在默认地址");
+        List<Shipping> shippings = shippingMapper.selectByStatus(userId, Const.ShippingEnum.DEFAULT.getCode(), 0, 10);
+        if (CollectionUtils.isNotEmpty(shippings)) {
+            updateStatus(userId, shippings.get(0).getId(),
+                    Const.ShippingEnum.NORMAL.getCode());
+        }
 
         updateStatus(userId, shippingId, Const.ShippingEnum.DEFAULT.getCode());
         return true;
@@ -56,8 +59,13 @@ public class ShippingService {
         Shipping shipping = ShippingConvert.of(shippingParam);
         if (shippingParam.getStatus().equals(Const.ShippingEnum.DEFAULT.getCode())) {
             List<Shipping> shippings = shippingMapper.selectByStatus(shippingParam.getUserId(),
-                    Const.ShippingEnum.DEFAULT.getCode());
-            Preconditions.checkArgument(CollectionUtils.isEmpty(shippings), "已存在默认地址");
+                    Const.ShippingEnum.DEFAULT.getCode(), 0, 10);
+
+            if (CollectionUtils.isNotEmpty(shippings)) {
+                updateStatus(shippingParam.getUserId(), shippings.get(0).getId(),
+                        Const.ShippingEnum.NORMAL.getCode());
+            }
+
         }
         int row = shippingMapper.insert(shipping);
 
@@ -89,7 +97,11 @@ public class ShippingService {
     }
 
     public List<Shipping> list(Integer userId, int pageNum, int pageSize) {
-        List<Shipping> shippingList = shippingMapper.selectByUserId(userId, (pageNum-1)*pageSize, pageSize);
+        List<Shipping> ans = shippingMapper.selectByStatus(userId, Const.ShippingEnum.DEFAULT.getCode(), 0, 10);
+        List<Shipping> shippingList = shippingMapper.selectByStatus(userId,
+                Const.ShippingEnum.NORMAL.getCode(),(pageNum-1)*pageSize,
+                pageSize - ans.size());
+        ans.addAll(shippingList);
         return shippingList;
     }
 

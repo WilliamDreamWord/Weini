@@ -34,5 +34,6 @@ public interface ShippingMapper {
     int updateStatus(@Param("userId") Integer userId,@Param("shppingId") Integer shippingId,
                      @Param("status") Integer status);
 
-    List<Shipping> selectByStatus(@Param("userId") Integer userId, @Param("status") Integer status);
+    List<Shipping> selectByStatus(@Param("userId") Integer userId, @Param("status") Integer status,
+                                  @Param("begin") Integer begin, @Param("count") Integer count);
 }

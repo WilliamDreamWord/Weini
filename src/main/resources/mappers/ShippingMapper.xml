@@ -30,7 +30,7 @@
     delete from paopao_shipping
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.paopao.po.Shipping">
+  <insert id="insert" parameterType="com.paopao.po.Shipping" useGeneratedKeys="true" keyProperty="id">
     insert into paopao_shipping (id, user_id, receiver_name, 
       receiver_mobile, receiver_large_area, receiver_medium_area, 
       receiver_small_area, receiver_door, status, 
@@ -38,7 +38,7 @@
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{receiverName,jdbcType=VARCHAR}, 
       #{receiverMobile,jdbcType=VARCHAR}, #{receiverLargeArea,jdbcType=VARCHAR}, #{receiverMediumArea,jdbcType=VARCHAR}, 
       #{receiverSmallArea,jdbcType=VARCHAR}, #{receiverDoor,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+      now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.paopao.po.Shipping">
     insert into paopao_shipping
@@ -106,10 +106,10 @@
         #{status,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
+        now(),
       </if>
       <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
+        now(),
       </if>
     </trim>
   </insert>
@@ -144,7 +144,7 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_time = now(),
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -160,7 +160,7 @@
       receiver_door = #{receiverDoor,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
 
@@ -209,7 +209,8 @@
   <update id="updateStatus" parameterType="map">
     update paopao_shipping
     SET
-    status = #{status}
+    status = #{status},
+    update_time = now()
     where id=#{shppingId} and user_id = #{userId}
   </update>
 
@@ -219,6 +220,8 @@
     <include refid="Base_Column_List" />
     FROM paopao_shipping
     where user_id=#{userId} and status=#{status}
+    order by create_time desc
+    limit #{begin}, #{count}
   </select>
 
 

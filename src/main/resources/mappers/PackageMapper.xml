@@ -41,7 +41,7 @@
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
       #{address,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{code,jdbcType=VARCHAR}, 
       #{packageType,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{exceptTime,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{detail,jdbcType=LONGVARCHAR}
+      now(), now(), #{detail,jdbcType=LONGVARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.paopao.po.Package">
@@ -113,10 +113,10 @@
         #{exceptTime,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
+        now(),
       </if>
       <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
+        now(),
       </if>
       <if test="detail != null">
         #{detail,jdbcType=LONGVARCHAR},
@@ -154,7 +154,7 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_time = now(),
       </if>
       <if test="detail != null">
         detail = #{detail,jdbcType=LONGVARCHAR},
@@ -173,7 +173,7 @@
       status = #{status,jdbcType=INTEGER},
       except_time = #{exceptTime,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_time = now(),
       detail = #{detail,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>

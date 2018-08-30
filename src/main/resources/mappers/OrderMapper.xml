@@ -212,7 +212,8 @@
 
   <update id="closeOrderByOrderId" parameterType="int" >
     UPDATE paopao_order
-    SET status = 0
+    SET status = 0,
+    update_time = now()
     where id = #{id}
   </update>
 
