@@ -32,7 +32,7 @@
     delete from paopao_package
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.paopao.po.Package">
+  <insert id="insert" parameterType="com.paopao.po.Package" useGeneratedKeys="true" keyProperty="id">
     insert into paopao_package (id, user_id, name, 
       address, price, code, 
       package_type, status, except_time, 

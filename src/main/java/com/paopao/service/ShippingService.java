@@ -23,8 +23,11 @@ public class ShippingService {
 
 
     public Shipping selectDefault(Integer userId) {
-        List<Shipping> shippings = shippingMapper.selectByStatus(userId, Const.ShippingEnum.DEFAULT.getCode(), 0, 10);
+        List<Shipping> shippings = shippingMapper.selectByStatus(userId,
+                Const.ShippingEnum.DEFAULT.getCode(), 0, 10);
+
         Preconditions.checkArgument(CollectionUtils.isNotEmpty(shippings), "不存在默认地址");
+
         return shippings.get(0);
     }
 

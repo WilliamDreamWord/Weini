@@ -78,9 +78,10 @@ public class ShippingController {
     }
 
     @PostMapping("select_default.do")
-    public JsonResponse<Shipping> selectByStatus(HttpSession httpSession) {
+    public JsonResponse<Shipping> selectDefault(HttpSession httpSession) {
         WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
-        return JsonResponse.createBySuccess(shippingService.selectDefault(weChatUser.getId()));
+        Shipping shipping = shippingService.selectDefault(weChatUser.getId());
+        return JsonResponse.createBySuccess(shipping);
     }
 
     @PostMapping("change_to_default.do")
