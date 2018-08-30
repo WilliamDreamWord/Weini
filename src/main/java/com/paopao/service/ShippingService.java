@@ -22,10 +22,13 @@ public class ShippingService {
     private ShippingMapper shippingMapper;
 
 
-    public List<Shipping> selectByStatus(Integer userId, Integer status) {
-        List<Shipping> shippings = shippingMapper.selectByStatus(userId, status);
-        return shippings;
+    public Shipping selectDefault(Integer userId) {
+        List<Shipping> shippings = shippingMapper.selectByStatus(userId, Const.ShippingEnum.DEFAULT.getCode());
+        Preconditions.checkArgument(CollectionUtils.isEmpty(shippings), "不存在默认地址");
+        return shippings.get(0);
     }
+
+
 
 
     private void updateStatus(Integer userId, Integer shippingId, Integer status) {
@@ -40,11 +43,10 @@ public class ShippingService {
         return true;
     }
 
-    public boolean changeTodefault(Integer userId, Integer shippingId) {
-        List<Shipping> shippings = selectByStatus(userId, Const.ShippingEnum.DEFAULT.getCode());
-        if (CollectionUtils.isNotEmpty(shippings)) {
-            return false;
-        }
+    public boolean changeToDefault(Integer userId, Integer shippingId) {
+        List<Shipping> shippings = shippingMapper.selectByStatus(userId, Const.ShippingEnum.DEFAULT.getCode());
+        Preconditions.checkArgument(CollectionUtils.isNotEmpty(shippings), "已存在默认地址");
+
         updateStatus(userId, shippingId, Const.ShippingEnum.DEFAULT.getCode());
         return true;
     }

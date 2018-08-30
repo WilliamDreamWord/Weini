@@ -58,7 +58,7 @@ public class ShippingController {
 
 
     @PostMapping("select.do")
-    public JsonResponse select(HttpSession httpSession, Integer shippingId) {
+    public JsonResponse<Shipping> select(HttpSession httpSession, Integer shippingId) {
         WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
         Shipping shipping = shippingService.select(weChatUser.getId(), shippingId);
         return JsonResponse.createBySuccess(shipping);
@@ -67,7 +67,7 @@ public class ShippingController {
 
 
     @PostMapping("list.do")
-    public JsonResponse list(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+    public JsonResponse<List<Shipping>> list(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                              @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                              HttpSession httpSession) {
 
@@ -77,10 +77,14 @@ public class ShippingController {
         return JsonResponse.createBySuccess(shippings);
     }
 
+    @PostMapping("select_default.do")
+    public JsonResponse<Shipping> selectByStatus(Integer userId) {
+        return JsonResponse.createBySuccess(shippingService.selectDefault(userId));
+    }
 
-    @PostMapping("change_to_default")
+    @PostMapping("change_to_default.do")
     public JsonResponse changeToDefault(Integer userId, Integer shippingId) {
-        boolean ans = shippingService.changeTodefault(userId, shippingId);
+        boolean ans = shippingService.changeToDefault(userId, shippingId);
         if (ans) {
             return JsonResponse.createBySuccess("成功修改");
         } else {
@@ -89,7 +93,7 @@ public class ShippingController {
     }
 
 
-    @PostMapping("change_to_normal")
+    @PostMapping("change_to_normal.do")
     public JsonResponse changeToNormal(Integer userId, Integer shippingId) {
         boolean ans = shippingService.changeToNormal(userId, shippingId);
         if (ans) {
