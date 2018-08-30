@@ -34,6 +34,8 @@ public class PackageParam {
     @NotNull(message = "包裹类型不能为空")
     private Integer packageType;
 
+    private String exceptTime;
+
 
     private String detail;
 
@@ -94,5 +96,13 @@ public class PackageParam {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public String getExceptTime() {
+        return exceptTime;
+    }
+
+    public void setExceptTime(String exceptTime) {
+        this.exceptTime = exceptTime;
     }
 }

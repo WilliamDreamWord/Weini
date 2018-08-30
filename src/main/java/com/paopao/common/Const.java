@@ -210,4 +210,37 @@ public class Const {
 
     }
 
+
+    public enum ShippingEnum {
+        DEFAULT(1, "默认"),
+        NORMAL(2, "正常");
+
+        ShippingEnum(int code, String value) {
+            this.code = code;
+            this.value = value;
+        }
+
+        private int code;
+        private String value;
+
+
+        public String getValue() {
+            return value;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public static ShippingEnum codeOf(int code) {
+            for (ShippingEnum shippingEnum : values()) {
+                if (shippingEnum.getCode() == code) {
+                    return shippingEnum;
+                }
+            }
+            throw new RuntimeException("没有找到对应的枚举");
+        }
+
+    }
+
 }

@@ -21,6 +21,7 @@ public class ShippingConvert {
         shipping.setReceiverMediumArea(shippingParam.getReceiverMediumArea());
         shipping.setReceiverSmallArea(shippingParam.getReceiverSmallArea());
         shipping.setReceiverDoor(shippingParam.getReceiverDoor());
+        shipping.setStatus(shippingParam.getStatus());
 
         return shipping;
     }

@@ -206,7 +206,7 @@ public class OrderService {
 
 
     public List<OrderVo> manageSearchByUserId(Integer userId, int pageNum, int pageSize) {
-        List<Order> orders = orderMapper.selectByUserId(userId, pageNum, pageSize);
+        List<Order> orders = orderMapper.selectByUserId(userId, (pageNum-1)*pageSize, pageSize);
         List<OrderVo> orderVoList = new ArrayList<>();
         for (Order order : orders) {
             List<OrderItem> orderItems = orderItemMapper.getByOrderNo(order.getOrderNo());
@@ -217,14 +217,26 @@ public class OrderService {
 
 
     //接单
-    public void manageSendGoods(Long orderNo) {
+    public void manageAcceptOrder(Long orderNo) {
         Order order = orderMapper.selectByOrderNo(orderNo);
         Preconditions.checkNotNull(order, "订单不存在");
-        if (order.getStatus() == Const.OrderStatusEnum.PUBLISH_ORDER.getCode()) {
-            order.setStatus(Const.OrderStatusEnum.GET_ORDER.getCode());
-            order.setGetTime(new Date());
-            orderMapper.updateByPrimaryKeySelective(order);
-        }
+        Preconditions.checkArgument(order.getStatus() == Const.OrderStatusEnum.PUBLISH_ORDER.getCode(),
+                "订单状态为已下单时，才能接单");
+        order.setStatus(Const.OrderStatusEnum.GET_ORDER.getCode());
+        order.setGetTime(new Date());
+        orderMapper.updateByPrimaryKeySelective(order);
+    }
+
+
+    //完成订单
+    public void manageFinishOrder(Long orderNo) {
+        Order order = orderMapper.selectByOrderNo(orderNo);
+        Preconditions.checkNotNull(order, "订单不存在");
+        Preconditions.checkArgument(order.getStatus() == Const.OrderStatusEnum.GET_ORDER.getCode(),
+                "订单状态为已接单时，才能完成订单");
+        order.setStatus(Const.OrderStatusEnum.SIGN.getCode());
+        order.setEndTime(new Date());
+        orderMapper.updateByPrimaryKeySelective(order);
     }
 
 

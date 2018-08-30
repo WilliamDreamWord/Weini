@@ -50,10 +50,17 @@ public class OrderManagerController {
 
     }
 
-    @PostMapping("send_goods.do")
-    public JsonResponse<String> orderSendGoods(Long orderNo) {
-        orderService.manageSendGoods(orderNo);
+    @PostMapping("accept_order.do")
+    public JsonResponse<String> acceptOrder(Long orderNo) {
+        orderService.manageAcceptOrder(orderNo);
         return JsonResponse.createBySuccess("接单成功");
+
+    }
+
+    @PostMapping("finish_order.do")
+    public JsonResponse<String> finishOrder(Long orderNo) {
+        orderService.manageFinishOrder(orderNo);
+        return JsonResponse.createBySuccess("完成订单成功");
 
     }
 

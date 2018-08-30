@@ -30,6 +30,8 @@ public class ShippingParam {
     @NotEmpty(message = "门牌号不能空")
     private String receiverDoor;
 
+    private Integer status;
+
     public Integer getUserId() {
         return userId;
     }
@@ -84,5 +86,13 @@ public class ShippingParam {
 
     public void setReceiverDoor(String receiverDoor) {
         this.receiverDoor = receiverDoor;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

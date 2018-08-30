@@ -25,11 +25,11 @@ public interface PackageMapper {
 
     Package selectByIdAndUserId(@Param("id") Integer id, @Param("userId") Integer userId);
 
-    List<Package> selectList();
+    List<Package> list(@Param("begin") Integer begin, @Param("count") Integer count);
 
     int updateByIdAndUserId(Package record);
 
     List<Package> selectByUserId(@Param("userId") Integer userId,
-                                 @Param("begin") Integer being,
+                                 @Param("begin") Integer begin,
                                  @Param("count") Integer count);
 }

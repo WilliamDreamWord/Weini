@@ -3,6 +3,8 @@ package com.paopao.controller.common;
 
 import com.paopao.common.JsonResponse;
 import com.paopao.exception.ParamException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +22,15 @@ public class ExceptionResolver extends ResponseEntityExceptionHandler {
 
 
 
+    private static final Logger log = LoggerFactory.getLogger(ExceptionResolver.class);
+
     @ExceptionHandler(value=ParamException.class)
     public ResponseEntity<Object> handleParamException(Exception ex){
 
 
         JsonResponse responseBody = JsonResponse.createByErrorMsg(
                 String.format("parameter error ：%s", ex.getMessage()));
+
 
         HttpHeaders headers = new HttpHeaders();
 
@@ -39,6 +44,8 @@ public class ExceptionResolver extends ResponseEntityExceptionHandler {
         JsonResponse responseBody = JsonResponse.createByErrorMsg(
                 String.format("system error ：%s", ex.getMessage()));
 
+        log.error("system error, {}", ex);
+
         HttpHeaders headers = new HttpHeaders();
 
         return new ResponseEntity<>(responseBody, headers,  HttpStatus.INTERNAL_SERVER_ERROR);
@@ -50,6 +57,8 @@ public class ExceptionResolver extends ResponseEntityExceptionHandler {
 
         JsonResponse responseBody = JsonResponse.createByErrorMsg(
                 String.format("system error ：%s", ex.getMessage()));
+
+        log.error("err, {}", ex);
 
         HttpHeaders headers = new HttpHeaders();
 
@@ -68,6 +77,8 @@ public class ExceptionResolver extends ResponseEntityExceptionHandler {
 
         JsonResponse responseBody = JsonResponse.createByErrorMsg(
                 String.format("other error ： %s", ex.getMessage()));
+
+        log.error("err, {}", ex);
 
 
         return super.handleExceptionInternal(ex, responseBody, headers, status, request);

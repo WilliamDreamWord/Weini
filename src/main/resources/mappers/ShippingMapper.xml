@@ -205,4 +205,22 @@
     order by create_time desc
     limit #{begin}, #{count}
   </select>
+
+  <update id="updateStatus" parameterType="map">
+    update paopao_shipping
+    SET
+    status = #{status}
+    where id=#{shppingId} and user_id = #{userId}
+  </update>
+
+
+  <select id="selectByStatus" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM paopao_shipping
+    where user_id=#{userId} and status=#{status}
+  </select>
+
+
+
 </mapper>

@@ -188,11 +188,12 @@
     where id =#{id} and user_id=#{userId}
   </update>
 
-  <select id="selectList" resultMap="BaseResultMap" >
+  <select id="list" resultMap="BaseResultMap" >
     SELECT
     <include refid="Base_Column_List"/>
     from paopao_package
-    ORDER by id asc
+    ORDER by create_time DESC
+    limit #{begin}, #{count}
   </select>
 
   <select id="selectByIdAndUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">

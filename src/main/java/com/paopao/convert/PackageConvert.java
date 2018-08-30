@@ -21,6 +21,7 @@ public class PackageConvert {
         pack.setDetail(packageParam.getDetail());
         pack.setPrice(packageParam.getPrice());
         pack.setPackageType(packageParam.getPackageType());
+        pack.setExceptTime(packageParam.getExceptTime());
         
         return pack;
     }
