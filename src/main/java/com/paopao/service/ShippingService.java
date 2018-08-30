@@ -24,7 +24,7 @@ public class ShippingService {
 
     public Shipping selectDefault(Integer userId) {
         List<Shipping> shippings = shippingMapper.selectByStatus(userId, Const.ShippingEnum.DEFAULT.getCode());
-        Preconditions.checkArgument(CollectionUtils.isEmpty(shippings), "不存在默认地址");
+        Preconditions.checkArgument(CollectionUtils.isNotEmpty(shippings), "不存在默认地址");
         return shippings.get(0);
     }
 
@@ -45,7 +45,7 @@ public class ShippingService {
 
     public boolean changeToDefault(Integer userId, Integer shippingId) {
         List<Shipping> shippings = shippingMapper.selectByStatus(userId, Const.ShippingEnum.DEFAULT.getCode());
-        Preconditions.checkArgument(CollectionUtils.isNotEmpty(shippings), "已存在默认地址");
+        Preconditions.checkArgument(CollectionUtils.isEmpty(shippings), "已存在默认地址");
 
         updateStatus(userId, shippingId, Const.ShippingEnum.DEFAULT.getCode());
         return true;
@@ -54,7 +54,13 @@ public class ShippingService {
 
     public Shipping add(ShippingParam shippingParam) {
         Shipping shipping = ShippingConvert.of(shippingParam);
+        if (shippingParam.getStatus().equals(Const.ShippingEnum.DEFAULT.getCode())) {
+            List<Shipping> shippings = shippingMapper.selectByStatus(shippingParam.getUserId(),
+                    Const.ShippingEnum.DEFAULT.getCode());
+            Preconditions.checkArgument(CollectionUtils.isEmpty(shippings), "已存在默认地址");
+        }
         int row = shippingMapper.insert(shipping);
+
         Preconditions.checkArgument(row>0, "新增地址失败");
 
         return shipping;
