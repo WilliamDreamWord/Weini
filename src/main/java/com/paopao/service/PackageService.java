@@ -60,9 +60,7 @@ public class PackageService {
         return ans;
     }
 
-    public void updateDetail(Integer packageId, PackageParam packageParam) {
-        Package pack = PackageConvert.of(packageParam);
-        pack.setId(packageId);
+    public void updateDetail(Package pack) {
         int ans = packageMapper.updateByIdAndUserId(pack);
         Preconditions.checkArgument(ans > 0, "更新失败");
 

@@ -42,4 +42,15 @@ public class ShippingServiceTest {
         boolean ans = shippingService.changeToDefault(11, 32);
         Assert.assertTrue(ans);
     }
+
+    @Test
+    public void shouldUpdate() {
+        Shipping shipping = new Shipping();
+        shipping.setId(35);
+        shipping.setUserId(11);
+        shipping.setReceiverName("jdfoiaj");
+        shipping.setStatus(Const.ShippingEnum.DEFAULT.getCode());
+        shippingService.update(shipping);
+
+    }
 }

@@ -48,10 +48,10 @@ public class ShippingController {
 
 
     @PostMapping("update.do")
-    public JsonResponse update(Integer shippingId, ShippingParam shippingParam, HttpSession httpSession) {
+    public JsonResponse update(Shipping shipping, HttpSession httpSession) {
         WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
-        shippingParam.setUserId(weChatUser.getId());
-        shippingService.update(shippingId, shippingParam);
+        shipping.setUserId(weChatUser.getId());
+        shippingService.update(shipping);
 
         return JsonResponse.createBySuccess("更新成功");
     }

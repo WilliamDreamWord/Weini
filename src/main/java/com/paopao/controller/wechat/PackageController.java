@@ -57,11 +57,11 @@ public class PackageController {
 
 
     @PostMapping("update.do")
-    public JsonResponse<String> update(Integer packageId, PackageParam packageParam, HttpSession httpSession) {
+    public JsonResponse<String> update(Package pack, HttpSession httpSession) {
 
         WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
-        packageParam.setUserId(weChatUser.getId());
-        packageService.updateDetail(packageId, packageParam);
+        pack.setUserId(weChatUser.getId());
+        packageService.updateDetail(pack);
 
         return JsonResponse.createBySuccess("更新成功");
     }

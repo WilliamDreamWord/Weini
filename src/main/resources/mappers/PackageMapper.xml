@@ -206,17 +206,38 @@
 
   <update id="updateByIdAndUserId" parameterType="com.paopao.po.Package">
     update paopao_package
-    set
-    name = #{name,jdbcType=VARCHAR},
-    address = #{address,jdbcType=VARCHAR},
-    price = #{price,jdbcType=DECIMAL},
-    code = #{code,jdbcType=VARCHAR},
-    package_type = #{packageType,jdbcType=INTEGER},
-    status = #{status,jdbcType=INTEGER},
-    except_time = #{exceptTime,jdbcType=VARCHAR},
-    create_time = #{createTime,jdbcType=TIMESTAMP},
-    update_time = now(),
-    detail = #{detail, jdbcType=VARCHAR}
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="packageType != null">
+        package_type = #{packageType,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="exceptTime != null">
+        except_time = #{exceptTime,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = now(),
+      </if>
+      <if test="detail != null">
+        detail = #{detail,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
     where id = #{id,jdbcType=INTEGER} and user_id=#{userId, jdbcType=INTEGER}
   </update>
 
