@@ -26,6 +26,7 @@ public class ShippingService {
         List<Shipping> shippings = shippingMapper.selectByStatus(userId,
                 Const.ShippingEnum.DEFAULT.getCode(), 0, 10);
 
+
         Preconditions.checkArgument(CollectionUtils.isNotEmpty(shippings), "不存在默认地址");
 
         return shippings.get(0);
@@ -47,7 +48,9 @@ public class ShippingService {
     }
 
     public boolean changeToDefault(Integer userId, Integer shippingId) {
-        List<Shipping> shippings = shippingMapper.selectByStatus(userId, Const.ShippingEnum.DEFAULT.getCode(), 0, 10);
+        List<Shipping> shippings = shippingMapper.selectByStatus(userId,
+                Const.ShippingEnum.DEFAULT.getCode(), 0, 10);
+
         if (CollectionUtils.isNotEmpty(shippings)) {
             updateStatus(userId, shippings.get(0).getId(),
                     Const.ShippingEnum.NORMAL.getCode());
@@ -83,37 +86,13 @@ public class ShippingService {
     }
 
 
-    /**
-     * @NotNull(message = "用户id不能空")
-      private Integer userId;
 
-     @NotEmpty(message = "收货名称不能空")
-     private String receiverName;
-
-     @NotEmpty(message = "收货手机不能空")
-     private String receiverMobile;
-
-     @NotEmpty(message = "大区域地址不能空")
-     private String receiverLargeArea;
-
-     @NotEmpty(message = "中区域地址不能空")
-     private String receiverMediumArea;
-
-     @NotEmpty(message = "小区域地址不能空")
-     private String receiverSmallArea;
-
-     @NotEmpty(message = "门牌号不能空")
-     private String receiverDoor;
-
-     private Integer status;
-     */
 
     public void update(Shipping shipping) {
         //如果传入的shipping为默认地址，那么要将其他默认地址变为正常的地址
-        if (shipping.getStatus().equals(Const.ShippingEnum.DEFAULT.getCode())) {
+        if (shipping.getStatus() != null &&
+                shipping.getStatus().equals(Const.ShippingEnum.DEFAULT.getCode())) {
             changeToDefault(shipping.getUserId(), shipping.getId());
-        } else {
-            shipping.setStatus(Const.ShippingEnum.NORMAL.getCode());
         }
 
         int row = shippingMapper.updateByShipping(shipping);
