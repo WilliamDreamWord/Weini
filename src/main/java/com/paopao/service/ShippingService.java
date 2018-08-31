@@ -105,7 +105,7 @@ public class ShippingService {
                 Const.ShippingEnum.NORMAL.getCode(),(pageNum-1)*pageSize,
                 pageSize - ans.size());
         ans.addAll(shippingList);
-        return shippingList;
+        return ans;
     }
 
 
