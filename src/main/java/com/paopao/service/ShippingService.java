@@ -86,6 +86,12 @@ public class ShippingService {
     public void update(Integer shippingId, ShippingParam shippingParam) {
         Shipping shipping = ShippingConvert.of(shippingParam);
         shipping.setId(shippingId);
+        //如果传入的shipping为默认地址，那么要将其他默认地址变为正常的地址
+        if (shipping.getStatus().equals(Const.ShippingEnum.DEFAULT.getCode())) {
+            changeToDefault(shipping.getUserId(), shippingId);
+        } else {
+            shipping.setStatus(Const.ShippingEnum.NORMAL.getCode());
+        }
 
         int row = shippingMapper.updateByShipping(shipping);
         Preconditions.checkArgument(row>0, "更新地址失败");
