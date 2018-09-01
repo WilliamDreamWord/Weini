@@ -27,9 +27,7 @@ public class ShippingService {
                 Const.ShippingEnum.DEFAULT.getCode(), 0, 10);
 
 
-        Preconditions.checkArgument(CollectionUtils.isNotEmpty(shippings), "不存在默认地址");
-
-        return shippings.get(0);
+        return CollectionUtils.isNotEmpty(shippings) ? shippings.get(0) : null;
     }
 
 
@@ -48,13 +46,11 @@ public class ShippingService {
     }
 
     public boolean changeToDefault(Integer userId, Integer shippingId) {
-        List<Shipping> shippings = shippingMapper.selectByStatus(userId,
-                Const.ShippingEnum.DEFAULT.getCode(), 0, 10);
 
-        if (CollectionUtils.isNotEmpty(shippings)) {
-            updateStatus(userId, shippings.get(0).getId(),
-                    Const.ShippingEnum.NORMAL.getCode());
-        }
+        int row = shippingMapper.updateStatusByStatus(userId,
+                Const.ShippingEnum.DEFAULT.getCode(), Const.ShippingEnum.NORMAL.getCode());
+
+        Preconditions.checkArgument(row > 0, "更新状态失败");
 
         updateStatus(userId, shippingId, Const.ShippingEnum.DEFAULT.getCode());
         return true;
@@ -63,17 +59,19 @@ public class ShippingService {
 
     public Shipping add(ShippingParam shippingParam) {
         Shipping shipping = ShippingConvert.of(shippingParam);
-        if (shippingParam.getStatus().equals(Const.ShippingEnum.DEFAULT.getCode())) {
-            List<Shipping> shippings = shippingMapper.selectByStatus(shippingParam.getUserId(),
-                    Const.ShippingEnum.DEFAULT.getCode(), 0, 10);
 
-            if (CollectionUtils.isNotEmpty(shippings)) {
-                updateStatus(shippingParam.getUserId(), shippings.get(0).getId(),
-                        Const.ShippingEnum.NORMAL.getCode());
-            }
+        int row = 0;
+        if (shippingParam.getStatus().equals(Const.ShippingEnum.DEFAULT.getCode())) {
+            //如果添加的收货地址为默认时，会把其他默认地址改为normal
+            row = shippingMapper.updateStatusByStatus(shippingParam.getUserId(),
+                    Const.ShippingEnum.DEFAULT.getCode(), Const.ShippingEnum.NORMAL.getCode());
+
+            Preconditions.checkArgument(row>0, "更新状态失败");
 
         }
-        int row = shippingMapper.insert(shipping);
+
+
+        row = shippingMapper.insert(shipping);
 
         Preconditions.checkArgument(row>0, "新增地址失败");
 
@@ -92,7 +90,10 @@ public class ShippingService {
         //如果传入的shipping为默认地址，那么要将其他默认地址变为正常的地址
         if (shipping.getStatus() != null &&
                 shipping.getStatus().equals(Const.ShippingEnum.DEFAULT.getCode())) {
-            changeToDefault(shipping.getUserId(), shipping.getId());
+            int row = shippingMapper.updateStatusByStatus(shipping.getUserId(),
+                    Const.ShippingEnum.DEFAULT.getCode(), Const.ShippingEnum.NORMAL.getCode());
+
+            Preconditions.checkArgument(row > 0, "更新状态失败");
         }
 
         int row = shippingMapper.updateByShipping(shipping);

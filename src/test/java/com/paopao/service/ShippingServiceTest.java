@@ -22,16 +22,20 @@ public class ShippingServiceTest {
 
     @Test
     public void shouldAdd() {
+        long start = System.currentTimeMillis();
+
         ShippingParam shippingParam = new ShippingParam();
         shippingParam.setUserId(11);
-        shippingParam.setReceiverLargeArea(" 252fae");
-        shippingParam.setReceiverMediumArea("v rw");
-        shippingParam.setReceiverSmallArea("dfwajlkfd");
-        shippingParam.setReceiverDoor("q");
-        shippingParam.setReceiverMobile("1234567891123");
+        shippingParam.setReceiverLargeArea("ojo");
+        shippingParam.setReceiverMediumArea("v3");
+        shippingParam.setReceiverSmallArea("342");
+        shippingParam.setReceiverDoor("32");
+        shippingParam.setReceiverMobile("123");
         shippingParam.setReceiverName("oiioi");
         shippingParam.setStatus(Const.ShippingEnum.DEFAULT.getCode());
         Shipping shipping = shippingService.add(shippingParam);
+
+        System.out.println("expire: " + (System.currentTimeMillis() - start));
 
         System.out.println(shipping.getId());
         Assert.assertTrue(shipping.getId() != null);
@@ -39,17 +43,25 @@ public class ShippingServiceTest {
 
     @Test
     public void shouldChangeToDefault() {
-        boolean ans = shippingService.changeToDefault(11, 32);
+        long start = System.currentTimeMillis();
+        boolean ans = shippingService.changeToDefault(11, 35);
+
+        System.out.println("expire: " + (System.currentTimeMillis() - start));
+
         Assert.assertTrue(ans);
     }
 
     @Test
     public void shouldUpdate() {
+        long start = System.currentTimeMillis();
+
         Shipping shipping = new Shipping();
         shipping.setId(32);
         shipping.setUserId(11);
         shipping.setStatus(Const.ShippingEnum.DEFAULT.getCode());
         shippingService.update(shipping);
+
+        System.out.println("expire: " + (System.currentTimeMillis() - start));
 
     }
 }

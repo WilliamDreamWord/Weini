@@ -4,7 +4,6 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
 
 /**
  * Created by joker on 11/08/2018.
@@ -25,7 +24,7 @@ public class RegisterParam {
     private String email;
 
     //check phone number
-    @Pattern(regexp="(^$|[0-9]{13})", message = "电话号码需要13位")
+    @NotEmpty(message = "电话号码不能为空")
     private String phone;
 
     @NotEmpty(message = "密码找回问题不能为空")

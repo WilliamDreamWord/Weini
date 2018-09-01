@@ -2,7 +2,6 @@ package com.paopao.service;
 
 import com.paopao.param.LoginParam;
 import com.paopao.po.User;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +20,17 @@ public class UserServiceTest {
     @Test
     public void testFindByUsernamePassword() {
 
+        long start = System.currentTimeMillis();
+
         LoginParam loginParam = new LoginParam();
         loginParam.setUsername("test");
         loginParam.setPassword("test");
         User user = userService.login(loginParam);
 
-        Assert.assertEquals(user.getUsername(), "test");
-        Assert.assertEquals(user.getPassword(), "test");
+        System.out.println(user);
+
+        System.out.println("expire: " + (System.currentTimeMillis() - start));
+
 
     }
 

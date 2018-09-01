@@ -242,6 +242,12 @@
     limit #{begin}, #{count}
   </select>
 
+  <update id="updateStatusByStatus" parameterType="map">
+    update paopao_shipping
+    set status=#{targetStatus}
+    where user_id=#{userId} and status = #{status}
+  </update>
+
 
 
 </mapper>
