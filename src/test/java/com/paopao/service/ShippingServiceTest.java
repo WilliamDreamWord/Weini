@@ -56,9 +56,9 @@ public class ShippingServiceTest {
         long start = System.currentTimeMillis();
 
         Shipping shipping = new Shipping();
-        shipping.setId(32);
+        shipping.setId(35);
         shipping.setUserId(11);
-        shipping.setStatus(Const.ShippingEnum.DEFAULT.getCode());
+        shipping.setStatus(Const.ShippingEnum.NORMAL.getCode());
         shippingService.update(shipping);
 
         System.out.println("expire: " + (System.currentTimeMillis() - start));
