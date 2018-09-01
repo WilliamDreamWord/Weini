@@ -46,7 +46,7 @@ public class ShippingServiceTest {
     @Test
     public void shouldUpdate() {
         Shipping shipping = new Shipping();
-        shipping.setId(34);
+        shipping.setId(32);
         shipping.setUserId(11);
         shipping.setStatus(Const.ShippingEnum.DEFAULT.getCode());
         shippingService.update(shipping);
