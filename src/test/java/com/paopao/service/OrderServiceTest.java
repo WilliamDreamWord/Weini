@@ -1,7 +1,7 @@
 package com.paopao.service;
 
 import com.paopao.common.Const;
-import com.paopao.vo.OrderVo;
+import com.paopao.vo.OrderManagerVo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +28,14 @@ public class OrderServiceTest {
     @Test
     public void shouldSelectByDateStatus() {
 
-        List<OrderVo> orders = orderService.selectByDateStatusNow("2018-8-15",
+        List<OrderManagerVo> orders = orderService.selectByDateStatusNow("2018-8-15",
                 Const.OrderStatusEnum.GET_ORDER.getCode());
         System.out.println(orders);
     }
 
     @Test
     public void shouldSelectByPhone() {
-        List<OrderVo> orderVos = orderService.selectByPhone("123");
+        List<OrderManagerVo> orderVos = orderService.selectByPhone("1234567891123");
         System.out.println(orderVos);
     }
 

@@ -6,9 +6,9 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * Created by joker on 14/08/2018.
+ * Created by joker on 03/09/2018.
  */
-public class OrderVo {
+public class OrderManagerVo {
 
 
     private Long orderNo;
@@ -17,6 +17,7 @@ public class OrderVo {
     private String paymentTypeDesc;
     private Integer status;
     private String statusDesc;
+
 
     private String getTime;
 
@@ -28,12 +29,58 @@ public class OrderVo {
 
 
     //订单明细
-    private List<OrderItemVo> orderItemVoList;
+    private List<OrderItemManagerVo> orderItemVoList;
+
+    //该用户下单数
+    private Integer orderCount;
 
     private Integer shippingId;
     private String receiverName;
 
     private Shipping shipping;
+
+    @Override
+    public String toString() {
+        return "OrderManagerVo{" +
+                "orderNo=" + orderNo +
+                ", payment=" + payment +
+                ", paymentType=" + paymentType +
+                ", paymentTypeDesc='" + paymentTypeDesc + '\'' +
+                ", status=" + status +
+                ", statusDesc='" + statusDesc + '\'' +
+                ", getTime='" + getTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", closeTime='" + closeTime + '\'' +
+                ", createTime='" + createTime + '\'' +
+                ", orderItemVoList=" + orderItemVoList +
+                ", orderCount=" + orderCount +
+                ", shippingId=" + shippingId +
+                ", receiverName='" + receiverName + '\'' +
+                ", shipping=" + shipping +
+                '}';
+    }
+
+
+    public OrderManagerVo() {
+    }
+
+    public OrderManagerVo(Long orderNo, BigDecimal payment, Integer paymentType, String paymentTypeDesc, Integer status, String statusDesc, String getTime, String endTime, String closeTime, String createTime, List<OrderItemManagerVo> orderItemVoList, Integer orderCount, Integer shippingId, String receiverName, Shipping shipping) {
+        this.orderNo = orderNo;
+        this.payment = payment;
+        this.paymentType = paymentType;
+        this.paymentTypeDesc = paymentTypeDesc;
+        this.status = status;
+        this.statusDesc = statusDesc;
+        this.getTime = getTime;
+        this.endTime = endTime;
+        this.closeTime = closeTime;
+        this.createTime = createTime;
+        this.orderItemVoList = orderItemVoList;
+        this.orderCount = orderCount;
+        this.shippingId = shippingId;
+        this.receiverName = receiverName;
+        this.shipping = shipping;
+    }
 
     public Long getOrderNo() {
         return orderNo;
@@ -83,6 +130,7 @@ public class OrderVo {
         this.statusDesc = statusDesc;
     }
 
+
     public String getGetTime() {
         return getTime;
     }
@@ -115,12 +163,20 @@ public class OrderVo {
         this.createTime = createTime;
     }
 
-    public List<OrderItemVo> getOrderItemVoList() {
+    public List<OrderItemManagerVo> getOrderItemVoList() {
         return orderItemVoList;
     }
 
-    public void setOrderItemVoList(List<OrderItemVo> orderItemVoList) {
+    public void setOrderItemVoList(List<OrderItemManagerVo> orderItemVoList) {
         this.orderItemVoList = orderItemVoList;
+    }
+
+    public Integer getOrderCount() {
+        return orderCount;
+    }
+
+    public void setOrderCount(Integer orderCount) {
+        this.orderCount = orderCount;
     }
 
     public Integer getShippingId() {
@@ -145,25 +201,5 @@ public class OrderVo {
 
     public void setShipping(Shipping shipping) {
         this.shipping = shipping;
-    }
-
-    @Override
-    public String toString() {
-        return "OrderVo{" +
-                "orderNo=" + orderNo +
-                ", payment=" + payment +
-                ", paymentType=" + paymentType +
-                ", paymentTypeDesc='" + paymentTypeDesc + '\'' +
-                ", status=" + status +
-                ", statusDesc='" + statusDesc + '\'' +
-                ", getTime='" + getTime + '\'' +
-                ", endTime='" + endTime + '\'' +
-                ", closeTime='" + closeTime + '\'' +
-                ", createTime='" + createTime + '\'' +
-                ", orderItemVoList=" + orderItemVoList +
-                ", shippingId=" + shippingId +
-                ", receiverName='" + receiverName + '\'' +
-                ", shipping=" + shipping +
-                '}';
     }
 }

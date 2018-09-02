@@ -12,7 +12,9 @@ import com.paopao.po.OrderItem;
 import com.paopao.po.Package;
 import com.paopao.po.Shipping;
 import com.paopao.util.DateTimeUtil;
+import com.paopao.vo.OrderItemManagerVo;
 import com.paopao.vo.OrderItemVo;
+import com.paopao.vo.OrderManagerVo;
 import com.paopao.vo.OrderVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,6 +49,7 @@ public class OrderService {
     private OrderVo assembleOrderVo(Order order, List<OrderItem> orderItemList) {
         OrderVo orderVo = new OrderVo();
 
+
         orderVo.setOrderNo(order.getOrderNo());
         orderVo.setPayment(order.getPayment());
         orderVo.setPaymentType(order.getPaymentType());
@@ -78,38 +81,7 @@ public class OrderService {
         return orderVo;
     }
 
-    private OrderVo assembleOrderVo(Order order, List<OrderItem> orderItemList,Shipping shipping) {
-        OrderVo orderVo = new OrderVo();
 
-        orderVo.setOrderNo(order.getOrderNo());
-        orderVo.setPayment(order.getPayment());
-        orderVo.setPaymentType(order.getPaymentType());
-        orderVo.setPaymentTypeDesc(Const.PaymentType.codeOf(order.getPaymentType()).getVal());
-        orderVo.setStatus(order.getStatus());
-        orderVo.setStatusDesc(Const.OrderStatusEnum.codeOf(order.getStatus()).getValue());
-
-        orderVo.setShippingId(order.getShippingId());
-        if (shipping != null) {
-            orderVo.setReceiverName(shipping.getReceiverName());
-            orderVo.setShipping(shipping);
-        }
-
-
-        orderVo.setCreateTime(DateTimeUtil.dateToStr(order.getCreateTime()));
-        orderVo.setGetTime(DateTimeUtil.dateToStr(order.getGetTime()));
-        orderVo.setEndTime(DateTimeUtil.dateToStr(order.getEndTime()));
-        orderVo.setCloseTime(DateTimeUtil.dateToStr(order.getCloseTime()));
-
-
-        List<OrderItemVo> orderItemVoList = Lists.newArrayList();
-        for (OrderItem orderItem : orderItemList) {
-            OrderItemVo orderItemVo = assembleOrderItemVo(orderItem);
-            orderItemVoList.add(orderItemVo);
-        }
-        orderVo.setOrderItemVoList(orderItemVoList);
-
-        return orderVo;
-    }
 
     private OrderItemVo assembleOrderItemVo(OrderItem orderItem) {
         OrderItemVo orderItemVo = new OrderItemVo();
@@ -193,9 +165,9 @@ public class OrderService {
     private List<OrderVo> assembleOrderVoList(List<Order> orderList, Integer userId) {
         List<OrderVo> orderVoList = Lists.newArrayList();
         for (Order order : orderList) {
-            List<OrderItem> orderItemList = Lists.newArrayList();
+            List<OrderItem> orderItemList;
             if (userId == null) {
-                //todo 管理员查询
+                //管理员查询
                 orderItemList = orderItemMapper.getByOrderNo(order.getOrderNo());
             } else {
                 orderItemList = orderItemMapper.getByOrderNoUserId(
@@ -218,23 +190,107 @@ public class OrderService {
     }
 
 
+    /**
+     *
+     *      manager
+     *
+     */
+
+    private OrderItemManagerVo assembleOrderItemManagerVo(OrderItem orderItem, Package pack) {
+        OrderItemManagerVo orderItemManagerVo = new OrderItemManagerVo();
+        orderItemManagerVo.setOrderNo(orderItem.getOrderNo());
+        orderItemManagerVo.setPackageId(orderItem.getPackageId());
+        orderItemManagerVo.setPackageName(orderItem.getPackageName());
+        orderItemManagerVo.setPrice(orderItem.getPrice());
+        orderItemManagerVo.setExceptTime(pack.getExceptTime());
+
+        orderItemManagerVo.setCreateTime(DateTimeUtil.dateToStr(orderItem.getCreateTime()));
+
+        return orderItemManagerVo;
+    }
+
+    private OrderItemManagerVo assembleOrderItemManagerVo(OrderItem orderItem) {
+        Package pack = packageMapper.selectByPrimaryKey(orderItem.getPackageId());
+        Preconditions.checkArgument(pack!=null, "没有相关包裹");
+        return assembleOrderItemManagerVo(orderItem, pack);
+    }
+
+    private List<OrderItemManagerVo> assembleOrderItemManagerVoList(List<OrderItem> orderItemList) {
+        List<OrderItemManagerVo> orderItemManagerVoList = new ArrayList<>();
+        for (OrderItem orderItem : orderItemList) {
+            orderItemManagerVoList.add(assembleOrderItemManagerVo(orderItem));
+        }
+        return orderItemManagerVoList;
+    }
 
 
-    //manager
+    private OrderManagerVo assembleOrderManagerVo(Order order, List<OrderItemManagerVo> orderItemManagerVos) {
+        OrderManagerVo orderManagerVo = new OrderManagerVo();
 
-    public List<OrderVo> manageList(int pageNum, int pageSize) {
 
-        List<Order> orderList = orderMapper.selectAllOrder((pageNum-1)*pageSize, pageSize);
-        List<OrderVo> orderVoList = assembleOrderVoList(orderList,null);
+        orderManagerVo.setOrderNo(order.getOrderNo());
+        orderManagerVo.setPayment(order.getPayment());
+        orderManagerVo.setPaymentType(order.getPaymentType());
+        orderManagerVo.setPaymentTypeDesc(Const.PaymentType.codeOf(order.getPaymentType()).getVal());
+        orderManagerVo.setStatus(order.getStatus());
+        orderManagerVo.setStatusDesc(Const.OrderStatusEnum.codeOf(order.getStatus()).getValue());
 
+        orderManagerVo.setShippingId(order.getShippingId());
+        Shipping shipping = shippingMapper.selectByPrimaryKey(order.getShippingId());
+        if (shipping != null) {
+            orderManagerVo.setReceiverName(shipping.getReceiverName());
+            orderManagerVo.setShipping(shipping);
+        }
+
+
+        orderManagerVo.setOrderCount(orderMapper.countByUserIdStatus(order.getUserId(), null));
+        orderManagerVo.setCreateTime(DateTimeUtil.dateToStr(order.getCreateTime()));
+        orderManagerVo.setGetTime(DateTimeUtil.dateToStr(order.getGetTime()));
+        orderManagerVo.setEndTime(DateTimeUtil.dateToStr(order.getEndTime()));
+        orderManagerVo.setCloseTime(DateTimeUtil.dateToStr(order.getCloseTime()));
+
+
+        orderManagerVo.setOrderItemVoList(orderItemManagerVos);
+
+        return orderManagerVo;
+    }
+
+    private List<OrderManagerVo> assembleOrderManagerVoList(List<Order> orderList, Integer userId) {
+        List<OrderManagerVo> orderVoList = Lists.newArrayList();
+        for (Order order : orderList) {
+            List<OrderItem> orderItemList;
+            if (userId == null) {
+                //管理员查询
+                orderItemList = orderItemMapper.getByOrderNo(order.getOrderNo());
+            } else {
+                orderItemList = orderItemMapper.getByOrderNoUserId(
+                        order.getOrderNo(), userId);
+            }
+
+            List<OrderItemManagerVo> orderItemManagerVoList = assembleOrderItemManagerVoList(orderItemList);
+            OrderManagerVo orderVo = assembleOrderManagerVo(order, orderItemManagerVoList);
+            orderVoList.add(orderVo);
+
+        }
         return orderVoList;
     }
 
-    public OrderVo manageDetail(Long orderNo) {
+
+
+
+    public List<OrderManagerVo> manageList(int pageNum, int pageSize) {
+
+        List<Order> orderList = orderMapper.selectAllOrder((pageNum-1)*pageSize, pageSize);
+        List<OrderManagerVo> orderManagerVos = assembleOrderManagerVoList(orderList,null);
+
+        return orderManagerVos;
+    }
+
+    public OrderManagerVo manageDetail(Long orderNo) {
         Order order = orderMapper.selectByOrderNo(orderNo);
         Preconditions.checkArgument(order!=null, "订单不存在");
         List<OrderItem> orderItems = orderItemMapper.getByOrderNo(orderNo);
-        return assembleOrderVo(order, orderItems);
+        return assembleOrderManagerVo(order, assembleOrderItemManagerVoList(orderItems));
     }
 
 
@@ -282,31 +338,31 @@ public class OrderService {
 
 
 
-    public List<OrderVo> selectByDateStatus(String beginStr, String endStr, Integer status) {
+    public List<OrderManagerVo> selectByDateStatus(String beginStr, String endStr, Integer status) {
         Date begin = DateTimeUtil.strToDate(beginStr.trim());
         Date end = DateTimeUtil.strToDate(endStr.trim());
         return selectByDateStatus(begin, end, status);
     }
 
-    public List<OrderVo> selectByDateStatusNow (String beginStr, Integer status) {
+    public List<OrderManagerVo> selectByDateStatusNow (String beginStr, Integer status) {
         Date begin = DateTimeUtil.strToDate(beginStr.trim());
         return selectByDateStatus(begin, new Date(), status);
 
     }
 
-    public List<OrderVo> selectByDateStatus(Date begin, Date end, Integer status) {
+    public List<OrderManagerVo> selectByDateStatus(Date begin, Date end, Integer status) {
         List<Order> orderList =  orderMapper.selectByUserIdDateStatus(begin, end, status);
-        List<OrderVo> orderVos = new ArrayList<>();
+        List<OrderManagerVo> orderManagerVos = new ArrayList<>();
         for (Order order : orderList) {
             List<OrderItem> orderItems = orderItemMapper.getByOrderNo(order.getOrderNo());
-            orderVos.add(assembleOrderVo(order, orderItems));
+            orderManagerVos.add(assembleOrderManagerVo(order, assembleOrderItemManagerVoList(orderItems)));
         }
-        return orderVos;
+        return orderManagerVos;
     }
 
 
 
-    public List<OrderVo> selectByPhone(String phone) {
+    public List<OrderManagerVo> selectByPhone(String phone) {
         List<Shipping> shippings = shippingMapper.selectByMobile(phone);
         List<Integer> shippingIds = new ArrayList<>();
         for (Shipping shipping : shippings) {
@@ -314,12 +370,13 @@ public class OrderService {
         }
 
         List<Order> orderList = orderMapper.selectByShippingIds(shippingIds);
-        List<OrderVo> orderVos = new ArrayList<>();
+        List<OrderManagerVo> orderManagerVos = new ArrayList<>();
         for (Order order : orderList) {
             List<OrderItem> orderItems = orderItemMapper.getByOrderNo(order.getOrderNo());
-            orderVos.add(assembleOrderVo(order, orderItems));
+            orderManagerVos.add(assembleOrderManagerVo(order,
+                    assembleOrderItemManagerVoList(orderItems)));
         }
-        return orderVos;
+        return orderManagerVos;
     }
 
 

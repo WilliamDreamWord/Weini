@@ -2,7 +2,7 @@ package com.paopao.controller.web;
 
 import com.paopao.common.JsonResponse;
 import com.paopao.service.OrderService;
-import com.paopao.vo.OrderVo;
+import com.paopao.vo.OrderManagerVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,16 +23,16 @@ public class OrderManagerController {
 
 
     @PostMapping("list.do")
-    public JsonResponse<List<OrderVo>> orderList(@RequestParam(value = "pageNum", defaultValue = "1")
+    public JsonResponse<List<OrderManagerVo>> orderList(@RequestParam(value = "pageNum", defaultValue = "1")
                                       int pageNum,
-                                               @RequestParam(value = "pageSize", defaultValue = "10")
+                                                        @RequestParam(value = "pageSize", defaultValue = "10")
                                       int pageSize) {
 
         return JsonResponse.createBySuccess(orderService.manageList(pageNum, pageSize));
     }
 
     @PostMapping("detail.do")
-    public JsonResponse<OrderVo> orderDetail(Long orderNo) {
+    public JsonResponse<OrderManagerVo> orderDetail(Long orderNo) {
 
         return JsonResponse.createBySuccess(orderService.manageDetail(orderNo));
     }
@@ -62,14 +62,14 @@ public class OrderManagerController {
 
 
     @PostMapping("select_date_status.do")
-    public JsonResponse<List<OrderVo>> selectDateStatus(String begin, String end, Integer status) {
-        List<OrderVo> orderVoList = orderService.selectByDateStatus(begin, end, status);
+    public JsonResponse<List<OrderManagerVo>> selectDateStatus(String begin, String end, Integer status) {
+        List<OrderManagerVo> orderVoList = orderService.selectByDateStatus(begin, end, status);
         return JsonResponse.createBySuccess(orderVoList);
     }
 
     @PostMapping("select_date_status_now.do")
-    public JsonResponse<List<OrderVo>> selectDateStatusNow(String begin, Integer status) {
-        List<OrderVo> orderVoList = orderService.selectByDateStatusNow(begin, status);
+    public JsonResponse<List<OrderManagerVo>> selectDateStatusNow(String begin, Integer status) {
+        List<OrderManagerVo> orderVoList = orderService.selectByDateStatusNow(begin, status);
         return JsonResponse.createBySuccess(orderVoList);
     }
 }
