@@ -64,4 +64,10 @@ public class ShippingServiceTest {
         System.out.println("expire: " + (System.currentTimeMillis() - start));
 
     }
+
+    @Test
+    public void shouldGetDefault() {
+        System.out.println(shippingService.selectDefault(11));
+
+    }
 }

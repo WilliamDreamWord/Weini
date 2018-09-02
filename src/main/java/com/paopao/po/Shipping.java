@@ -130,4 +130,21 @@ public class Shipping {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+    @Override
+    public String toString() {
+        return "Shipping{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", receiverName='" + receiverName + '\'' +
+                ", receiverMobile='" + receiverMobile + '\'' +
+                ", receiverLargeArea='" + receiverLargeArea + '\'' +
+                ", receiverMediumArea='" + receiverMediumArea + '\'' +
+                ", receiverSmallArea='" + receiverSmallArea + '\'' +
+                ", receiverDoor='" + receiverDoor + '\'' +
+                ", status=" + status +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
+    }
 }
