@@ -31,7 +31,7 @@ public class UserService {
 
         String encrytedPasswd = MD5Util.encrypt(loginParam.getPassword());
         User user = userMapper.findByUsernamePassword(loginParam.getUsername(), encrytedPasswd);
-        Preconditions.checkNotNull(user, "不存在相关用户");
+        Preconditions.checkArgument(user!=null, "不存在相关用户");
         user.setPassword("");
 
         return user;

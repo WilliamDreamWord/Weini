@@ -98,7 +98,7 @@ public class OrderService {
 
         OrderItem orderItem = new OrderItem();
         Package pack = packageMapper.selectByPrimaryKey(packageId);
-        Preconditions.checkNotNull(pack, "没有相关包裹");
+        Preconditions.checkArgument(pack!=null, "没有相关包裹");
         Preconditions.checkArgument(pack.getStatus() == Const.PackageStatus.WAIT.getCode(),
                 "包裹状态异常,请查看订单是否为等待状态");
 
@@ -131,7 +131,7 @@ public class OrderService {
 
     public void cancel(Integer userId, Long orderNo) {
         Order order = orderMapper.selectByUserIdAndOrderNo(userId, orderNo);
-        Preconditions.checkNotNull(order, "该用户的改订单不存在");
+        Preconditions.checkArgument(order!=null, "该用户的改订单不存在");
         Preconditions.checkArgument(order.getStatus() != Const.OrderStatusEnum.SIGN.getCode(),
                 "该订单已签收，无法取消");
         Order updateOrder = new Order();
@@ -143,7 +143,7 @@ public class OrderService {
 
     public OrderVo getOrder(Integer userId, Long orderNo) {
         Order order = orderMapper.selectByUserIdAndOrderNo(userId, orderNo);
-        Preconditions.checkNotNull(order, "没有找到该订单");
+        Preconditions.checkArgument(order!=null, "没有找到该订单");
         List<OrderItem> orderItemList = orderItemMapper.getByOrderNoUserId(orderNo, userId);
         OrderVo orderVo = assembleOrderVo(order, orderItemList);
 
@@ -199,7 +199,7 @@ public class OrderService {
 
     public OrderVo manageDetail(Long orderNo) {
         Order order = orderMapper.selectByOrderNo(orderNo);
-        Preconditions.checkNotNull(order, "订单不存在");
+        Preconditions.checkArgument(order!=null, "订单不存在");
         List<OrderItem> orderItems = orderItemMapper.getByOrderNo(orderNo);
         return assembleOrderVo(order, orderItems);
     }
@@ -219,7 +219,7 @@ public class OrderService {
     //接单
     public void manageAcceptOrder(Long orderNo) {
         Order order = orderMapper.selectByOrderNo(orderNo);
-        Preconditions.checkNotNull(order, "订单不存在");
+        Preconditions.checkArgument(order!=null, "订单不存在");
         Preconditions.checkArgument(order.getStatus() == Const.OrderStatusEnum.PUBLISH_ORDER.getCode(),
                 "订单状态为已下单时，才能接单");
         order.setStatus(Const.OrderStatusEnum.GET_ORDER.getCode());
@@ -231,7 +231,7 @@ public class OrderService {
     //完成订单
     public void manageFinishOrder(Long orderNo) {
         Order order = orderMapper.selectByOrderNo(orderNo);
-        Preconditions.checkNotNull(order, "订单不存在");
+        Preconditions.checkArgument(order!=null, "订单不存在");
         Preconditions.checkArgument(order.getStatus() == Const.OrderStatusEnum.GET_ORDER.getCode(),
                 "订单状态为已接单时，才能完成订单");
         order.setStatus(Const.OrderStatusEnum.SIGN.getCode());

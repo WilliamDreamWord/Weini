@@ -64,7 +64,7 @@ public class WechatUserService {
 
     public WeChatUser selectByOpenId(String openId) {
         WeChatUser weChatUser = weChatUserMapper.selectByOpenId(openId);
-        Preconditions.checkNotNull(weChatUser, "没有相关的用户");
+        Preconditions.checkArgument(weChatUser!=null, "没有相关的用户");
         return weChatUser;
     }
 

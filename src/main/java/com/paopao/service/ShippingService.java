@@ -100,7 +100,7 @@ public class ShippingService {
 
     public Shipping select(Integer userId, Integer shippingId) {
         Shipping shipping = shippingMapper.selectByShippingIdUserId(userId, shippingId);
-        Preconditions.checkNotNull(shipping, "无法查询到该地址");
+        Preconditions.checkArgument(shipping!=null, "无法查询到该地址");
 
         return shipping;
     }

@@ -39,7 +39,7 @@ public class FeedbackService {
 
     public Feedback findById(Integer id) {
         Feedback feedback = feedbackMapper.selectByPrimaryKey(id);
-        Preconditions.checkNotNull(feedback, "没有找到相关回馈");
+        Preconditions.checkArgument(feedback!=null, "没有找到相关回馈");
         return feedback;
     }
 
