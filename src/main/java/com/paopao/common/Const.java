@@ -173,7 +173,7 @@ public class Const {
                     return orderStatusEnum;
                 }
             }
-            throw new RuntimeException("没有找到对应的枚举");
+            return null;
         }
     }
 

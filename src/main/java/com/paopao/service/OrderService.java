@@ -78,6 +78,39 @@ public class OrderService {
         return orderVo;
     }
 
+    private OrderVo assembleOrderVo(Order order, List<OrderItem> orderItemList,Shipping shipping) {
+        OrderVo orderVo = new OrderVo();
+
+        orderVo.setOrderNo(order.getOrderNo());
+        orderVo.setPayment(order.getPayment());
+        orderVo.setPaymentType(order.getPaymentType());
+        orderVo.setPaymentTypeDesc(Const.PaymentType.codeOf(order.getPaymentType()).getVal());
+        orderVo.setStatus(order.getStatus());
+        orderVo.setStatusDesc(Const.OrderStatusEnum.codeOf(order.getStatus()).getValue());
+
+        orderVo.setShippingId(order.getShippingId());
+        if (shipping != null) {
+            orderVo.setReceiverName(shipping.getReceiverName());
+            orderVo.setShipping(shipping);
+        }
+
+
+        orderVo.setCreateTime(DateTimeUtil.dateToStr(order.getCreateTime()));
+        orderVo.setGetTime(DateTimeUtil.dateToStr(order.getGetTime()));
+        orderVo.setEndTime(DateTimeUtil.dateToStr(order.getEndTime()));
+        orderVo.setCloseTime(DateTimeUtil.dateToStr(order.getCloseTime()));
+
+
+        List<OrderItemVo> orderItemVoList = Lists.newArrayList();
+        for (OrderItem orderItem : orderItemList) {
+            OrderItemVo orderItemVo = assembleOrderItemVo(orderItem);
+            orderItemVoList.add(orderItemVo);
+        }
+        orderVo.setOrderItemVoList(orderItemVoList);
+
+        return orderVo;
+    }
+
     private OrderItemVo assembleOrderItemVo(OrderItem orderItem) {
         OrderItemVo orderItemVo = new OrderItemVo();
         orderItemVo.setOrderNo(orderItem.getOrderNo());
@@ -176,8 +209,8 @@ public class OrderService {
     }
 
 
-    public int countByStatus(Integer userId, Integer status) {
-        return orderMapper.countByUserIdStatus(userId, status);
+    public int countByStatus(Integer status) {
+        return orderMapper.countByUserIdStatus(null, status);
     }
 
     public int countByUserId(Integer userId) {
@@ -205,39 +238,42 @@ public class OrderService {
     }
 
 
-    public List<OrderVo> manageSearchByUserId(Integer userId, int pageNum, int pageSize) {
-        List<Order> orders = orderMapper.selectByUserId(userId, (pageNum-1)*pageSize, pageSize);
-        List<OrderVo> orderVoList = new ArrayList<>();
-        for (Order order : orders) {
-            List<OrderItem> orderItems = orderItemMapper.getByOrderNo(order.getOrderNo());
-            orderVoList.add(assembleOrderVo(order, orderItems));
+
+    //改变订单状态
+    public void manageChangeOrderStatus(Integer orderId, Integer status) {
+        Order order = orderMapper.selectByPrimaryKey(orderId);
+        Preconditions.checkArgument(order!=null, "订单不存在");
+        Const.OrderStatusEnum orderStatus = Const.OrderStatusEnum.codeOf(status);
+        Preconditions.checkArgument(orderStatus!=null, "不存在该状态");
+
+        // TODO: 02/09/2018
+        switch (orderStatus) {
+            //下单
+            case PUBLISH_ORDER: {
+                order.setCreateTime(new Date());
+                break;
+            }
+            //接单
+            case GET_ORDER: {
+                order.setGetTime(new Date());
+                break;
+            }
+            //签收，
+            case SIGN: {
+                order.setEndTime(new Date());
+                break;
+            }
+            //取消
+            case CANCELED: {
+                order.setCloseTime(new Date());
+                break;
+            }
         }
-        return orderVoList;
-    }
-
-
-    //接单
-    public void manageAcceptOrder(Long orderNo) {
-        Order order = orderMapper.selectByOrderNo(orderNo);
-        Preconditions.checkArgument(order!=null, "订单不存在");
-        Preconditions.checkArgument(order.getStatus() == Const.OrderStatusEnum.PUBLISH_ORDER.getCode(),
-                "订单状态为已下单时，才能接单");
-        order.setStatus(Const.OrderStatusEnum.GET_ORDER.getCode());
-        order.setGetTime(new Date());
+        order.setStatus(status);
         orderMapper.updateByPrimaryKeySelective(order);
     }
 
 
-    //完成订单
-    public void manageFinishOrder(Long orderNo) {
-        Order order = orderMapper.selectByOrderNo(orderNo);
-        Preconditions.checkArgument(order!=null, "订单不存在");
-        Preconditions.checkArgument(order.getStatus() == Const.OrderStatusEnum.GET_ORDER.getCode(),
-                "订单状态为已接单时，才能完成订单");
-        order.setStatus(Const.OrderStatusEnum.SIGN.getCode());
-        order.setEndTime(new Date());
-        orderMapper.updateByPrimaryKeySelective(order);
-    }
 
 
     public int manageCountAll() {
@@ -245,8 +281,21 @@ public class OrderService {
     }
 
 
-    public List<OrderVo> selectByUserIdDateStatus(Integer userId, Date begin, Date end, Integer status) {
-        List<Order> orderList =  orderMapper.selectByUserIdDateStatus(userId, begin, end, status);
+
+    public List<OrderVo> selectByDateStatus(String beginStr, String endStr, Integer status) {
+        Date begin = DateTimeUtil.strToDate(beginStr.trim());
+        Date end = DateTimeUtil.strToDate(endStr.trim());
+        return selectByDateStatus(begin, end, status);
+    }
+
+    public List<OrderVo> selectByDateStatusNow (String beginStr, Integer status) {
+        Date begin = DateTimeUtil.strToDate(beginStr.trim());
+        return selectByDateStatus(begin, new Date(), status);
+
+    }
+
+    public List<OrderVo> selectByDateStatus(Date begin, Date end, Integer status) {
+        List<Order> orderList =  orderMapper.selectByUserIdDateStatus(begin, end, status);
         List<OrderVo> orderVos = new ArrayList<>();
         for (Order order : orderList) {
             List<OrderItem> orderItems = orderItemMapper.getByOrderNo(order.getOrderNo());
@@ -257,8 +306,21 @@ public class OrderService {
 
 
 
+    public List<OrderVo> selectByPhone(String phone) {
+        List<Shipping> shippings = shippingMapper.selectByMobile(phone);
+        List<Integer> shippingIds = new ArrayList<>();
+        for (Shipping shipping : shippings) {
+            shippingIds.add(shipping.getId());
+        }
 
-
+        List<Order> orderList = orderMapper.selectByShippingIds(shippingIds);
+        List<OrderVo> orderVos = new ArrayList<>();
+        for (Order order : orderList) {
+            List<OrderItem> orderItems = orderItemMapper.getByOrderNo(order.getOrderNo());
+            orderVos.add(assembleOrderVo(order, orderItems));
+        }
+        return orderVos;
+    }
 
 
 }

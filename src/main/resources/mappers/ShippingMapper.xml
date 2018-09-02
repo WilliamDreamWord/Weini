@@ -248,6 +248,31 @@
     where user_id=#{userId} and status = #{status}
   </update>
 
+  <select id="selectByMobile" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    FROM  paopao_shipping
+    where receiver_mobile=#{mobile}
+  </select>
+  
+  <select id="selectByArea" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM  paopao_shipping
+    <where>
+      <if test="largeArea!=null">
+        and receiver_large_area=#{largeArea}
+      </if>
+      <if test="mediumArea!=null">
+        and receiver_medium_area=#{mediumArea}
+      </if>
+      <if test="smallArea">
+        and receiver_small_area=#{smallArea}
+      </if>
+    </where>
+  </select>
+
+
 
 
 </mapper>

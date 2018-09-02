@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,42 +37,20 @@ public class OrderManagerController {
         return JsonResponse.createBySuccess(orderService.manageDetail(orderNo));
     }
 
-    @PostMapping("search.do")
-    public JsonResponse<List<OrderVo>> orderSearch(Integer userId,
-                                                @RequestParam(value = "pageNum", defaultValue = "1")
-                                                int pageNum,
-                                                @RequestParam(value = "pageSize", defaultValue = "10")
-                                                int pageSize) {
 
 
-        return JsonResponse.createBySuccess(orderService.manageSearchByUserId(userId, pageNum, pageSize));
-
-    }
-
-    @PostMapping("accept_order.do")
-    public JsonResponse<String> acceptOrder(Long orderNo) {
-        orderService.manageAcceptOrder(orderNo);
-        return JsonResponse.createBySuccess("接单成功");
-
-    }
-
-    @PostMapping("finish_order.do")
-    public JsonResponse<String> finishOrder(Long orderNo) {
-        orderService.manageFinishOrder(orderNo);
-        return JsonResponse.createBySuccess("完成订单成功");
+    @PostMapping("change_status.do")
+    public JsonResponse<String> changeStatus(Integer orderId, Integer status) {
+        orderService.manageChangeOrderStatus(orderId, status);
+        return JsonResponse.createBySuccess("更改状态成功");
 
     }
 
 
-    @PostMapping("count_by_user_id.do")
-    public JsonResponse<Integer> countByUserId(Integer userId) {
-        int count = orderService.countByUserId(userId);
-        return JsonResponse.createBySuccess(count);
-    }
 
-    @PostMapping("count_by_user_id_status.do")
-    public JsonResponse<Integer> countByUserId(Integer userId, Integer status) {
-        int count = orderService.countByStatus(userId, status);
+    @PostMapping("count_status.do")
+    public JsonResponse<Integer> countByStatus(Integer status) {
+        int count = orderService.countByStatus(status);
         return JsonResponse.createBySuccess(count);
     }
 
@@ -84,9 +61,15 @@ public class OrderManagerController {
     }
 
 
-    @PostMapping("count_complex.do")
-    public JsonResponse<List<OrderVo>> countByStatus(Integer userId, Date begin, Date end, Integer status) {
-        List<OrderVo> orderVoList = orderService.selectByUserIdDateStatus(userId, begin, end, status);
+    @PostMapping("select_date_status.do")
+    public JsonResponse<List<OrderVo>> selectDateStatus(String begin, String end, Integer status) {
+        List<OrderVo> orderVoList = orderService.selectByDateStatus(begin, end, status);
+        return JsonResponse.createBySuccess(orderVoList);
+    }
+
+    @PostMapping("select_date_status_now.do")
+    public JsonResponse<List<OrderVo>> selectDateStatusNow(String begin, Integer status) {
+        List<OrderVo> orderVoList = orderService.selectByDateStatusNow(begin, status);
         return JsonResponse.createBySuccess(orderVoList);
     }
 }

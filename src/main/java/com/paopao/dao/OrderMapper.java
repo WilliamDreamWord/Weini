@@ -36,10 +36,14 @@ public interface OrderMapper {
     int countByUserIdStatus(@Param("userId") Integer userId, @Param("status") Integer status);
 
 
-    List<Order> selectByUserIdDateStatus(@Param("userId")Integer userId,
-                                         @Param("begin")Date begin,
+    List<Order> selectByUserIdDateStatus(@Param("begin")Date begin,
                                          @Param("end") Date end,
                                          @Param("status") Integer status);
+
+
+    List<Order> selectByShippingIds(@Param("shippingIdList") List<Integer> shippingIdList);
+
+    List<Order> selectByShippingId(Integer shippingId);
 
 
 

@@ -145,4 +145,24 @@ public class OrderVo {
     public void setShipping(Shipping shipping) {
         this.shipping = shipping;
     }
+
+    @Override
+    public String toString() {
+        return "OrderVo{" +
+                "orderNo=" + orderNo +
+                ", payment=" + payment +
+                ", paymentType=" + paymentType +
+                ", paymentTypeDesc='" + paymentTypeDesc + '\'' +
+                ", status=" + status +
+                ", statusDesc='" + statusDesc + '\'' +
+                ", getTime='" + getTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", closeTime='" + closeTime + '\'' +
+                ", createTime='" + createTime + '\'' +
+                ", orderItemVoList=" + orderItemVoList +
+                ", shippingId=" + shippingId +
+                ", receiverName='" + receiverName + '\'' +
+                ", shipping=" + shipping +
+                '}';
+    }
 }

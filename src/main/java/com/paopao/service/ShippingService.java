@@ -59,7 +59,6 @@ public class ShippingService {
     public Shipping add(ShippingParam shippingParam) {
         Shipping shipping = ShippingConvert.of(shippingParam);
 
-        int row = 0;
         if (shippingParam.getStatus().equals(Const.ShippingEnum.DEFAULT.getCode())) {
             //如果添加的收货地址为默认时，会把其他默认地址改为normal
             shippingMapper.updateStatusByStatus(shippingParam.getUserId(),
@@ -68,8 +67,7 @@ public class ShippingService {
 
         }
 
-
-        row = shippingMapper.insert(shipping);
+        int row = shippingMapper.insert(shipping);
 
         Preconditions.checkArgument(row>0, "新增地址失败");
 
@@ -88,7 +86,7 @@ public class ShippingService {
         //如果传入的shipping为默认地址，那么要将其他默认地址变为正常的地址
         if (shipping.getStatus() != null &&
                 shipping.getStatus().equals(Const.ShippingEnum.DEFAULT.getCode())) {
-            int row = shippingMapper.updateStatusByStatus(shipping.getUserId(),
+            shippingMapper.updateStatusByStatus(shipping.getUserId(),
                     Const.ShippingEnum.DEFAULT.getCode(), Const.ShippingEnum.NORMAL.getCode());
 
         }

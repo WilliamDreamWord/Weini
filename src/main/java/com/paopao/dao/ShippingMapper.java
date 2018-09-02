@@ -39,4 +39,11 @@ public interface ShippingMapper {
 
     int updateStatusByStatus(@Param("userId") Integer userId, @Param("status") Integer status,
                              @Param("targetStatus") Integer targetStatus);
+
+
+    List<Shipping> selectByMobile(String mobile);
+
+    List<Shipping> selectByArea(@Param("largeArea") String largeArea,
+                                @Param("mediumArea") String mediumArea,
+                                @Param("smallArea") String smallArea);
 }

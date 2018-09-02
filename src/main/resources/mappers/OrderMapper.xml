@@ -225,10 +225,14 @@
   <select id="countByUserIdStatus" parameterType="int" resultType="int">
     select count(*)
     from paopao_order
-    where user_id=#{userId}
-    <if test="status != null">
-      and status=#{status}
-    </if>
+    <where>
+      <if test="userId != null">
+        and user_id=#{userId}
+      </if>
+      <if test="status != null">
+        and status=#{status}
+      </if>
+    </where>
   </select>
 
 
@@ -240,9 +244,7 @@
       <if test="status != null">
         and status = #{status}
       </if>
-      <if test="userId != null">
-        and user_id = #{userId}
-      </if>
+
       <if test="begin!=null ">
         <![CDATA[
        and create_time >= #{begin}
@@ -257,5 +259,21 @@
     order by create_time desc
   </select>
 
+  <select id="selectByShippingIds" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from paopao_order
+    WHERE shipping_id in
+    <foreach collection="shippingIdList" item="item" index="index" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
+
+  <select id="selectByShippingId" parameterType="int" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from paopao_order
+    where shipping_id=#{shippingId}
+  </select>
 
 </mapper>

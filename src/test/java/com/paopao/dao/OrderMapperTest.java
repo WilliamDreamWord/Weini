@@ -20,16 +20,7 @@ public class OrderMapperTest {
 
     @Test
     public void test() {
-        Calendar begin = new GregorianCalendar(2018, 8-1, 1);
-        Calendar end = new GregorianCalendar(2018, 8-1, 31);
 
-
-        List<Order> orderList = orderMapper.selectByUserIdDateStatus(23,
-                begin.getTime(),
-                end.getTime(),
-                null);
-
-        System.out.println(orderList);
     }
 
 

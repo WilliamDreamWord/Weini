@@ -10,7 +10,7 @@ import java.util.Date;
 
 public class DateTimeUtil {
 
-    public static final String STANDARD_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final String STANDARD_FORMAT = "yyyy-MM-dd";
 
     public static Date strToDate(String dateTimeStr, String formatStr) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(formatStr);
