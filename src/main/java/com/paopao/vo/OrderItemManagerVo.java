@@ -17,19 +17,10 @@ public class OrderItemManagerVo {
 
     private BigDecimal price;
 
+    //提货码
+    private String code;
+
     private String createTime;
-
-    public OrderItemManagerVo(Long orderNo, Integer packageId, String packageName, String exceptTime, BigDecimal price, String createTime) {
-        this.orderNo = orderNo;
-        this.packageId = packageId;
-        this.packageName = packageName;
-        this.exceptTime = exceptTime;
-        this.price = price;
-        this.createTime = createTime;
-    }
-
-    public OrderItemManagerVo() {
-    }
 
     @Override
     public String toString() {
@@ -39,8 +30,22 @@ public class OrderItemManagerVo {
                 ", packageName='" + packageName + '\'' +
                 ", exceptTime='" + exceptTime + '\'' +
                 ", price=" + price +
+                ", code='" + code + '\'' +
                 ", createTime='" + createTime + '\'' +
                 '}';
+    }
+
+    public OrderItemManagerVo() {
+    }
+
+    public OrderItemManagerVo(Long orderNo, Integer packageId, String packageName, String exceptTime, BigDecimal price, String code, String createTime) {
+        this.orderNo = orderNo;
+        this.packageId = packageId;
+        this.packageName = packageName;
+        this.exceptTime = exceptTime;
+        this.price = price;
+        this.code = code;
+        this.createTime = createTime;
     }
 
     public Long getOrderNo() {
@@ -81,6 +86,14 @@ public class OrderItemManagerVo {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getCreateTime() {
