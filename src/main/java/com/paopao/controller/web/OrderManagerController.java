@@ -40,8 +40,8 @@ public class OrderManagerController {
 
 
     @PostMapping("change_status.do")
-    public JsonResponse<String> changeStatus(Integer orderId, Integer status) {
-        orderService.manageChangeOrderStatus(orderId, status);
+    public JsonResponse<String> changeStatus(Long orderNo, Integer status) {
+        orderService.manageChangeOrderStatus(orderNo, status);
         return JsonResponse.createBySuccess("更改状态成功");
 
     }

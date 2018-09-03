@@ -22,7 +22,7 @@ public class OrderServiceTest {
 
     @Test
     public void shouldManageChangeOrderStatus() {
-        orderService.manageChangeOrderStatus(119, Const.OrderStatusEnum.GET_ORDER.getCode());
+        orderService.manageChangeOrderStatus(1534329381721L, Const.OrderStatusEnum.CANCELED.getCode());
     }
 
     @Test

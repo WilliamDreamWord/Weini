@@ -296,8 +296,8 @@ public class OrderService {
 
 
     //改变订单状态
-    public void manageChangeOrderStatus(Integer orderId, Integer status) {
-        Order order = orderMapper.selectByPrimaryKey(orderId);
+    public void manageChangeOrderStatus(Long orderNo, Integer status) {
+        Order order = orderMapper.selectByOrderNo(orderNo);
         Preconditions.checkArgument(order!=null, "订单不存在");
         Const.OrderStatusEnum orderStatus = Const.OrderStatusEnum.codeOf(status);
         Preconditions.checkArgument(orderStatus!=null, "不存在该状态");
@@ -326,7 +326,7 @@ public class OrderService {
             }
         }
         order.setStatus(status);
-        orderMapper.updateByPrimaryKeySelective(order);
+        orderMapper.updateByOrderNo(order);
     }
 
 
