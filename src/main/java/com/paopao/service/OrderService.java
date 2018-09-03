@@ -97,7 +97,11 @@ public class OrderService {
 
 
     //目前为止，直接通过packageId来添加订单
-    public OrderVo addOrder(int packageId, int shippingId, int userId) {
+    public OrderVo addOrder(Integer packageId, Integer shippingId, Integer userId) {
+        if (packageId == null || shippingId == null || userId == null) {
+            // TODO: 03/09/2018 权宜之计，应该抛出错误
+            return null;
+        }
 
         long orderNo = generateOrderNo();
 
