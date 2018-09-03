@@ -28,6 +28,24 @@ public class Package {
 
     private String detail;
 
+    @Override
+    public String toString() {
+        return "Package{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", price=" + price +
+                ", code='" + code + '\'' +
+                ", packageType=" + packageType +
+                ", status=" + status +
+                ", exceptTime='" + exceptTime + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", detail='" + detail + '\'' +
+                '}';
+    }
+
     public Package(Integer id, Integer userId, String name, String address, BigDecimal price, String code, Integer packageType, Integer status, String exceptTime, Date createTime, Date updateTime, String detail) {
         this.id = id;
         this.userId = userId;

@@ -1,5 +1,7 @@
 package com.paopao.vo;
 
+import com.paopao.po.Package;
+
 import java.math.BigDecimal;
 
 /**
@@ -9,16 +11,10 @@ public class OrderItemManagerVo {
 
     private Long orderNo;
 
-    private Integer packageId;
 
-    private String packageName;
+    private BigDecimal totalPrice;
 
-    private String exceptTime;
-
-    private BigDecimal price;
-
-    //提货码
-    private String code;
+    private Package pack;
 
     private String createTime;
 
@@ -26,11 +22,8 @@ public class OrderItemManagerVo {
     public String toString() {
         return "OrderItemManagerVo{" +
                 "orderNo=" + orderNo +
-                ", packageId=" + packageId +
-                ", packageName='" + packageName + '\'' +
-                ", exceptTime='" + exceptTime + '\'' +
-                ", price=" + price +
-                ", code='" + code + '\'' +
+                ", totalPrice=" + totalPrice +
+                ", pack=" + pack +
                 ", createTime='" + createTime + '\'' +
                 '}';
     }
@@ -38,13 +31,10 @@ public class OrderItemManagerVo {
     public OrderItemManagerVo() {
     }
 
-    public OrderItemManagerVo(Long orderNo, Integer packageId, String packageName, String exceptTime, BigDecimal price, String code, String createTime) {
+    public OrderItemManagerVo(Long orderNo, BigDecimal totalPrice, Package pack, String createTime) {
         this.orderNo = orderNo;
-        this.packageId = packageId;
-        this.packageName = packageName;
-        this.exceptTime = exceptTime;
-        this.price = price;
-        this.code = code;
+        this.totalPrice = totalPrice;
+        this.pack = pack;
         this.createTime = createTime;
     }
 
@@ -56,44 +46,20 @@ public class OrderItemManagerVo {
         this.orderNo = orderNo;
     }
 
-    public Integer getPackageId() {
-        return packageId;
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setPackageId(Integer packageId) {
-        this.packageId = packageId;
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
-    public String getPackageName() {
-        return packageName;
+    public Package getPack() {
+        return pack;
     }
 
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
-    }
-
-    public String getExceptTime() {
-        return exceptTime;
-    }
-
-    public void setExceptTime(String exceptTime) {
-        this.exceptTime = exceptTime;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
+    public void setPack(Package pack) {
+        this.pack = pack;
     }
 
     public String getCreateTime() {

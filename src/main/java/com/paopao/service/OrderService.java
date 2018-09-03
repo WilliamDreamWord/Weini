@@ -199,11 +199,7 @@ public class OrderService {
     private OrderItemManagerVo assembleOrderItemManagerVo(OrderItem orderItem, Package pack) {
         OrderItemManagerVo orderItemManagerVo = new OrderItemManagerVo();
         orderItemManagerVo.setOrderNo(orderItem.getOrderNo());
-        orderItemManagerVo.setPackageId(orderItem.getPackageId());
-        orderItemManagerVo.setPackageName(orderItem.getPackageName());
-        orderItemManagerVo.setPrice(orderItem.getPrice());
-        orderItemManagerVo.setExceptTime(pack.getExceptTime());
-        orderItemManagerVo.setCode(pack.getCode());
+        orderItemManagerVo.setPack(pack);
 
         orderItemManagerVo.setCreateTime(DateTimeUtil.dateToStr(orderItem.getCreateTime()));
 
