@@ -341,7 +341,7 @@ public class OrderService {
         return selectByDateStatus(begin, end, status);
     }
 
-    public List<OrderManagerVo> selectByDateStatusNow (String beginStr, Integer status) {
+    public List<OrderManagerVo> selectByDateStatusNow(String beginStr, Integer status) {
         Date begin = DateTimeUtil.strToDate(beginStr.trim());
         return selectByDateStatus(begin, new Date(), status);
 

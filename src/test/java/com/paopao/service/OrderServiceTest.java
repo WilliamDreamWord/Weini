@@ -21,6 +21,11 @@ public class OrderServiceTest {
     private OrderService orderService;
 
     @Test
+    public void shouldDetail() {
+        System.out.println(orderService.manageDetail(1534291925448L));
+    }
+
+    @Test
     public void shouldManageChangeOrderStatus() {
         orderService.manageChangeOrderStatus(1534329381721L, Const.OrderStatusEnum.CANCELED.getCode());
     }

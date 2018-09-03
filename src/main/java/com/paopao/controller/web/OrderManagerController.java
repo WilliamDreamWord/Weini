@@ -72,4 +72,7 @@ public class OrderManagerController {
         List<OrderManagerVo> orderVoList = orderService.selectByDateStatusNow(begin, status);
         return JsonResponse.createBySuccess(orderVoList);
     }
+
+
+
 }
