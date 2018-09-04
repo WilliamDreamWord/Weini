@@ -67,7 +67,7 @@ public class ShippingServiceTest {
 
     @Test
     public void shouldGetDefault() {
-        System.out.println(shippingService.selectDefault(11));
+        System.out.println(shippingService.selectDefault(31324));
 
     }
 }

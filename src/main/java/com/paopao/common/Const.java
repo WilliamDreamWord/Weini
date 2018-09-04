@@ -10,6 +10,39 @@ public class Const {
     public static final String CURRENT_WECHAT_USER_OPEN_ID = "CURRENT_WECHAT_USER_OPEN_ID";
     public static final String CURRENT_WECHAT_USER = "CURRENT_WECHAT_USER";
 
+
+    public enum Gender {
+        MALE(0, "男性"),
+        FEMALE(1, "女性");
+
+        private int code;
+        private String val;
+
+        public int getCode() {
+            return code;
+        }
+
+
+        public String getVal() {
+            return val;
+        }
+
+
+        Gender(int code, String val) {
+            this.code = code;
+            this.val = val;
+        }
+
+        public static Gender codeOf(int code) {
+            for (Gender gender : values()) {
+                if (gender.getCode() == code) {
+                    return gender;
+                }
+            }
+            throw new RuntimeException("没有找到对应的枚举");
+        }
+    }
+
     public enum Role {
         ADMIN(2, "管理员"),
         NORMAL(1, "普通用户");

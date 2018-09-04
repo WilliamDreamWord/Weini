@@ -11,11 +11,28 @@
  Target Server Version : 50719
  File Encoding         : utf-8
 
- Date: 08/28/2018 23:01:14 PM
+ Date: 09/04/2018 14:44:14 PM
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+--  Table structure for `paopao_candidate`
+-- ----------------------------
+DROP TABLE IF EXISTS `paopao_candidate`;
+CREATE TABLE `paopao_candidate` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `name` varchar(10) NOT NULL COMMENT '个人姓名',
+  `gender` int(10) NOT NULL COMMENT '性别',
+  `qq` varchar(20) NOT NULL COMMENT 'qq',
+  `phone` varchar(20) NOT NULL COMMENT '手机号码',
+  `address` varchar(50) NOT NULL COMMENT '寝室地址',
+  `comment` text COMMENT '候选人个人介绍',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '最后一次更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `paopao_feedback`
@@ -29,7 +46,7 @@ CREATE TABLE `paopao_feedback` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `paopao_order`
@@ -50,7 +67,7 @@ CREATE TABLE `paopao_order` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `order_no_index` (`order_no`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=125 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `paopao_order_item`
@@ -68,7 +85,7 @@ CREATE TABLE `paopao_order_item` (
   PRIMARY KEY (`id`),
   KEY `order_no_index` (`order_no`) USING BTREE,
   KEY `order_no_user_id_index` (`user_id`,`order_no`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=138 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=142 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `paopao_package`
@@ -88,7 +105,7 @@ CREATE TABLE `paopao_package` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `paopao_shipping`
@@ -107,7 +124,7 @@ CREATE TABLE `paopao_shipping` (
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `paopao_user`
@@ -126,7 +143,7 @@ CREATE TABLE `paopao_user` (
   `update_time` datetime NOT NULL COMMENT '最后一次更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_name_unique` (`username`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `paopao_wechat_user`

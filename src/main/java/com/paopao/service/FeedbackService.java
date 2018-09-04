@@ -19,12 +19,12 @@ public class FeedbackService {
     private FeedbackMapper feedbackMapper;
 
 
-    public void add(Integer userId, String context) {
+    public void add(Integer userId, String content) {
 
         Feedback feedback = new Feedback();
         feedback.setAuthorId(userId);
         feedback.setStatus(Const.FeedbackStatusEnum.SHOW.getCode());
-        feedback.setContent(context);
+        feedback.setContent(content);
 
         int row = feedbackMapper.insert(feedback);
 

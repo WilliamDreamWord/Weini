@@ -22,13 +22,15 @@ public class FeedbackController {
     private FeedbackService feedbackService;
 
     @PostMapping("add.do")
-    public JsonResponse add(String context, HttpSession httpSession) {
+    public JsonResponse add(String content, HttpSession httpSession) {
 
         WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
-        feedbackService.add(weChatUser.getId(), context);
+        feedbackService.add(weChatUser.getId(), content);
 
         return JsonResponse.createBySuccess("添加反馈成功");
     }
+
+
 
 
 }

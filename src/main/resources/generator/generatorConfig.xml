@@ -78,17 +78,20 @@
 
 
 
+        <!--<table tableName="paopao_candidate" domainObjectName="Candidate"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false" />-->
 
+        <!--<table tableName="paopao_package" domainObjectName="Package"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false" />-->
 
-        <table tableName="paopao_package" domainObjectName="Package"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false" />
-
-        <table tableName="paopao_feedback" domainObjectName="Feedback"
-        enableCountByExample="false" enableUpdateByExample="false"
-        enableDeleteByExample="false" enableSelectByExample="false"
-        selectByExampleQueryId="false" />
+        <!--<table tableName="paopao_feedback" domainObjectName="Feedback"-->
+        <!--enableCountByExample="false" enableUpdateByExample="false"-->
+        <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--selectByExampleQueryId="false" />-->
 
 
         <!--<table tableName="paopao_order" domainObjectName="Order"-->
@@ -103,10 +106,10 @@
         <!--selectByExampleQueryId="false" />-->
 
 
-        <table tableName="paopao_shipping" domainObjectName="Shipping"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false" />
+        <!--<table tableName="paopao_shipping" domainObjectName="Shipping"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false" />-->
 
 
         <!--<table tableName="paopao_user" domainObjectName="User"-->
