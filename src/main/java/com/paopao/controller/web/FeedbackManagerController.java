@@ -6,6 +6,7 @@ import com.paopao.service.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,8 +22,11 @@ public class FeedbackManagerController {
     private FeedbackService feedbackService;
 
     @PostMapping("list.do")
-    public JsonResponse<List<Feedback>> list() {
-        return JsonResponse.createBySuccess(feedbackService.list());
+    public JsonResponse<List<Feedback>> list(@RequestParam(value = "pageNum", defaultValue = "1")
+                                                 int pageNum,
+                                             @RequestParam(value = "pageSize", defaultValue = "10")
+                                                 int pageSize) {
+        return JsonResponse.createBySuccess(feedbackService.list(pageNum, pageSize));
     }
 
     @PostMapping("del.do")

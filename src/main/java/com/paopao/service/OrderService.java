@@ -380,5 +380,9 @@ public class OrderService {
         return orderManagerVos;
     }
 
+    public void manageDelete(Long orderNo) {
+        int row = orderMapper.deleteByOrderNo(orderNo);
+        Preconditions.checkArgument(row>0, "删除失败或不存在该订单");
+    }
 
 }

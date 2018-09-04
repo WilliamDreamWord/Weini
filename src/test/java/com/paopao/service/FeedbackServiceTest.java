@@ -29,6 +29,6 @@ public class FeedbackServiceTest {
 
     @Test
     public void list() {
-        System.out.println(feedbackService.list());
+        System.out.println(feedbackService.list(1, 10));
     }
 }

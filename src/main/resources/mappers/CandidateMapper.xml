@@ -143,4 +143,12 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+  <select id="list" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from paopao_candidate
+    order by create_time desc
+    limit #{begin}, #{count}
+  </select>
+
 </mapper>

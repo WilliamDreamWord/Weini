@@ -108,4 +108,19 @@ public class Candidate {
     public void setComment(String comment) {
         this.comment = comment == null ? null : comment.trim();
     }
+
+    @Override
+    public String toString() {
+        return "Candidate{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", gender=" + gender +
+                ", qq='" + qq + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", comment='" + comment + '\'' +
+                '}';
+    }
 }

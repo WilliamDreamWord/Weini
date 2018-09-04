@@ -31,9 +31,9 @@ public class FeedbackService {
         Preconditions.checkArgument(row>0, "添加反馈失败");
     }
 
-    public List<Feedback> list() {
+    public List<Feedback> list(Integer pageNum, Integer pageSize) {
 
-        return feedbackMapper.list();
+        return feedbackMapper.list((pageNum-1)*pageSize, pageSize);
     }
 
 

@@ -31,5 +31,21 @@ public class CandidateServiceTest {
         candidateService.add(candidateParam);
     }
 
+    @Test
+    public void shouldList() {
+
+        System.out.println(candidateService.list(1, 10));
+    }
+
+    @Test
+    public void shouldFindById() {
+        System.out.println(candidateService.findById(120));
+    }
+
+    @Test
+    public void shoulDel() {
+        candidateService.del(119);
+    }
+
 
 }

@@ -114,5 +114,6 @@
     <include refid="Base_Column_List" />
     FROM paopao_feedback
     order by create_time desc
+    limit #{begin}, #{count}
   </select>
 </mapper>

@@ -47,6 +47,8 @@ public interface OrderMapper {
 
     List<Order> selectByShippingId(Integer shippingId);
 
+    int deleteByOrderNo(Long orderNo);
+
 
 
 

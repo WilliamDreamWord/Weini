@@ -315,4 +315,10 @@
     where shipping_id=#{shippingId}
   </select>
 
+  <delete id="deleteByOrderNo" parameterType="long">
+    delete from paopao_order
+    where order_no=#{orderNo}
+  </delete>
+
+
 </mapper>

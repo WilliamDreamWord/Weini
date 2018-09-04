@@ -73,6 +73,12 @@ public class OrderManagerController {
         return JsonResponse.createBySuccess(orderVoList);
     }
 
+    @PostMapping("delete.do")
+    public JsonResponse delete(Long orderNo) {
+        orderService.manageDelete(orderNo);
+        return JsonResponse.createBySuccess("删除成功");
+    }
+
 
 
 }

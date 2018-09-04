@@ -1,6 +1,9 @@
 package com.paopao.dao;
 
 import com.paopao.po.Candidate;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface CandidateMapper {
     int deleteByPrimaryKey(Integer id);
@@ -15,4 +18,6 @@ public interface CandidateMapper {
 
 
     int updateByPrimaryKey(Candidate record);
+
+    List<Candidate> list(@Param("begin") Integer begin, @Param("count") Integer count);
 }

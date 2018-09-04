@@ -44,4 +44,9 @@ public class OrderServiceTest {
         System.out.println(orderVos);
     }
 
+
+    @Test
+    public void shouldDelete() {
+        orderService.manageDelete(1535990796736L);
+    }
 }
