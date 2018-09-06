@@ -11,7 +11,7 @@
  Target Server Version : 50719
  File Encoding         : utf-8
 
- Date: 09/04/2018 14:44:14 PM
+ Date: 09/06/2018 21:57:00 PM
 */
 
 SET NAMES utf8mb4;
@@ -32,7 +32,7 @@ CREATE TABLE `paopao_candidate` (
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '最后一次更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `paopao_feedback`
@@ -67,7 +67,7 @@ CREATE TABLE `paopao_order` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `order_no_index` (`order_no`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=125 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=126 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `paopao_order_item`
@@ -85,7 +85,47 @@ CREATE TABLE `paopao_order_item` (
   PRIMARY KEY (`id`),
   KEY `order_no_index` (`order_no`) USING BTREE,
   KEY `order_no_user_id_index` (`user_id`,`order_no`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=142 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=143 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Table structure for `paopao_order_returns_apply`
+-- ----------------------------
+DROP TABLE IF EXISTS `paopao_order_returns_apply`;
+CREATE TABLE `paopao_order_returns_apply` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL COMMENT '用户id',
+  `order_no` bigint(20) DEFAULT NULL COMMENT '订单号',
+  `type` int(4) NOT NULL COMMENT '申请类型：0-取消包裹订单',
+  `order_status` int(10) NOT NULL COMMENT '订单状态:0-已取消，10-已下单，20-已接单，30-已签收',
+  `why` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '退换货原因',
+  `audit_status` int(10) NOT NULL DEFAULT '0' COMMENT '审核状态 -1 拒绝 0 未审核 1审核通过',
+  `audit_time` datetime DEFAULT NULL COMMENT '审核时间',
+  `audit_why` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '审核原因',
+  `comment` text COLLATE utf8mb4_unicode_ci COMMENT '备注',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------
+--  Table structure for `paopao_order_shipping`
+-- ----------------------------
+DROP TABLE IF EXISTS `paopao_order_shipping`;
+CREATE TABLE `paopao_order_shipping` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_no` bigint(20) DEFAULT NULL COMMENT '订单号',
+  `user_id` int(11) DEFAULT NULL COMMENT '用户id',
+  `receiver_name` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '收货姓名',
+  `receiver_mobile` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '收货移动电话',
+  `receiver_large_area` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '大区域，现在是西南大学',
+  `receiver_medium_area` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '中区域，现在有北区，南区',
+  `receiver_small_area` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '小片区，比如橘园八舍，桃园一舍',
+  `receiver_door` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '门牌号',
+  `shipping_status` int(11) DEFAULT '1' COMMENT '收货地址状态，1 默认 2 非默认',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 --  Table structure for `paopao_package`
@@ -105,7 +145,7 @@ CREATE TABLE `paopao_package` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Table structure for `paopao_shipping`

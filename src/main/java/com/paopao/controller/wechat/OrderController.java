@@ -44,17 +44,6 @@ public class OrderController {
     }
 
 
-    @ApiOperation(value="取消订单")
-    @ApiImplicitParam(name = "orderNo")
-    @PostMapping("cancel.do")
-    public JsonResponse cancel(Long orderNo, HttpSession httpSession) {
-
-        WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
-        orderService.cancel(weChatUser.getId(), orderNo);
-
-        return JsonResponse.createBySuccess("取消成功");
-    }
-
 
     @ApiOperation(value="得到订单")
     @ApiImplicitParam(name = "orderNo")

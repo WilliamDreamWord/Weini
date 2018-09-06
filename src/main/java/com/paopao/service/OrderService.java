@@ -3,14 +3,10 @@ package com.paopao.service;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.paopao.common.Const;
-import com.paopao.dao.OrderItemMapper;
-import com.paopao.dao.OrderMapper;
-import com.paopao.dao.PackageMapper;
-import com.paopao.dao.ShippingMapper;
-import com.paopao.po.Order;
-import com.paopao.po.OrderItem;
+import com.paopao.common.OrderConst;
+import com.paopao.dao.*;
+import com.paopao.po.*;
 import com.paopao.po.Package;
-import com.paopao.po.Shipping;
 import com.paopao.util.DateTimeUtil;
 import com.paopao.vo.OrderItemManagerVo;
 import com.paopao.vo.OrderItemVo;
@@ -40,6 +36,9 @@ public class OrderService {
     @Autowired
     private ShippingMapper shippingMapper;
 
+    @Autowired
+    private OrderShippingMapper orderShippingMapper;
+
     //当前时间加随机数生产订单号
     private long generateOrderNo() {
         long currentTime = System.currentTimeMillis();
@@ -53,15 +52,16 @@ public class OrderService {
         orderVo.setOrderNo(order.getOrderNo());
         orderVo.setPayment(order.getPayment());
         orderVo.setPaymentType(order.getPaymentType());
-        orderVo.setPaymentTypeDesc(Const.PaymentType.codeOf(order.getPaymentType()).getVal());
+        orderVo.setPaymentTypeDesc(OrderConst.PaymentType.codeOf(order.getPaymentType()).getVal());
         orderVo.setStatus(order.getStatus());
-        orderVo.setStatusDesc(Const.OrderStatusEnum.codeOf(order.getStatus()).getValue());
+        orderVo.setStatusDesc(OrderConst.OrderStatusEnum.codeOf(order.getStatus()).getValue());
 
         orderVo.setShippingId(order.getShippingId());
-        Shipping shipping = shippingMapper.selectByPrimaryKey(order.getShippingId());
-        if (shipping != null) {
-            orderVo.setReceiverName(shipping.getReceiverName());
-            orderVo.setShipping(shipping);
+        //这里的shipping对应order_shipping表，而不是shipping表
+        OrderShipping orderShipping = orderShippingMapper.selectByPrimaryKey(order.getShippingId());
+        if (orderShipping != null) {
+            orderVo.setReceiverName(orderShipping.getReceiverName());
+            orderVo.setShipping(orderShipping);
         }
 
 
@@ -99,8 +99,7 @@ public class OrderService {
     //目前为止，直接通过packageId来添加订单
     public OrderVo addOrder(Integer packageId, Integer shippingId, Integer userId) {
         if (packageId == null || shippingId == null || userId == null) {
-            // TODO: 03/09/2018 权宜之计，应该抛出错误
-            return null;
+            throw new IllegalArgumentException("传入的参数项为null");
         }
 
         long orderNo = generateOrderNo();
@@ -125,9 +124,25 @@ public class OrderService {
         order.setOrderNo(orderNo);
         order.setUserId(userId);
         order.setPayment(orderItem.getPrice());
-        order.setPaymentType(Const.PaymentType.OFFLINE_PAY.getCode());
-        order.setShippingId(shippingId);
-        order.setStatus(Const.OrderStatusEnum.PUBLISH_ORDER.getCode());
+        order.setPaymentType(OrderConst.PaymentType.OFFLINE_PAY.getCode());
+        order.setStatus(OrderConst.OrderStatusEnum.PUBLISH_ORDER.getCode());
+
+        //把shipping转化为orderShipping
+        Shipping shipping = shippingMapper.selectByPrimaryKey(shippingId);
+        OrderShipping orderShipping = new OrderShipping();
+        orderShipping.setOrderNo(orderNo);
+        orderShipping.setUserId(userId);
+        orderShipping.setReceiverName(shipping.getReceiverName());
+        orderShipping.setShippingStatus(shipping.getStatus());
+        orderShipping.setReceiverMobile(shipping.getReceiverMobile());
+        orderShipping.setReceiverSmallArea(shipping.getReceiverSmallArea());
+        orderShipping.setReceiverMediumArea(shipping.getReceiverMediumArea());
+        orderShipping.setReceiverLargeArea(shipping.getReceiverLargeArea());
+        orderShipping.setReceiverDoor(shipping.getReceiverDoor());
+        int row = orderShippingMapper.insert(orderShipping);
+        Preconditions.checkArgument(row > 0, "插入orderShipping失败");
+
+        order.setShippingId(orderShipping.getId());
 
         int ans = orderMapper.insert(order);
         Preconditions.checkArgument(ans > 0, "下单失败");
@@ -138,17 +153,7 @@ public class OrderService {
         return orderVo;
     }
 
-    public void cancel(Integer userId, Long orderNo) {
-        Order order = orderMapper.selectByUserIdAndOrderNo(userId, orderNo);
-        Preconditions.checkArgument(order!=null, "该用户的改订单不存在");
-        Preconditions.checkArgument(order.getStatus() != Const.OrderStatusEnum.SIGN.getCode(),
-                "该订单已签收，无法取消");
-        Order updateOrder = new Order();
-        updateOrder.setId(order.getId());
-        updateOrder.setStatus(Const.OrderStatusEnum.CANCELED.getCode());
-        int row = orderMapper.updateByPrimaryKeySelective(updateOrder);
-        Preconditions.checkArgument(row>0, "取消订单失败");
-    }
+
 
     public OrderVo getOrder(Integer userId, Long orderNo) {
         Order order = orderMapper.selectByUserIdAndOrderNo(userId, orderNo);
@@ -232,15 +237,17 @@ public class OrderService {
         orderManagerVo.setOrderNo(order.getOrderNo());
         orderManagerVo.setPayment(order.getPayment());
         orderManagerVo.setPaymentType(order.getPaymentType());
-        orderManagerVo.setPaymentTypeDesc(Const.PaymentType.codeOf(order.getPaymentType()).getVal());
+        orderManagerVo.setPaymentTypeDesc(OrderConst.PaymentType.codeOf(order.getPaymentType()).getVal());
         orderManagerVo.setStatus(order.getStatus());
-        orderManagerVo.setStatusDesc(Const.OrderStatusEnum.codeOf(order.getStatus()).getValue());
+        orderManagerVo.setStatusDesc(OrderConst.OrderStatusEnum.codeOf(order.getStatus()).getValue());
 
         orderManagerVo.setShippingId(order.getShippingId());
-        Shipping shipping = shippingMapper.selectByPrimaryKey(order.getShippingId());
-        if (shipping != null) {
-            orderManagerVo.setReceiverName(shipping.getReceiverName());
-            orderManagerVo.setShipping(shipping);
+
+        //这里的shipping对应order_shipping表，而不是shipping表
+        OrderShipping orderShipping = orderShippingMapper.selectByPrimaryKey(order.getShippingId());
+        if (orderShipping != null) {
+            orderManagerVo.setReceiverName(orderShipping.getReceiverName());
+            orderManagerVo.setShipping(orderShipping);
         }
 
 
@@ -300,7 +307,7 @@ public class OrderService {
     public void manageChangeOrderStatus(Long orderNo, Integer status) {
         Order order = orderMapper.selectByOrderNo(orderNo);
         Preconditions.checkArgument(order!=null, "订单不存在");
-        Const.OrderStatusEnum orderStatus = Const.OrderStatusEnum.codeOf(status);
+        OrderConst.OrderStatusEnum orderStatus = OrderConst.OrderStatusEnum.codeOf(status);
         Preconditions.checkArgument(orderStatus!=null, "不存在该状态");
 
         // TODO: 02/09/2018
@@ -361,28 +368,5 @@ public class OrderService {
         return orderManagerVos;
     }
 
-
-
-    public List<OrderManagerVo> selectByPhone(String phone) {
-        List<Shipping> shippings = shippingMapper.selectByMobile(phone);
-        List<Integer> shippingIds = new ArrayList<>();
-        for (Shipping shipping : shippings) {
-            shippingIds.add(shipping.getId());
-        }
-
-        List<Order> orderList = orderMapper.selectByShippingIds(shippingIds);
-        List<OrderManagerVo> orderManagerVos = new ArrayList<>();
-        for (Order order : orderList) {
-            List<OrderItem> orderItems = orderItemMapper.getByOrderNo(order.getOrderNo());
-            orderManagerVos.add(assembleOrderManagerVo(order,
-                    assembleOrderItemManagerVoList(orderItems)));
-        }
-        return orderManagerVos;
-    }
-
-    public void manageDelete(Long orderNo) {
-        int row = orderMapper.deleteByOrderNo(orderNo);
-        Preconditions.checkArgument(row>0, "删除失败或不存在该订单");
-    }
 
 }

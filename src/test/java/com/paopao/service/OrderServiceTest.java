@@ -1,6 +1,6 @@
 package com.paopao.service;
 
-import com.paopao.common.Const;
+import com.paopao.common.OrderConst;
 import com.paopao.vo.OrderManagerVo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,33 +20,29 @@ public class OrderServiceTest {
     @Autowired
     private OrderService orderService;
 
+
+    @Test
+    public void shouldAdd() {
+        orderService.addOrder(37,41, 23);
+    }
+
     @Test
     public void shouldDetail() {
-        System.out.println(orderService.manageDetail(1534291925448L));
+        System.out.println(orderService.manageDetail(1536240646692L));
     }
 
     @Test
     public void shouldManageChangeOrderStatus() {
-        orderService.manageChangeOrderStatus(1534329381721L, Const.OrderStatusEnum.CANCELED.getCode());
+        orderService.manageChangeOrderStatus(1534329381721L, OrderConst.OrderStatusEnum.CANCELED.getCode());
     }
 
     @Test
     public void shouldSelectByDateStatus() {
 
         List<OrderManagerVo> orders = orderService.selectByDateStatusNow("2018-8-15",
-                Const.OrderStatusEnum.GET_ORDER.getCode());
+                OrderConst.OrderStatusEnum.GET_ORDER.getCode());
         System.out.println(orders);
     }
 
-    @Test
-    public void shouldSelectByPhone() {
-        List<OrderManagerVo> orderVos = orderService.selectByPhone("1234567891123");
-        System.out.println(orderVos);
-    }
 
-
-    @Test
-    public void shouldDelete() {
-        orderService.manageDelete(1535990796736L);
-    }
 }

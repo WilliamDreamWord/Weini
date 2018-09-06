@@ -1,6 +1,6 @@
 package com.paopao.vo;
 
-import com.paopao.po.Shipping;
+import com.paopao.po.OrderShipping;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -33,7 +33,7 @@ public class OrderVo {
     private Integer shippingId;
     private String receiverName;
 
-    private Shipping shipping;
+    private OrderShipping shipping;
 
     public Long getOrderNo() {
         return orderNo;
@@ -139,31 +139,13 @@ public class OrderVo {
         this.receiverName = receiverName;
     }
 
-    public Shipping getShipping() {
+    public OrderShipping getShipping() {
         return shipping;
     }
 
-    public void setShipping(Shipping shipping) {
+    public void setShipping(OrderShipping shipping) {
         this.shipping = shipping;
     }
 
-    @Override
-    public String toString() {
-        return "OrderVo{" +
-                "orderNo=" + orderNo +
-                ", payment=" + payment +
-                ", paymentType=" + paymentType +
-                ", paymentTypeDesc='" + paymentTypeDesc + '\'' +
-                ", status=" + status +
-                ", statusDesc='" + statusDesc + '\'' +
-                ", getTime='" + getTime + '\'' +
-                ", endTime='" + endTime + '\'' +
-                ", closeTime='" + closeTime + '\'' +
-                ", createTime='" + createTime + '\'' +
-                ", orderItemVoList=" + orderItemVoList +
-                ", shippingId=" + shippingId +
-                ", receiverName='" + receiverName + '\'' +
-                ", shipping=" + shipping +
-                '}';
-    }
+
 }

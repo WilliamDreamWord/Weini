@@ -23,10 +23,9 @@ public class OrderManagerController {
 
 
     @PostMapping("list.do")
-    public JsonResponse<List<OrderManagerVo>> orderList(@RequestParam(value = "pageNum", defaultValue = "1")
-                                      int pageNum,
-                                                        @RequestParam(value = "pageSize", defaultValue = "10")
-                                      int pageSize) {
+    public JsonResponse<List<OrderManagerVo>> orderList(
+            @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
 
         return JsonResponse.createBySuccess(orderService.manageList(pageNum, pageSize));
     }
@@ -73,11 +72,6 @@ public class OrderManagerController {
         return JsonResponse.createBySuccess(orderVoList);
     }
 
-    @PostMapping("delete.do")
-    public JsonResponse delete(Long orderNo) {
-        orderService.manageDelete(orderNo);
-        return JsonResponse.createBySuccess("删除成功");
-    }
 
 
 
