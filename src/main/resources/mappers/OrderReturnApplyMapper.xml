@@ -33,7 +33,7 @@
     delete from paopao_order_returns_apply
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.paopao.po.OrderReturnApply">
+  <insert id="insert" parameterType="com.paopao.po.OrderReturnApply" useGeneratedKeys="true" keyProperty="id">
     insert into paopao_order_returns_apply (id, user_id, order_no, 
       type, order_status, why, 
       audit_status, audit_time, audit_why, 

@@ -26,7 +26,7 @@
     delete from paopao_feedback
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.paopao.po.Feedback">
+  <insert id="insert" parameterType="com.paopao.po.Feedback" useGeneratedKeys="true" keyProperty="id">
     insert into paopao_feedback (id, author_id, status, 
       create_time, update_time, content
       )

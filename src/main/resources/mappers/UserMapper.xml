@@ -33,7 +33,7 @@
     delete from paopao_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.paopao.po.User">
+  <insert id="insert" parameterType="com.paopao.po.User" useGeneratedKeys="true" keyProperty="id">
     insert into paopao_user (id, username, password, 
       email, phone, question, 
       answer, role, create_time, 

@@ -29,7 +29,7 @@
     delete from paopao_candidate
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.paopao.po.Candidate">
+  <insert id="insert" parameterType="com.paopao.po.Candidate" useGeneratedKeys="true" keyProperty="id">
     insert into paopao_candidate (id, name, gender, 
       qq, phone, address, 
       create_time, update_time, comment
