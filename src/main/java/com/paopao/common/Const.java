@@ -81,7 +81,8 @@ public class Const {
 
     public enum PackageType {
         SMALL(1, "小件"),
-        LARGE(2, "大件"),
+        MEDIUM(2, "中件"),
+        LARGE(4, "大件"),
         SUPER_HUGE(3, "超大件");
 
 
