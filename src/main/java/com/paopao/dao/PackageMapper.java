@@ -16,8 +16,9 @@ public interface PackageMapper {
 
     int updateByPrimaryKeySelective(Package record);
 
-
     int updateByPrimaryKey(Package record);
+
+
 
 
     int updateStatus(@Param("id") Integer id, @Param("userId") Integer userId,

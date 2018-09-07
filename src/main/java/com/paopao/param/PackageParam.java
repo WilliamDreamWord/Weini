@@ -2,6 +2,7 @@ package com.paopao.param;
 
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
@@ -19,13 +20,9 @@ public class PackageParam {
     private String name;
 
 
-    @NotNull(message = "地址不能为空")
-    @Length(min=1, max = 50, message = "没有填写收货地址")
     private String address;
 
-
-    @NotNull(message = "取货码不能为空")
-    @Length(min=1, max = 50, message = "没有填写提货码")
+    @NotEmpty(message = "取货码不能为空")
     private String code;
 
     @NotNull(message = "价格不能为空")
@@ -34,12 +31,14 @@ public class PackageParam {
     @NotNull(message = "包裹类型不能为空")
     private Integer packageType;
 
+    @NotEmpty(message = "期望时间不能为空")
     private String exceptTime;
 
 
     private String detail;
 
-
+    @NotEmpty(message = "必须填写手机短信")
+    private String phoneMessage;
 
 
     public String getName() {
@@ -104,5 +103,13 @@ public class PackageParam {
 
     public void setExceptTime(String exceptTime) {
         this.exceptTime = exceptTime;
+    }
+
+    public String getPhoneMessage() {
+        return phoneMessage;
+    }
+
+    public void setPhoneMessage(String phoneMessage) {
+        this.phoneMessage = phoneMessage;
     }
 }

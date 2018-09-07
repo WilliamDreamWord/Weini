@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.paopao.dao.PackageMapper">
+
   <resultMap id="BaseResultMap" type="com.paopao.po.Package">
     <constructor>
       <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
@@ -15,11 +16,12 @@
       <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="detail" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
+      <arg column="phone_message" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
     id, user_id, name, address, price, code, package_type, status, except_time, create_time, 
-    update_time, detail
+    update_time, detail, phone_message
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -32,17 +34,17 @@
     delete from paopao_package
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.paopao.po.Package" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.paopao.po.Package">
     insert into paopao_package (id, user_id, name, 
       address, price, code, 
       package_type, status, except_time, 
-      create_time, update_time, detail
-      )
+      create_time, update_time, detail, 
+      phone_message)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
       #{address,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{code,jdbcType=VARCHAR}, 
       #{packageType,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{exceptTime,jdbcType=VARCHAR}, 
-      now(), now(), #{detail,jdbcType=LONGVARCHAR}
-      )
+      now(), now(), #{detail,jdbcType=LONGVARCHAR},
+      #{phoneMessage,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.paopao.po.Package">
     insert into paopao_package
@@ -83,6 +85,9 @@
       <if test="detail != null">
         detail,
       </if>
+      <if test="phoneMessage != null">
+        phone_message,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -120,6 +125,9 @@
       </if>
       <if test="detail != null">
         #{detail,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="phoneMessage != null">
+        #{phoneMessage,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -159,6 +167,9 @@
       <if test="detail != null">
         detail = #{detail,jdbcType=LONGVARCHAR},
       </if>
+      <if test="phoneMessage != null">
+        phone_message = #{phoneMessage,jdbcType=LONGVARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -174,10 +185,10 @@
       except_time = #{exceptTime,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = now(),
-      detail = #{detail,jdbcType=LONGVARCHAR}
+      detail = #{detail,jdbcType=LONGVARCHAR},
+      phone_message = #{phoneMessage,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
 
 
 
@@ -237,6 +248,9 @@
       <if test="detail != null">
         detail = #{detail,jdbcType=LONGVARCHAR},
       </if>
+      <if test="phoneMessage != null">
+        phone_message = #{phoneMessage,jdbcType=LONGVARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER} and user_id=#{userId, jdbcType=INTEGER}
   </update>
@@ -250,4 +264,5 @@
     order by create_time desc
     limit #{begin}, #{count}
   </select>
+
 </mapper>

@@ -25,13 +25,13 @@ public class ShippingServiceTest {
         long start = System.currentTimeMillis();
 
         ShippingParam shippingParam = new ShippingParam();
-        shippingParam.setUserId(11);
-        shippingParam.setReceiverLargeArea("ojo");
-        shippingParam.setReceiverMediumArea("v3");
-        shippingParam.setReceiverSmallArea("342");
-        shippingParam.setReceiverDoor("32");
-        shippingParam.setReceiverMobile("123");
-        shippingParam.setReceiverName("oiioi");
+        shippingParam.setUserId(23);
+        shippingParam.setReceiverLargeArea("mmp");
+        shippingParam.setReceiverMediumArea("mmp");
+        shippingParam.setReceiverSmallArea("mmp");
+        shippingParam.setReceiverDoor("mmp");
+        shippingParam.setReceiverMobile("mmp");
+        shippingParam.setReceiverName("mmp");
         shippingParam.setStatus(Const.ShippingEnum.DEFAULT.getCode());
         Shipping shipping = shippingService.add(shippingParam);
 
@@ -44,7 +44,7 @@ public class ShippingServiceTest {
     @Test
     public void shouldChangeToDefault() {
         long start = System.currentTimeMillis();
-        boolean ans = shippingService.changeToDefault(11, 35);
+        boolean ans = shippingService.changeToDefault(23, 42);
 
         System.out.println("expire: " + (System.currentTimeMillis() - start));
 
@@ -56,9 +56,10 @@ public class ShippingServiceTest {
         long start = System.currentTimeMillis();
 
         Shipping shipping = new Shipping();
-        shipping.setId(35);
-        shipping.setUserId(11);
-        shipping.setStatus(Const.ShippingEnum.NORMAL.getCode());
+        shipping.setId(41);
+        shipping.setUserId(23);
+        shipping.setStatus(Const.ShippingEnum.DEFAULT.getCode());
+        shipping.setReceiverName("吃吃吃");
         shippingService.update(shipping);
 
         System.out.println("expire: " + (System.currentTimeMillis() - start));

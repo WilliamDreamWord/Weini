@@ -22,7 +22,8 @@ public class PackageConvert {
         pack.setPrice(packageParam.getPrice());
         pack.setPackageType(packageParam.getPackageType());
         pack.setExceptTime(packageParam.getExceptTime());
-        
+        pack.setPhoneMessage(packageParam.getPhoneMessage());
+
         return pack;
     }
 

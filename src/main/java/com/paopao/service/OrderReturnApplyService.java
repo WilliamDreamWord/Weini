@@ -38,6 +38,8 @@ public class OrderReturnApplyService {
     public void add(Integer userId, Long orderNo, String way) {
 
         Order order = orderMapper.selectByOrderNo(orderNo);
+        Preconditions.checkArgument(order!=null, "没有相关的订单号");
+
         OrderReturnApply orderReturnApply = new OrderReturnApply();
         orderReturnApply.setOrderNo(orderNo);
         orderReturnApply.setUserId(userId);

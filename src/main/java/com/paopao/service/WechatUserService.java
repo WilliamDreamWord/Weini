@@ -2,11 +2,14 @@ package com.paopao.service;
 
 import com.google.common.base.Preconditions;
 import com.paopao.common.Const;
+import com.paopao.dao.WeChatUserExtraMapper;
 import com.paopao.dao.WeChatUserMapper;
 import com.paopao.po.WeChatUser;
+import com.paopao.po.WeChatUserExtra;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by joker on 12/08/2018.
@@ -18,22 +21,47 @@ public class WechatUserService {
     @Autowired
     private WeChatUserMapper weChatUserMapper;
 
+    @Autowired
+    private WeChatUserExtraMapper weChatUserExtraMapper;
+
+
+//    public WeChatUserExtra selectByUserId(Integer userId) {
+//        WeChatUserExtra weChatUserExtra = weChatUserExtraMapper.selectByUserId(userId);
+//
+//    }
+
+
+    public Integer getOrderCountByUserId(Integer userId) {
+        Integer orderCount = weChatUserExtraMapper.selectOrderCountByUserId(userId);
+
+        Preconditions.checkArgument(orderCount != null, "获取order count失败");
+
+        return orderCount;
+    }
 
 
 
-
-    public WeChatUser insertNotExist(String openId ) {
+    @Transactional
+    public WeChatUser insertNotExist(String openId) {
 
         WeChatUser weChatUser = weChatUserMapper.selectByOpenId(openId);
         if(weChatUser != null) {
             return weChatUser;
         }
 
+        //存储在wecharuser表
         weChatUser = new WeChatUser();
         weChatUser.setOpenId(openId);
         weChatUser.setIdentity(Const.WeChatIdentity.NORMAL.getCode());
         int row = weChatUserMapper.insert(weChatUser);
         Preconditions.checkArgument(row > 0, "存储openId失败");
+
+        //存储weChatUserExtra表
+        WeChatUserExtra weChatUserExtra = new WeChatUserExtra();
+        weChatUserExtra.setUserId(weChatUser.getId());
+        row = weChatUserExtraMapper.insert(weChatUserExtra);
+
+        Preconditions.checkArgument(row > 0, "存储weChatUserExtra失败");
         return weChatUser;
 
     }

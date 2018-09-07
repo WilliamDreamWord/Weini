@@ -76,6 +76,16 @@
         </javaClientGenerator>
 
 
+
+        <!--<table tableName="paopao_wechat_user_extra" domainObjectName="WeChatUserExtra"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false" />-->
+        <!--<table tableName="paopao_package" domainObjectName="Package"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false" />-->
+
         <!--<table tableName="paopao_order_returns_apply" domainObjectName="OrderReturnApply"-->
                <!--enableCountByExample="false" enableUpdateByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->

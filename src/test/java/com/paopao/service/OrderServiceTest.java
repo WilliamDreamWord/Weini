@@ -23,7 +23,7 @@ public class OrderServiceTest {
 
     @Test
     public void shouldAdd() {
-        orderService.addOrder(37,41, 23);
+        orderService.addOrder(38, 41, 23);
     }
 
     @Test

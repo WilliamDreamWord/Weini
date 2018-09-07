@@ -30,8 +30,9 @@ public class PackageServiceTest {
         packageParam.setCode("OIJ341421");
         packageParam.setAddress("dfafdaf");
         packageParam.setPackageType(Const.PackageType.SMALL.getCode());
+        packageParam.setPhoneMessage("短发控嗯出去哦");
 
-        //packageService.addPackage(packageParam);
+        packageService.addPackage(packageParam);
     }
 
 }

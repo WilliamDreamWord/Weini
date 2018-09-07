@@ -9,6 +9,7 @@ import com.paopao.po.Shipping;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -45,6 +46,7 @@ public class ShippingService {
         return true;
     }
 
+    @Transactional
     public boolean changeToDefault(Integer userId, Integer shippingId) {
 
         shippingMapper.updateStatusByStatus(userId,
@@ -56,6 +58,8 @@ public class ShippingService {
     }
 
 
+
+    @Transactional
     public Shipping add(ShippingParam shippingParam) {
         Shipping shipping = ShippingConvert.of(shippingParam);
 
@@ -63,9 +67,8 @@ public class ShippingService {
             //如果添加的收货地址为默认时，会把其他默认地址改为normal
             shippingMapper.updateStatusByStatus(shippingParam.getUserId(),
                     Const.ShippingEnum.DEFAULT.getCode(), Const.ShippingEnum.NORMAL.getCode());
-
-
         }
+
 
         int row = shippingMapper.insert(shipping);
 
@@ -81,7 +84,7 @@ public class ShippingService {
 
 
 
-
+    @Transactional
     public void update(Shipping shipping) {
         //如果传入的shipping为默认地址，那么要将其他默认地址变为正常的地址
         if (shipping.getStatus() != null &&

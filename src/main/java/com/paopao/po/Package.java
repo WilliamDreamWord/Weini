@@ -28,25 +28,9 @@ public class Package {
 
     private String detail;
 
-    @Override
-    public String toString() {
-        return "Package{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", name='" + name + '\'' +
-                ", address='" + address + '\'' +
-                ", price=" + price +
-                ", code='" + code + '\'' +
-                ", packageType=" + packageType +
-                ", status=" + status +
-                ", exceptTime='" + exceptTime + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", detail='" + detail + '\'' +
-                '}';
-    }
+    private String phoneMessage;
 
-    public Package(Integer id, Integer userId, String name, String address, BigDecimal price, String code, Integer packageType, Integer status, String exceptTime, Date createTime, Date updateTime, String detail) {
+    public Package(Integer id, Integer userId, String name, String address, BigDecimal price, String code, Integer packageType, Integer status, String exceptTime, Date createTime, Date updateTime, String detail, String phoneMessage) {
         this.id = id;
         this.userId = userId;
         this.name = name;
@@ -59,6 +43,7 @@ public class Package {
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.detail = detail;
+        this.phoneMessage = phoneMessage;
     }
 
     public Package() {
@@ -159,5 +144,13 @@ public class Package {
 
     public void setDetail(String detail) {
         this.detail = detail == null ? null : detail.trim();
+    }
+
+    public String getPhoneMessage() {
+        return phoneMessage;
+    }
+
+    public void setPhoneMessage(String phoneMessage) {
+        this.phoneMessage = phoneMessage == null ? null : phoneMessage.trim();
     }
 }

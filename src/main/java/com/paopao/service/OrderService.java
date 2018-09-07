@@ -14,6 +14,7 @@ import com.paopao.vo.OrderManagerVo;
 import com.paopao.vo.OrderVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -38,6 +39,9 @@ public class OrderService {
 
     @Autowired
     private OrderShippingMapper orderShippingMapper;
+
+    @Autowired
+    private WeChatUserExtraMapper weChatUserExtraMapper;
 
     //当前时间加随机数生产订单号
     private long generateOrderNo() {
@@ -96,7 +100,9 @@ public class OrderService {
     }
 
 
+
     //目前为止，直接通过packageId来添加订单
+    @Transactional
     public OrderVo addOrder(Integer packageId, Integer shippingId, Integer userId) {
         if (packageId == null || shippingId == null || userId == null) {
             throw new IllegalArgumentException("传入的参数项为null");
@@ -119,6 +125,7 @@ public class OrderService {
         orderItem.setCreateTime(pack.getCreateTime());
 
         orderItemMapper.insert(orderItem);
+
 
         Order order = new Order();
         order.setOrderNo(orderNo);
@@ -144,12 +151,17 @@ public class OrderService {
 
         order.setShippingId(orderShipping.getId());
 
-        int ans = orderMapper.insert(order);
-        Preconditions.checkArgument(ans > 0, "下单失败");
+        row = orderMapper.insert(order);
+        Preconditions.checkArgument(row > 0, "插入订单失败");
 
+
+        row = weChatUserExtraMapper.incrOrderCount(userId);
+        Preconditions.checkArgument(row > 0, "增长orderCount失败");
 
 
         OrderVo orderVo = assembleOrderVo(order, Arrays.asList(orderItem));
+
+
         return orderVo;
     }
 
@@ -251,7 +263,11 @@ public class OrderService {
         }
 
 
-        orderManagerVo.setOrderCount(orderMapper.countByUserIdStatus(order.getUserId(), null));
+        //该用户的下单数
+        Integer orderCount = weChatUserExtraMapper.selectOrderCountByUserId(order.getUserId());
+        Preconditions.checkArgument(orderCount != null, "获取order count失败");
+        orderManagerVo.setOrderCount(orderCount);
+
         orderManagerVo.setCreateTime(DateTimeUtil.dateToStr(order.getCreateTime()));
         orderManagerVo.setGetTime(DateTimeUtil.dateToStr(order.getGetTime()));
         orderManagerVo.setEndTime(DateTimeUtil.dateToStr(order.getEndTime()));

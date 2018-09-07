@@ -11,7 +11,7 @@
  Target Server Version : 50719
  File Encoding         : utf-8
 
- Date: 09/06/2018 21:57:00 PM
+ Date: 09/07/2018 20:15:59 PM
 */
 
 SET NAMES utf8mb4;
@@ -105,7 +105,7 @@ CREATE TABLE `paopao_order_returns_apply` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 --  Table structure for `paopao_order_shipping`
@@ -144,6 +144,7 @@ CREATE TABLE `paopao_package` (
   `except_time` varchar(100) DEFAULT NULL COMMENT '用户期望的收货时间',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `phone_message` text COMMENT '手机上的包裹短信',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
 
@@ -203,5 +204,21 @@ CREATE TABLE `paopao_wechat_user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `open_id_unique` (`open_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Table structure for `paopao_wechat_user_extra`
+-- ----------------------------
+DROP TABLE IF EXISTS `paopao_wechat_user_extra`;
+CREATE TABLE `paopao_wechat_user_extra` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `user_id` int(11) NOT NULL COMMENT '用户id',
+  `order_count` int(11) DEFAULT '0' COMMENT '用户下单次数',
+  `credit` bigint(20) DEFAULT '0' COMMENT '用户信用',
+  `status` int(11) DEFAULT '0' COMMENT '用户状态，0:正常',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '最后一次更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 SET FOREIGN_KEY_CHECKS = 1;
