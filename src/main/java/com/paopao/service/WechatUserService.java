@@ -59,6 +59,9 @@ public class WechatUserService {
         //存储weChatUserExtra表
         WeChatUserExtra weChatUserExtra = new WeChatUserExtra();
         weChatUserExtra.setUserId(weChatUser.getId());
+        weChatUserExtra.setStatus(0);
+        weChatUserExtra.setOrderCount(0);
+        weChatUserExtra.setCredit(0L);
         row = weChatUserExtraMapper.insert(weChatUserExtra);
 
         Preconditions.checkArgument(row > 0, "存储weChatUserExtra失败");
