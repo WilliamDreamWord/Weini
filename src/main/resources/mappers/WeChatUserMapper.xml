@@ -197,5 +197,11 @@
     where open_id=#{openId}
   </select>
 
+  <select id="list" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from paopao_wechat_user
+  </select>
+
 
 </mapper>

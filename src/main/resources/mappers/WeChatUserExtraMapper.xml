@@ -134,9 +134,16 @@
 
   <update id="incrOrderCount" parameterType="int">
     UPDATE paopao_wechat_user_extra
-    set order_count = order_count+1
+    set order_count = order_count+1,
+    update_time=now()
     where user_id=#{userId}
   </update>
+
+  <select id="list" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from paopao_wechat_user_extra
+  </select>
 
 
 </mapper>

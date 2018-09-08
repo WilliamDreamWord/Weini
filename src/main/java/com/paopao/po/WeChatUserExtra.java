@@ -86,4 +86,17 @@ public class WeChatUserExtra {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+    @Override
+    public String toString() {
+        return "WeChatUserExtra{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", orderCount=" + orderCount +
+                ", credit=" + credit +
+                ", status=" + status +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
+    }
 }

@@ -2,6 +2,8 @@ package com.paopao.dao;
 
 import com.paopao.po.WeChatUserExtra;
 
+import java.util.List;
+
 public interface WeChatUserExtraMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -23,5 +25,6 @@ public interface WeChatUserExtraMapper {
 
     int incrOrderCount(Integer userId);
 
+    List<WeChatUserExtra> list();
 
 }

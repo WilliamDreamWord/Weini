@@ -213,6 +213,13 @@
         </profile>
 
         <profile>
+            <id>test</id>
+            <properties>
+                <deploy.type>test</deploy.type>
+            </properties>
+        </profile>
+
+        <profile>
             <id>prod</id>
             <properties>
                 <deploy.type>prod</deploy.type>

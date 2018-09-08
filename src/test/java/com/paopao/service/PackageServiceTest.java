@@ -25,10 +25,12 @@ public class PackageServiceTest {
     public void shouldAdd() {
         PackageParam packageParam = new PackageParam();
         packageParam.setName("package");
-        packageParam.setUserId(23);
+        packageParam.setUserId(35);
         packageParam.setPrice(new BigDecimal("3"));
         packageParam.setCode("OIJ341421");
         packageParam.setAddress("dfafdaf");
+        packageParam.setExceptTime("明天");
+        packageParam.setDetail("dfkaofpkda");
         packageParam.setPackageType(Const.PackageType.SMALL.getCode());
         packageParam.setPhoneMessage("短发控嗯出去哦");
 

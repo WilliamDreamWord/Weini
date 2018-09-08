@@ -2,6 +2,8 @@ package com.paopao.dao;
 
 import com.paopao.po.WeChatUser;
 
+import java.util.List;
+
 public interface WeChatUserMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -15,11 +17,15 @@ public interface WeChatUserMapper {
 
     int updateByPrimaryKey(WeChatUser record);
 
+
+
     WeChatUser selectByOpenId(String openId);
 
     int updateByOpenId(WeChatUser record);
 
 
     int countByOpenId(String openId);
+
+    List<WeChatUser> list();
 
 }
