@@ -25,6 +25,19 @@ import java.util.*;
 public class OrderService {
 
 
+//    public static void main(String[] args) {
+//        String str = "北区 橘园";
+//        String[] parts = str.split(" ");
+//
+//        for (String part : parts) {
+//            System.out.print(" " + part + " ");
+//            System.out.print(part.length());
+//            System.out.println(part.equals("北区"));
+//        }
+//        System.out.println();
+//    }
+
+
     @Autowired
     private OrderMapper orderMapper;
 
@@ -108,6 +121,23 @@ public class OrderService {
             throw new IllegalArgumentException("传入的参数项为null");
         }
 
+
+        WeChatUserExtra weChatUserExtra = weChatUserExtraMapper.selectByUserId(userId);
+        Preconditions.checkArgument(weChatUserExtra != null, "不存在该userId的WeChatUserExtra");
+        Shipping shipping = shippingMapper.selectByPrimaryKey(shippingId);
+
+
+        // TODO: 09/09/2018 业务需求
+        //业务需求：新用户的南区地址不能下单
+        String mediumArea = shipping.getReceiverMediumArea();
+        String department = mediumArea.split(" ")[0];
+        if (department.equals("南区") && weChatUserExtra.getOrderCount() > 0) {
+            throw new IllegalArgumentException("南区业务对新用户已停止");
+        }
+
+
+
+
         long orderNo = generateOrderNo();
 
         OrderItem orderItem = new OrderItem();
@@ -135,7 +165,7 @@ public class OrderService {
         order.setStatus(OrderConst.OrderStatusEnum.PUBLISH_ORDER.getCode());
 
         //把shipping转化为orderShipping
-        Shipping shipping = shippingMapper.selectByPrimaryKey(shippingId);
+//        Shipping shipping = shippingMapper.selectByPrimaryKey(shippingId);
         OrderShipping orderShipping = new OrderShipping();
         orderShipping.setOrderNo(orderNo);
         orderShipping.setUserId(userId);
@@ -157,6 +187,7 @@ public class OrderService {
 
         row = weChatUserExtraMapper.incrOrderCount(userId);
         Preconditions.checkArgument(row > 0, "增长orderCount失败");
+
 
 
         OrderVo orderVo = assembleOrderVo(order, Arrays.asList(orderItem));
