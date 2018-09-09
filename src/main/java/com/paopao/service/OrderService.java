@@ -26,15 +26,10 @@ public class OrderService {
 
 
 //    public static void main(String[] args) {
-//        String str = "北区 橘园";
-//        String[] parts = str.split(" ");
+//        String str = "北区橘园";
 //
-//        for (String part : parts) {
-//            System.out.print(" " + part + " ");
-//            System.out.print(part.length());
-//            System.out.println(part.equals("北区"));
-//        }
-//        System.out.println();
+//
+//        System.out.println(str.substring(0, 2).equals("北区"));
 //    }
 
 
@@ -130,7 +125,7 @@ public class OrderService {
         // TODO: 09/09/2018 业务需求
         //业务需求：新用户的南区地址不能下单
         String mediumArea = shipping.getReceiverMediumArea();
-        String department = mediumArea.split(" ")[0];
+        String department = mediumArea.substring(0, 2);
         if (department.equals("南区") && weChatUserExtra.getOrderCount() > 0) {
             throw new IllegalArgumentException("南区业务对新用户已停止");
         }
