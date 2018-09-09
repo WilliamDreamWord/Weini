@@ -148,4 +148,23 @@ public class OrderVo {
     }
 
 
+    @Override
+    public String toString() {
+        return "OrderVo{" +
+                "orderNo=" + orderNo +
+                ", payment=" + payment +
+                ", paymentType=" + paymentType +
+                ", paymentTypeDesc='" + paymentTypeDesc + '\'' +
+                ", status=" + status +
+                ", statusDesc='" + statusDesc + '\'' +
+                ", getTime='" + getTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", closeTime='" + closeTime + '\'' +
+                ", createTime='" + createTime + '\'' +
+                ", orderItemVoList=" + orderItemVoList +
+                ", shippingId=" + shippingId +
+                ", receiverName='" + receiverName + '\'' +
+                ", shipping=" + shipping +
+                '}';
+    }
 }

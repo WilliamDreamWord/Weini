@@ -25,8 +25,8 @@ public class ShippingServiceTest {
         long start = System.currentTimeMillis();
 
         ShippingParam shippingParam = new ShippingParam();
-        shippingParam.setUserId(23);
-        shippingParam.setReceiverLargeArea("mmp");
+        shippingParam.setUserId(35);
+        shippingParam.setReceiverLargeArea("addPackageOrder test");
         shippingParam.setReceiverMediumArea("mmp");
         shippingParam.setReceiverSmallArea("mmp");
         shippingParam.setReceiverDoor("mmp");
@@ -37,8 +37,6 @@ public class ShippingServiceTest {
 
         System.out.println("expire: " + (System.currentTimeMillis() - start));
 
-        System.out.println(shipping.getId());
-        Assert.assertTrue(shipping.getId() != null);
     }
 
     @Test

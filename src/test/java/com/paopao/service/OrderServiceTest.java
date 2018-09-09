@@ -1,6 +1,8 @@
 package com.paopao.service;
 
+import com.paopao.common.Const;
 import com.paopao.common.OrderConst;
+import com.paopao.param.PackageParam;
 import com.paopao.vo.OrderManagerVo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -20,10 +23,27 @@ public class OrderServiceTest {
     @Autowired
     private OrderService orderService;
 
+//
+//    @Test
+//    public void shouldAdd() {
+//        orderService.addOrder(69, 60, 35);
+//    }
 
     @Test
-    public void shouldAdd() {
-        orderService.addOrder(69, 60, 35);
+    public void shouldAddPackageOrder() {
+        PackageParam packageParam = new PackageParam();
+        packageParam.setName("package order test");
+        packageParam.setUserId(35);
+        packageParam.setPrice(new BigDecimal("3"));
+        packageParam.setCode("OIJ341421");
+        packageParam.setAddress("短发哦沉溺");
+        packageParam.setExceptTime("明天");
+        packageParam.setDetail("哦多可达从破壳我们");
+        packageParam.setPackageType(Const.PackageType.SMALL.getCode());
+        packageParam.setPhoneMessage("短发控嗯出去哦");
+
+        System.out.println(orderService.addPackageOrder(packageParam, 43));
+
     }
 
     @Test

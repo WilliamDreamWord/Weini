@@ -2,6 +2,7 @@ package com.paopao.controller.wechat;
 
 import com.paopao.common.Const;
 import com.paopao.common.JsonResponse;
+import com.paopao.param.PackageParam;
 import com.paopao.po.WeChatUser;
 import com.paopao.service.OrderService;
 import com.paopao.vo.OrderVo;
@@ -29,19 +30,28 @@ public class OrderController {
     private OrderService orderService;
 
 
-    @ApiOperation(value="创建订单")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "shippingId"),
-            @ApiImplicitParam(name = "packageId")
-    })
-    @PostMapping("add.do")
-    public JsonResponse<OrderVo> add(Integer shippingId, Integer packageId, HttpSession httpSession) {
+
+    //同时添加package和order
+    @PostMapping("add_package_order.do")
+    public JsonResponse<OrderVo> addPackageOrder(PackageParam packageParam, Integer shippingId,HttpSession httpSession) {
 
         WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
-        OrderVo orderVo =  orderService.addOrder(packageId, shippingId, weChatUser.getId());
+        packageParam.setUserId(weChatUser.getId());
 
-        return JsonResponse.createBySuccess(orderVo);
+        return orderService.addPackageOrder(packageParam, shippingId);
+
     }
+
+
+
+//    @PostMapping("add.do")
+//    public JsonResponse<OrderVo> add(Integer shippingId, Integer packageId, HttpSession httpSession) {
+//
+//        WeChatUser weChatUser = (WeChatUser) httpSession.getAttribute(Const.CURRENT_WECHAT_USER);
+//        OrderVo orderVo =  orderService.addOrder(packageId, shippingId, weChatUser.getId());
+//
+//        return JsonResponse.createBySuccess(orderVo);
+//    }
 
 
 

@@ -3,8 +3,11 @@ package com.paopao.service;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.paopao.common.Const;
+import com.paopao.common.JsonResponse;
 import com.paopao.common.OrderConst;
+import com.paopao.convert.PackageConvert;
 import com.paopao.dao.*;
+import com.paopao.param.PackageParam;
 import com.paopao.po.*;
 import com.paopao.po.Package;
 import com.paopao.util.DateTimeUtil;
@@ -109,61 +112,47 @@ public class OrderService {
 
 
 
-    //目前为止，直接通过packageId来添加订单
     @Transactional
-    public OrderVo addOrder(Integer packageId, Integer shippingId, Integer userId) {
-        if (packageId == null || shippingId == null || userId == null) {
-            throw new IllegalArgumentException("传入的参数项为null");
-        }
+    public JsonResponse<OrderVo> addPackageOrder(PackageParam packageParam, Integer shippingId) {
 
+        Package pack = PackageConvert.of(packageParam);
+        pack.setStatus(Const.PackageStatus.WAIT.getCode());
 
-        WeChatUserExtra weChatUserExtra = weChatUserExtraMapper.selectByUserId(userId);
+        WeChatUserExtra weChatUserExtra = weChatUserExtraMapper.selectByUserId(packageParam.getUserId());
         Preconditions.checkArgument(weChatUserExtra != null, "不存在该userId的WeChatUserExtra");
         Shipping shipping = shippingMapper.selectByPrimaryKey(shippingId);
-
+        Preconditions.checkArgument(shipping != null, "不存在收货地址");
 
         // TODO: 09/09/2018 业务需求
         //业务需求：新用户的南区地址不能下单
         String mediumArea = shipping.getReceiverMediumArea();
         String department = mediumArea.substring(0, 2);
         if (department.equals("南区") && weChatUserExtra.getOrderCount() == 0) {
-            throw new IllegalArgumentException("南区业务对新用户已停止");
+            return JsonResponse.createByErrorMsg("南区地址");
         }
 
 
+        //添加包裹
+        int ans = packageMapper.insert(pack);
+        Preconditions.checkArgument(ans > 0, "新增包裹失败");
 
-
+        //添加orderItem
         long orderNo = generateOrderNo();
-
         OrderItem orderItem = new OrderItem();
-        Package pack = packageMapper.selectByPrimaryKey(packageId);
-        Preconditions.checkArgument(pack!=null, "没有相关包裹");
-        Preconditions.checkArgument(pack.getStatus() == Const.PackageStatus.WAIT.getCode(),
-                "包裹状态异常,请查看订单是否为等待状态");
-
-
-        orderItem.setUserId(userId);
-        orderItem.setPackageId(packageId);
+        orderItem.setUserId(pack.getUserId());
+        orderItem.setPackageId(pack.getId());
         orderItem.setOrderNo(orderNo);
         orderItem.setPackageName(pack.getName());
         orderItem.setPrice(pack.getPrice());
         orderItem.setCreateTime(pack.getCreateTime());
-
         orderItemMapper.insert(orderItem);
 
 
-        Order order = new Order();
-        order.setOrderNo(orderNo);
-        order.setUserId(userId);
-        order.setPayment(orderItem.getPrice());
-        order.setPaymentType(OrderConst.PaymentType.OFFLINE_PAY.getCode());
-        order.setStatus(OrderConst.OrderStatusEnum.PUBLISH_ORDER.getCode());
 
-        //把shipping转化为orderShipping
-//        Shipping shipping = shippingMapper.selectByPrimaryKey(shippingId);
+        //把shipping转化为orderShipping，并添加orderShipping
         OrderShipping orderShipping = new OrderShipping();
         orderShipping.setOrderNo(orderNo);
-        orderShipping.setUserId(userId);
+        orderShipping.setUserId(pack.getUserId());
         orderShipping.setReceiverName(shipping.getReceiverName());
         orderShipping.setShippingStatus(shipping.getStatus());
         orderShipping.setReceiverMobile(shipping.getReceiverMobile());
@@ -174,22 +163,106 @@ public class OrderService {
         int row = orderShippingMapper.insert(orderShipping);
         Preconditions.checkArgument(row > 0, "插入orderShipping失败");
 
+
+        //添加订单
+        Order order = new Order();
+        order.setOrderNo(orderNo);
+        order.setUserId(pack.getUserId());
+        order.setPayment(orderItem.getPrice());
+        order.setPaymentType(OrderConst.PaymentType.OFFLINE_PAY.getCode());
+        order.setStatus(OrderConst.OrderStatusEnum.PUBLISH_ORDER.getCode());
         order.setShippingId(orderShipping.getId());
 
         row = orderMapper.insert(order);
         Preconditions.checkArgument(row > 0, "插入订单失败");
 
 
-        row = weChatUserExtraMapper.incrOrderCount(userId);
+        //增长order count
+        row = weChatUserExtraMapper.incrOrderCount(pack.getUserId());
         Preconditions.checkArgument(row > 0, "增长orderCount失败");
-
-
 
         OrderVo orderVo = assembleOrderVo(order, Arrays.asList(orderItem));
 
 
-        return orderVo;
+        return JsonResponse.createBySuccess(orderVo);
+
     }
+
+
+
+
+    //目前为止，直接通过packageId来添加订单
+//    @Transactional
+//    public OrderVo addOrder(Integer packageId, Integer shippingId, Integer userId) {
+//        if (packageId == null || shippingId == null || userId == null) {
+//            throw new IllegalArgumentException("传入的参数项为null");
+//        }
+//
+//
+//        WeChatUserExtra weChatUserExtra = weChatUserExtraMapper.selectByUserId(userId);
+//        Preconditions.checkArgument(weChatUserExtra != null, "不存在该userId的WeChatUserExtra");
+//        Shipping shipping = shippingMapper.selectByPrimaryKey(shippingId);
+//        Preconditions.checkArgument(shipping != null, "不存在收货地址");
+//
+//
+//
+//        long orderNo = generateOrderNo();
+//
+//        OrderItem orderItem = new OrderItem();
+//        Package pack = packageMapper.selectByPrimaryKey(packageId);
+//        Preconditions.checkArgument(pack!=null, "没有相关包裹");
+//        Preconditions.checkArgument(pack.getStatus() == Const.PackageStatus.WAIT.getCode(),
+//                "包裹状态异常,请查看订单是否为等待状态");
+//
+//
+//        orderItem.setUserId(userId);
+//        orderItem.setPackageId(packageId);
+//        orderItem.setOrderNo(orderNo);
+//        orderItem.setPackageName(pack.getName());
+//        orderItem.setPrice(pack.getPrice());
+//        orderItem.setCreateTime(pack.getCreateTime());
+//
+//        orderItemMapper.insert(orderItem);
+//
+//
+//        Order order = new Order();
+//        order.setOrderNo(orderNo);
+//        order.setUserId(userId);
+//        order.setPayment(orderItem.getPrice());
+//        order.setPaymentType(OrderConst.PaymentType.OFFLINE_PAY.getCode());
+//        order.setStatus(OrderConst.OrderStatusEnum.PUBLISH_ORDER.getCode());
+//
+//        //把shipping转化为orderShipping
+////        Shipping shipping = shippingMapper.selectByPrimaryKey(shippingId);
+//        OrderShipping orderShipping = new OrderShipping();
+//        orderShipping.setOrderNo(orderNo);
+//        orderShipping.setUserId(userId);
+//        orderShipping.setReceiverName(shipping.getReceiverName());
+//        orderShipping.setShippingStatus(shipping.getStatus());
+//        orderShipping.setReceiverMobile(shipping.getReceiverMobile());
+//        orderShipping.setReceiverSmallArea(shipping.getReceiverSmallArea());
+//        orderShipping.setReceiverMediumArea(shipping.getReceiverMediumArea());
+//        orderShipping.setReceiverLargeArea(shipping.getReceiverLargeArea());
+//        orderShipping.setReceiverDoor(shipping.getReceiverDoor());
+//        int row = orderShippingMapper.insert(orderShipping);
+//        Preconditions.checkArgument(row > 0, "插入orderShipping失败");
+//
+//        order.setShippingId(orderShipping.getId());
+//
+//        row = orderMapper.insert(order);
+//        Preconditions.checkArgument(row > 0, "插入订单失败");
+//
+//
+//        row = weChatUserExtraMapper.incrOrderCount(userId);
+//        Preconditions.checkArgument(row > 0, "增长orderCount失败");
+//
+//
+//
+//        OrderVo orderVo = assembleOrderVo(order, Arrays.asList(orderItem));
+//
+//
+//        return orderVo;
+//    }
 
 
 
