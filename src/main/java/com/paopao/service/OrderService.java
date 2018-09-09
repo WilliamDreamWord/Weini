@@ -126,7 +126,7 @@ public class OrderService {
         //业务需求：新用户的南区地址不能下单
         String mediumArea = shipping.getReceiverMediumArea();
         String department = mediumArea.substring(0, 2);
-        if (department.equals("南区") && weChatUserExtra.getOrderCount() > 0) {
+        if (department.equals("南区") && weChatUserExtra.getOrderCount() == 0) {
             throw new IllegalArgumentException("南区业务对新用户已停止");
         }
 
